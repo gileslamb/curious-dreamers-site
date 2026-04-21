@@ -82,7 +82,7 @@ nav {
   position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
   width: 0; height: 0;
   border-left: 320px solid transparent; border-right: 320px solid transparent;
-  border-top: 110vh solid rgba(245,200,66,0.055);
+  border-top: 110vh solid rgba(245,200,66,0.075);
   z-index: 1; pointer-events: none; filter: blur(18px);
   animation: beamPulse 6s ease-in-out infinite;
 }
@@ -408,6 +408,97 @@ nav {
 .modal-credits { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-wrap:wrap; gap:0.4rem; }
 .m-badge { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.08em; padding:0.25rem 0.55rem; border-radius:2px; }
 
+/* ══ TEATRINO TRUMPET ══ */
+#play-me {
+  background: var(--navy); padding: 2.5rem 3rem 3.5rem; text-align: center;
+  position: relative; overflow: visible;
+}
+.trumpet-stage {
+  display: flex; justify-content: center; align-items: center;
+  perspective: 800px;
+}
+.trumpet-perspective {
+  transform-style: preserve-3d;
+  transition: transform 0.08s ease-out;
+}
+.trumpet-wrapper {
+  position: relative; cursor: pointer; display: inline-block;
+  outline: none; transform-style: preserve-3d;
+  -webkit-user-select: none; user-select: none;
+}
+
+.trumpet-img {
+  width: 260px; height: auto; display: block;
+  filter: drop-shadow(0 4px 24px rgba(245,200,66,0.12));
+  transition: filter 0.3s;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+  border-radius: 8px;
+}
+.trumpet-wrapper:hover .trumpet-img {
+  filter: drop-shadow(0 8px 36px rgba(245,200,66,0.22));
+}
+
+/* 3D spin on click */
+.trumpet-wrapper.spinning .trumpet-img {
+  animation: trumpetSpin 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes trumpetSpin {
+  0%   { transform: rotateY(0deg) scale(1); }
+  40%  { transform: rotateY(200deg) scale(1.08); }
+  70%  { transform: rotateY(340deg) scale(1.02); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+
+/* Play me sticker */
+.play-sticker {
+  position: absolute; top: -20px; right: -36px;
+  background: var(--coral); color: var(--white);
+  font-family: var(--syne); font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.75rem 0.35rem;
+  transform: rotate(12deg);
+  border-radius: 2px;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.3);
+  z-index: 5; pointer-events: none;
+  animation: stickerWiggle 3s ease-in-out infinite;
+  white-space: nowrap;
+}
+.play-sticker::before {
+  content: ''; position: absolute;
+  bottom: -5px; left: 10px;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--coral);
+}
+
+/* Now playing indicator */
+.now-playing {
+  position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: var(--yellow); opacity: 0;
+  transition: opacity 0.4s;
+  white-space: nowrap; pointer-events: none;
+}
+.now-playing.visible { opacity: 0.6; animation: noteFloat 2s ease-in-out infinite; }
+@keyframes noteFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+
+@keyframes stickerWiggle {
+  0%, 100% { transform: rotate(12deg) scale(1); }
+  25% { transform: rotate(14deg) scale(1.04); }
+  75% { transform: rotate(10deg) scale(0.97); }
+}
+
+@media (max-width: 600px) {
+  .trumpet-img { width: 180px; }
+  .play-sticker { top: -16px; right: -22px; font-size: 0.6rem; padding: 0.3rem 0.6rem; }
+  #play-me { padding: 2rem 1.5rem 3rem; }
+}
+
 /* ══ ANIMATIONS ══ */
 @keyframes popIn { from{opacity:0;transform:translateY(16px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -509,7 +600,7 @@ nav {
       <span class="line1">CURIOUS</span>
       <span class="line2">DREAMERS</span>
     </h1>
-    <p class="hero-sub">Bold work. Music at the centre. Made for people who want to feel something.</p>
+    <p class="hero-sub">Music-led stories for screen, stage and beyond. Made with care, felt in the bones.</p>
     <div class="hero-buttons">
       <a href="#projects" class="btn-primary">Our projects</a>
       <a href="#about" class="btn-secondary">The studio</a>
@@ -520,8 +611,45 @@ nav {
 <!-- MANIFESTO -->
 <section id="manifesto">
   <div class="manifesto-inner">
-    <p class="manifesto-quote reveal">We don't make <em>children's content.</em><br>We make extraordinary work.</p>
-    <p class="manifesto-sub reveal reveal-d1">The best creative work doesn't talk down to anyone. It opens something up. We start with music and sound, we work with the best people we can find, and we make things we're genuinely proud of. That's it.</p>
+    <p class="manifesto-quote reveal">We make work that <em>means something.</em><br>For all ages. Music first.</p>
+    <p class="manifesto-sub reveal reveal-d1">The best work invites you in. It doesn't care how old you are. We start with music and sound, we collaborate with wonderful people, and we make things we believe in. Simple as that.</p>
+  </div>
+</section>
+
+<!-- TEATRINO TRUMPET -->
+<section id="play-me">
+  <div class="trumpet-stage" id="trumpetStage">
+    <div class="trumpet-perspective" id="trumpetPerspective">
+      <div class="trumpet-wrapper" id="trumpetBtn" role="button" tabindex="0" aria-label="Play a surprise sound">
+        <!-- Play me label -->
+        <div class="play-sticker" id="playSticker">
+          <span class="sticker-text">play me!</span>
+        </div>
+        <!-- Now playing indicator -->
+        <div class="now-playing" id="nowPlaying">♪ ♫ ♪</div>
+        <!-- Trumpet sticker image — upload to R2 as trumpet-sticker.png -->
+        <!-- OR replace src with: https://imagedelivery.net/YOUR_ACCOUNT_HASH/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public -->
+        <img
+          class="trumpet-img" id="trumpetImg"
+          src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public"
+          alt="A peculiar trumpet — click to play"
+          draggable="false"
+          onerror="this.style.display='none';document.getElementById('trumpetFallback').style.display='block';"
+        />
+        <!-- SVG fallback if image not yet uploaded -->
+        <svg id="trumpetFallback" style="display:none" class="trumpet-img" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="58" cy="90" rx="42" ry="52" fill="none" stroke="#f5c842" stroke-width="2.5" opacity="0.8"/>
+          <path d="M95,78 C120,78 140,72 180,72" fill="none" stroke="#f5c842" stroke-width="6" stroke-linecap="round"/>
+          <path d="M95,102 C120,102 140,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+          <path d="M180,72 Q200,72 200,90 Q200,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+          <rect x="132" y="60" width="12" height="20" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="152" y="56" width="12" height="24" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="172" y="59" width="12" height="21" rx="6" fill="#f5c842" opacity="0.5"/>
+          <path d="M200,90 L240,90" fill="none" stroke="#f5c842" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+          <ellipse cx="245" cy="90" rx="8" ry="6" fill="none" stroke="#f5c842" stroke-width="2" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -564,7 +692,7 @@ nav {
       <div class="proj-content">
         <span class="proj-tag">Animated Series · In Development</span>
         <h3 class="proj-title">Teatrino</h3>
-        <p class="proj-desc">Set inside a theatre. No dialogue. Seven minutes per episode of music, surrealism and play. European in spirit, genuinely unlike anything else.</p>
+        <p class="proj-desc">Set inside a theatre. No dialogue. Seven minutes per episode of music, surrealism and play. European in spirit, and genuinely unlike anything else we've seen.</p>
         <span class="proj-reveal">Enter the theatre →</span>
       </div>
     </div>
@@ -822,18 +950,18 @@ nav {
     <div class="studio-grid">
       <div class="studio-cell reveal">
         <p class="studio-cell-label">Track record</p>
-        <h4 class="studio-cell-title">Award-winning from the start</h4>
-        <p class="studio-cell-body">Hushabye Lullaby won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers. Distance to the Moon picked up awards on the festival circuit. We set the bar high and we keep it there.</p>
+        <h4 class="studio-cell-title">It started with a lullaby</h4>
+        <p class="studio-cell-body">Hushabye Lullabye won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers. Distance to the Moon picked up awards on the festival circuit. Beautiful things keep happening when we follow the music.</p>
       </div>
       <div class="studio-cell reveal reveal-d1">
         <p class="studio-cell-label">How we work</p>
-        <h4 class="studio-cell-title">Music first. Every time.</h4>
-        <p class="studio-cell-body">Sound and music aren't added at the end of our process. They start it. We work across animation, live action, stop motion, and immersive formats, and we bring a European artistic sensibility to everything we touch.</p>
+        <h4 class="studio-cell-title">Music first. Always.</h4>
+        <p class="studio-cell-body">Sound and music aren't added at the end of our process. They start it. We work across animation, live action, stop motion, and immersive formats, bringing a European artistic sensibility and a genuine love for the craft.</p>
       </div>
       <div class="studio-cell reveal reveal-d2">
         <p class="studio-cell-label">Who we work with</p>
-        <h4 class="studio-cell-title">The right people know us</h4>
-        <p class="studio-cell-body">BAFTA, RTS, WFTV, Screen Scotland, BFI, CBeebies, Channel 4. Broadcasters, funders, and festival programmers come to us when they want something that doesn't look like everything else.</p>
+        <h4 class="studio-cell-title">Friends and collaborators</h4>
+        <p class="studio-cell-body">We're lucky to work with brilliant people. BAFTA, RTS, WFTV, Screen Scotland, BFI, CBeebies, Channel 4 — broadcasters, funders, and festival programmers who share our appetite for work that feels a bit different.</p>
       </div>
     </div>
 
@@ -858,7 +986,7 @@ nav {
       <p class="section-label">Curious Minds</p>
       <h2 class="section-title">Sharing <em>what we know</em></h2>
       <div class="minds-body">
-        <p>Between us we've spent decades making things, teaching people to make things, and figuring out what actually works. Curious Minds is how we share that.</p>
+        <p>We've spent a long time making things, teaching people to make things, and learning what actually works. Curious Minds is how we share that — openly and generously.</p>
         <p>We run masterclasses in soundtrack composition, screen skills, creative storytelling, and play-based practice. We work with industry professionals, educators, students, and young people.</p>
         <p>Championing women in film and television runs through everything we do. We support female talent across directing, writing, design, and production at every stage of their career.</p>
       </div>
@@ -877,7 +1005,7 @@ nav {
     <div class="pillars reveal reveal-d1">
       <div class="pillar"><h4>Play and creativity</h4><p>Play is serious work. We run sessions for children, young people, and the adults who work with them, putting creative play at the centre of how we learn and make.</p></div>
       <div class="pillar"><h4>Screen skills and storytelling</h4><p>Practical masterclasses in animation, live action, sound design, and how to tell a story through image and sound. From students to seasoned professionals.</p></div>
-      <div class="pillar"><h4>Women in film and TV</h4><p>Mentoring, advocating, and opening doors for women working across directing, writing, design, and production. This matters to us and we put real time into it.</p></div>
+      <div class="pillar"><h4>Women in film and TV</h4><p>Mentoring, advocating, and opening doors for women working across directing, writing, design, and production. This runs through everything we do.</p></div>
       <div class="pillar"><h4>Immersive and new forms</h4><p>Galleries, theatres, online, outdoors. We're genuinely curious about what happens when you take the work off the screen and put it somewhere unexpected.</p></div>
     </div>
   </div>
@@ -886,8 +1014,8 @@ nav {
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner">
-    <h2 class="contact-title reveal">Got a project?<br><em>Talk to us.</em></h2>
-    <p class="contact-sub reveal reveal-d1">Glasgow based. Working everywhere.</p>
+    <h2 class="contact-title reveal">Let's make<br><em>something together.</em></h2>
+    <p class="contact-sub reveal reveal-d1">Based in Glasgow. Happy to travel.</p>
     <a href="mailto:hello@curiousdreamers.com" class="contact-email reveal reveal-d2">hello@curiousdreamers.com</a>
     <p class="contact-address">73 Albion Street, Merchant City, Glasgow G1 1NY</p>
     <div class="social-row">
@@ -1016,34 +1144,268 @@ resize(); window.addEventListener('resize', resize);
 class Puff {
   constructor() { this.reset(true); }
   reset(init) {
-    this.x = W/2 + (Math.random()-0.5)*200;
-    this.y = init ? Math.random()*H : H*0.3 + Math.random()*H*0.4;
-    this.r = 20 + Math.random()*55;
-    this.vx = (Math.random()-0.5)*0.45;
-    this.vy = -(0.22 + Math.random()*0.5);
-    this.alpha = 0; this.maxA = 0.03 + Math.random()*0.065;
-    this.state = 'in'; this.life = 0; this.maxL = 220 + Math.random()*200;
+    this.x = W/2 + (Math.random()-0.5)*420;
+    this.y = init ? Math.random()*H : H*0.2 + Math.random()*H*0.5;
+    this.r = 30 + Math.random()*80;
+    this.vx = (Math.random()-0.5)*0.55;
+    this.vy = -(0.18 + Math.random()*0.45);
+    this.alpha = 0; this.maxA = 0.045 + Math.random()*0.085;
+    this.state = 'in'; this.life = 0; this.maxL = 300 + Math.random()*280;
   }
   tick() {
     this.life++;
-    this.x += this.vx + Math.sin(this.life*0.035)*0.45;
-    this.y += this.vy; this.r += 0.22;
-    if (this.state==='in') { this.alpha += this.maxA/45; if (this.alpha>=this.maxA) this.state='out'; }
-    else { this.alpha -= this.maxA/130; }
+    this.x += this.vx + Math.sin(this.life*0.028)*0.55;
+    this.y += this.vy; this.r += 0.28;
+    if (this.state==='in') { this.alpha += this.maxA/50; if (this.alpha>=this.maxA) this.state='out'; }
+    else { this.alpha -= this.maxA/180; }
     if (this.alpha<=0||this.life>this.maxL) this.reset(false);
   }
   draw() {
     const g = ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
     g.addColorStop(0,`rgba(230,210,170,${this.alpha})`);
-    g.addColorStop(0.5,`rgba(210,190,150,${this.alpha*0.45})`);
+    g.addColorStop(0.4,`rgba(215,195,155,${this.alpha*0.5})`);
     g.addColorStop(1,`rgba(190,170,130,0)`);
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
   }
 }
-const puffs = Array.from({length:30}, () => { const p=new Puff(); p.life=Math.random()*p.maxL; return p; });
+const puffs = Array.from({length:55}, () => { const p=new Puff(); p.life=Math.random()*p.maxL; return p; });
 let heroVis = true;
 new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observe(document.getElementById('hero'));
 (function loop() { ctx.clearRect(0,0,W,H); if(heroVis) puffs.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+
+/* ── TEATRINO TRUMPET ── */
+(function() {
+  const stage = document.getElementById('trumpetStage');
+  const persp = document.getElementById('trumpetPerspective');
+  const btn = document.getElementById('trumpetBtn');
+  const img = document.getElementById('trumpetImg');
+  const sticker = document.getElementById('playSticker');
+  const nowPlaying = document.getElementById('nowPlaying');
+  if (!btn || !img) return;
+
+  const R2 = 'https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/';
+
+  // ── MP3 FILES ──
+  // Add your filenames here. Each click plays ~10s: 1s fade-in, 8s play, 1s fade-out.
+  const SAMPLE_FILES = [
+    '441789-Film_Projector-16mm-1.mp3',
+    'CRAZY RIDE_STEM_TRUMPET_1.mp3',
+    'Dutch Trumpet Synth.mp3',
+    'Hyundai v1.mp3',
+    'Hyundai v2.3.mp3',
+    'Hyundai v3.mp3',
+  ];
+
+  let audioCtx = null;
+  let playCount = 0;
+  let currentSource = null;
+  let currentGain = null;
+  let fadeOutTimer = null;
+  let isPlaying = false;
+
+  function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // ── PARALLAX — mouse tilt ──
+  stage.addEventListener('mousemove', e => {
+    const rect = stage.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotY = dx * 18;  // max 18deg tilt
+    const rotX = -dy * 12; // max 12deg tilt
+    persp.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+  });
+  stage.addEventListener('mouseleave', () => {
+    persp.style.transform = 'rotateY(0deg) rotateX(0deg)';
+  });
+
+  // ── SYNTH FALLBACK VOICES ──
+  const voices = [
+    // Music box tinkle
+    function(ctx) {
+      const t = ctx.currentTime;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0, t+i*0.08); g.gain.linearRampToValueAtTime(0.12, t+i*0.08+0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, t+i*0.08+0.6);
+        osc.connect(g).connect(ctx.destination); osc.start(t+i*0.08); osc.stop(t+i*0.08+0.7);
+      });
+    },
+    // Descending woop
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1200, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.5);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.55);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.6);
+    },
+    // Fat synth chord
+    function(ctx) {
+      const t = ctx.currentTime;
+      [130.81, 164.81, 196, 261.63].forEach(f => {
+        const osc = ctx.createOscillator(); osc.type = 'square'; osc.frequency.value = f+(Math.random()-0.5)*4;
+        const g = ctx.createGain(); g.gain.setValueAtTime(0.04, t); g.gain.linearRampToValueAtTime(0.06, t+0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, t+1.2);
+        osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+1.3);
+      });
+    },
+    // Percussive boing
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.2);
+      osc.frequency.linearRampToValueAtTime(120, t+0.5);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.55);
+    },
+    // Ascending trill
+    function(ctx) {
+      const t = ctx.currentTime;
+      [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25].forEach((f, i) => {
+        const osc = ctx.createOscillator(); osc.type = 'triangle'; osc.frequency.value = f;
+        const g = ctx.createGain(); const s = t+i*0.045;
+        g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(0.1, s+0.015);
+        g.gain.exponentialRampToValueAtTime(0.001, s+0.35);
+        osc.connect(g).connect(ctx.destination); osc.start(s); osc.stop(s+0.4);
+      });
+    },
+    // Funny quack
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'square';
+      osc.frequency.setValueAtTime(350, t); osc.frequency.linearRampToValueAtTime(200, t+0.08);
+      osc.frequency.linearRampToValueAtTime(280, t+0.12); osc.frequency.exponentialRampToValueAtTime(120, t+0.25);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.08, t); g.gain.linearRampToValueAtTime(0.1, t+0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.35);
+    },
+  ];
+  let lastPick = -1;
+  let fadeInInterval = null;
+
+  // ── Fade out when scrolling away from trumpet section ──
+  const playSection = document.getElementById('play-me');
+  if (playSection) {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting && isPlaying && currentSource) {
+          // Slowly fade out as user scrolls away
+          let scrollFade = setInterval(() => {
+            if (currentSource && currentSource.volume > 0.02) {
+              currentSource.volume = Math.max(currentSource.volume - 0.001, 0);
+            } else {
+              clearInterval(scrollFade);
+              if (currentSource) {
+                currentSource.pause();
+                isPlaying = false;
+                if (nowPlaying) nowPlaying.classList.remove('visible');
+                currentSource = null;
+              }
+            }
+          }, 30);
+        }
+      });
+    }, { threshold: 0.1 }).observe(playSection);
+  }
+
+  // ── STOP current playback ──
+  function stopCurrent() {
+    if (fadeOutTimer) { clearTimeout(fadeOutTimer); fadeOutTimer = null; }
+    if (currentSource) {
+      try {
+        if (currentSource.pause) {
+          // Audio element
+          currentSource.pause();
+          currentSource.currentTime = 0;
+        } else if (currentSource.stop) {
+          currentSource.stop();
+        }
+      } catch(e) {}
+    }
+    currentSource = null; currentGain = null; isPlaying = false;
+    if (nowPlaying) nowPlaying.classList.remove('visible');
+  }
+
+  // ── PLAY ──
+  function play() {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    // Stop any current playback
+    stopCurrent();
+
+    // Spin animation
+    btn.classList.remove('spinning');
+    void btn.offsetWidth;
+    btn.classList.add('spinning');
+
+    // Hide sticker after first play
+    if (sticker && playCount === 0) {
+      sticker.style.transition = 'opacity 0.4s, transform 0.4s';
+      sticker.style.opacity = '0';
+      sticker.style.transform = 'rotate(20deg) scale(0.5)';
+      setTimeout(() => sticker.style.display = 'none', 400);
+    }
+    playCount++;
+
+    // ── MIXED MODE: ~60% MP3, ~40% synth for variety ──
+    const totalPool = SAMPLE_FILES.length + voices.length;
+    let pick;
+    do { pick = Math.floor(Math.random() * totalPool); } while (pick === lastPick && totalPool > 1);
+    lastPick = pick;
+
+    if (pick < SAMPLE_FILES.length) {
+      // ── MP3 ──
+      const file = SAMPLE_FILES[pick];
+      const url = R2 + encodeURIComponent(file);
+
+      const audio = new Audio(url);
+      audio.volume = 0;
+      audio.currentTime = 5;
+      audio.loop = true;
+
+      currentSource = audio;
+      isPlaying = true;
+      if (nowPlaying) nowPlaying.classList.add('visible');
+
+      if (fadeInInterval) clearInterval(fadeInInterval);
+      fadeInInterval = setInterval(() => {
+        if (audio.volume < 0.44) {
+          audio.volume = Math.min(audio.volume + 0.04, 0.45);
+        } else {
+          clearInterval(fadeInInterval);
+          fadeInInterval = null;
+        }
+      }, 20);
+
+      audio.play().catch(err => {
+        console.warn('MP3 play failed:', file, err);
+        isPlaying = false;
+        if (nowPlaying) nowPlaying.classList.remove('visible');
+        voices[Math.floor(Math.random() * voices.length)](audioCtx);
+      });
+
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        if (nowPlaying) nowPlaying.classList.remove('visible');
+        currentSource = null;
+      });
+    } else {
+      // ── SYNTH ──
+      voices[pick - SAMPLE_FILES.length](audioCtx);
+    }
+  }
+
+  btn.addEventListener('click', play);
+  btn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); }
+  });
+
+  // Clean up spin class
+  img.addEventListener('animationend', () => btn.classList.remove('spinning'));
+})();
 
 /* ── PROJECT DATA ── */
 const accentColors = {
@@ -1066,7 +1428,7 @@ const P = {
     body:`<p>Teatrino is set inside a theatre. Not a metaphor for one, an actual theatre, with sets, flats, props, and all the beautiful artifice that comes with it. Episodes are seven minutes long and there's no dialogue. Music and sound don't support the story. They are the story.</p><p>It sits in a European tradition of visual comedy and surrealism. Think Tati's timing, the playfulness of Eastern European animation, the musicality of early Fellini. The theatrical setting is worn openly and without apology: sets that look like sets, everything knowingly constructed.</p><p>Each episode starts with something very simple and follows it wherever it goes. At the end there's a short recap section that invites children to take the episode's logic and run with it. No explanation, no moral. Just an invitation to play.</p>`,
     creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
   wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub',sub:'Teaching young people to see stories',
-    body:`<p>The question that started WndrKlub was simple: what would a screen skills curriculum look like if it was made by artists rather than policy writers? The answer turns out to be a series that works as both a teaching resource and a genuinely creative piece of television in its own right.</p><p>Developed with Screen Scotland and built around the ScreenSkills Education Curriculum, WndrKlub teaches children and young people how to make films. Not by telling them how to do it, but by showing them what it looks like when it's done well. Each episode demonstrates a different way of telling a story through image and sound.</p><p>It carries the DNA of Hushabye Lullaby, which won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers.</p>`,
+    body:`<p>The question that started WndrKlub was simple: what would a screen skills curriculum look like if it was made by artists rather than policy writers? The answer turns out to be a series that works as both a teaching resource and a genuinely creative piece of television in its own right.</p><p>Developed with Screen Scotland and built around the ScreenSkills Education Curriculum, WndrKlub teaches children and young people how to make films. Not by telling them how to do it, but by showing them what it looks like when it's done well. Each episode demonstrates a different way of telling a story through image and sound.</p><p>It carries the DNA of Hushabye Lullabye, which won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers.</p>`,
     creds:['Screen Scotland','ScreenSkills Curriculum','Animated Series','In Development']},
   leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'What the whales have been saying, all this time',
     body:`<p><em>"My soul has been torn from me and I am bleeding / My heart it has been rent and I am crying / I am the last of the Great Whales and I am dying."</em></p><p>Andy Barnes wrote that song in 1983. It asks what it would mean to truly listen to whales, not as a symbol or a campaign, but as living creatures with their own complex acoustic world. That question is the starting point for this film.</p><p>We're working with <strong>Mairi Campbell</strong>, Gaelic and Scottish musician, vocalist, viola and clarsach player, and with <strong>Alex South</strong>, a Glasgow-based musician and researcher whose practice sits at the intersection of music, bioacoustics, and animal communication. The recordings come first, made separately, then woven together.</p><p>The form is still open: short film, multi-screen live performance, VR, or some combination of all three. What's fixed is the subject: what connects us to the rest of the natural world, and what happens when we stop to listen.</p>`,
