@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curious Dreamers — Music & Screen Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:        #0d1b2a;
+  --teal:        #0b7a75;
+  --teal-bright: #14b8b2;
+  --coral:       #e8472a;
+  --yellow:      #f5c842;
+  --yellow-dim:  #c49a1a;
+  --cream:       #faf4e4;
+  --mint:        #b8f0e8;
+  --sky:         #4fb3e8;
+  --white:       #ffffff;
+  --syne:        'Syne', sans-serif;
+  --brico:       'Bricolage Grotesque', sans-serif;
+  --mono:        'DM Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--navy); color: var(--cream); font-family: var(--brico); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(13,27,42,0.95);
+  border-bottom: 2px solid var(--teal);
+  backdrop-filter: blur(8px);
+}
+.nav-logo {
+  font-family: var(--syne); font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--cream); text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem; z-index: 101;
+}
+.nav-logo .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--coral); display: inline-block; animation: blink 3s ease-in-out infinite; flex-shrink: 0; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; color: rgba(250,244,228,0.6); text-decoration: none; transition: color 0.25s; }
+.nav-links a:hover { color: var(--yellow); }
+
+/* Burger */
+.burger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px; z-index: 101;
+}
+.burger span { display: block; width: 24px; height: 2px; background: var(--cream); transition: all 0.3s; border-radius: 1px; }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none; position: fixed; inset: 0; background: rgba(13,27,42,0.98);
+  z-index: 99; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--syne); font-size: 2rem; font-weight: 800;
+  color: var(--cream); text-decoration: none; letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--yellow); }
+
+/* ══ HERO ══ */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--navy);
+}
+
+/* Projector beam */
+.proj-beam {
+  position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 320px solid transparent; border-right: 320px solid transparent;
+  border-top: 110vh solid rgba(245,200,66,0.075);
+  z-index: 1; pointer-events: none; filter: blur(18px);
+  animation: beamPulse 6s ease-in-out infinite;
+}
+.proj-beam-2 {
+  position: absolute; top: -5%; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 180px solid transparent; border-right: 180px solid transparent;
+  border-top: 110vh solid rgba(79,179,232,0.04);
+  z-index: 1; pointer-events: none; filter: blur(24px);
+}
+
+#smokeCanvas { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+
+/* Faint film frames under hero text */
+.film-frames {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 0; overflow: hidden;
+}
+.film-frame-row {
+  display: flex; gap: 0; opacity: 1;
+}
+.film-frame {
+  flex-shrink: 0;
+  width: 120px; height: 90px;
+  border: 1px solid rgba(245,200,66,0.04);
+  background: rgba(245,200,66,0.008);
+  position: relative;
+}
+.film-frame::after {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 1px solid rgba(245,200,66,0.025);
+}
+
+.scan-lines {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+}
+
+/* ── Animated film strips ── */
+.film-strip {
+  position: absolute; left: 0; right: 0; height: 44px; z-index: 8;
+  background: rgba(8,13,20,0.92);
+  overflow: hidden;
+  border-top: 1px solid rgba(245,200,66,0.12);
+  border-bottom: 1px solid rgba(245,200,66,0.12);
+}
+.film-strip.top    { top: 0; }
+.film-strip.bottom { bottom: 0; }
+
+/* Tape driven by JS scroll velocity — no CSS animation */
+.film-tape {
+  display: flex; align-items: center;
+  height: 100%;
+  will-change: transform;
+  width: max-content;
+  transform: translateX(0);
+}
+
+.spr-hole {
+  flex-shrink: 0; width: 24px; height: 18px;
+  border: 1.5px solid rgba(245,200,66,0.3); border-radius: 3px;
+  background: rgba(0,0,0,0.8); margin: 0 14px;
+}
+.spr-num {
+  font-family: var(--mono); font-size: 0.42rem; letter-spacing: 0.1em;
+  color: rgba(245,200,66,0.15); margin: 0 4px; flex-shrink: 0;
+}
+
+/* Horizontal frame lines — driven by same offset as sprockets */
+.film-h-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: rgba(245,200,66,0.045);
+  pointer-events: none; will-change: transform;
+}
+
+/* Hero content */
+.hero-content {
+  position: relative; z-index: 20;
+  text-align: center; padding: 5rem 2rem;
+  max-width: 1000px; width: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.3em;
+  color: var(--teal-bright); margin-bottom: 2rem;
+  opacity: 0; animation: popIn 0.6s 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+.hero-title {
+  font-family: var(--syne); font-weight: 800;
+  font-size: clamp(1.6rem, 9vw, 10rem);
+  line-height: 0.92; letter-spacing: -0.01em;
+  margin-bottom: 0.2em;
+  width: 100%;
+  opacity: 0; animation: popIn 0.7s 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+.hero-title .line1 { color: var(--cream); display: block; white-space: nowrap; }
+.hero-title .line2 { color: var(--yellow); display: block; white-space: nowrap; }
+.hero-sub {
+  font-family: var(--brico); font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 300; color: rgba(250,244,228,0.65);
+  margin-bottom: 2.5rem; max-width: 540px;
+  opacity: 0; animation: popIn 0.6s 0.75s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+.hero-buttons {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: popIn 0.6s 1s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+.btn-primary {
+  font-family: var(--syne); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+  background: var(--coral); color: var(--white); border: none;
+  padding: 0.85rem 2.2rem; cursor: pointer; text-decoration: none;
+  transition: transform 0.2s, background 0.2s;
+  clip-path: polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.btn-primary:hover { background: #ff5a3a; transform: translateY(-2px) scale(1.02); }
+.btn-secondary {
+  font-family: var(--syne); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;
+  background: transparent; color: var(--teal-bright); border: 2px solid var(--teal-bright);
+  padding: 0.85rem 2.2rem; cursor: pointer; text-decoration: none; transition: all 0.2s;
+}
+.btn-secondary:hover { background: var(--teal-bright); color: var(--navy); transform: translateY(-2px); }
+
+/* ══ MANIFESTO ══ */
+#manifesto { background: var(--coral); padding: 7rem 3rem; position: relative; overflow: hidden; }
+#manifesto::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.06); }
+#manifesto::after  { content:''; position:absolute; bottom:-100px; left:-60px; width:260px; height:260px; border-radius:50%; background:rgba(0,0,0,0.08); }
+.manifesto-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+.manifesto-quote {
+  font-family: var(--syne); font-size: clamp(2rem,5.5vw,4.5rem);
+  font-weight: 800; line-height: 1.05; color: var(--white); letter-spacing: -0.02em; margin-bottom: 1.5rem;
+}
+.manifesto-quote em { font-style: normal; color: var(--yellow); }
+.manifesto-sub { font-family: var(--brico); font-size: 1.15rem; font-weight: 300; color: rgba(255,255,255,0.8); max-width: 600px; line-height: 1.75; }
+
+/* ══ SECTION COMMONS ══ */
+.section-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.3em; color: var(--teal-bright); margin-bottom: 0.6rem; text-transform: uppercase; }
+.section-title { font-family: var(--syne); font-size: clamp(2rem,5vw,4rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; color: var(--cream); }
+.section-title em { font-style: normal; color: var(--yellow); }
+
+/* ══ PROJECTS ══ */
+#projects { padding: 7rem 0 6rem; background: var(--navy); }
+.projects-header { padding: 0 3rem; margin-bottom: 4rem; }
+
+.primary-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 3px; }
+
+.proj-card {
+  position: relative; cursor: pointer;
+  padding: 3rem 2.8rem 2.5rem;
+  min-height: 380px; display: flex; flex-direction: column; justify-content: flex-end;
+  overflow: hidden; transition: transform 0.3s;
+}
+.proj-card:hover { transform: scale(1.01); z-index: 2; }
+.proj-card:hover .proj-silhouette { opacity: 0.18; transform: scale(1.04); }
+.proj-card:hover .proj-reveal { opacity: 1; transform: translateY(0); }
+
+/* Silhouette layer */
+.proj-silhouette {
+  position: absolute; inset: 0;
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  opacity: 0.07; transition: opacity 0.5s, transform 0.5s;
+  pointer-events: none; z-index: 0;
+  padding: 0;
+}
+.proj-silhouette svg { width: 100%; height: 100%; }
+
+.proj-num {
+  font-family: var(--syne); font-size: 6rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em;
+  position: absolute; top: 1.5rem; right: 2rem; opacity: 0.07; pointer-events: none; z-index: 0;
+}
+.proj-content { position: relative; z-index: 2; }
+.proj-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; margin-bottom: 0.6rem; display: inline-block; padding: 0.25rem 0.6rem; border-radius: 2px; }
+.proj-title { font-family: var(--syne); font-size: clamp(1.6rem,3.5vw,2.8rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+.proj-desc { font-family: var(--brico); font-size: 0.88rem; font-weight: 300; line-height: 1.6; max-width: 380px; margin-bottom: 1.2rem; opacity: 0.75; }
+.proj-reveal { font-family: var(--syne); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; opacity: 0; transform: translateY(8px); transition: all 0.35s 0.05s; }
+
+/* Colour themes */
+.card-teal   { background:#0a2a28; }
+.card-teal   .proj-tag { background:rgba(20,184,178,0.15); color:var(--teal-bright); }
+.card-teal   .proj-title { color:var(--teal-bright); }
+.card-teal   .proj-desc  { color:rgba(184,240,232,0.8); }
+.card-teal   .proj-reveal { color:var(--teal-bright); }
+.card-teal   .proj-silhouette svg { fill:var(--teal-bright); }
+
+.card-yellow { background:#1a1600; }
+.card-yellow .proj-tag { background:rgba(245,200,66,0.15); color:var(--yellow); }
+.card-yellow .proj-title { color:var(--yellow); }
+.card-yellow .proj-desc  { color:rgba(245,228,160,0.8); }
+.card-yellow .proj-reveal { color:var(--yellow); }
+.card-yellow .proj-silhouette svg { fill:var(--yellow); }
+
+.card-sky    { background:#081624; }
+.card-sky    .proj-tag { background:rgba(79,179,232,0.15); color:var(--sky); }
+.card-sky    .proj-title { color:var(--sky); }
+.card-sky    .proj-desc  { color:rgba(184,220,250,0.8); }
+.card-sky    .proj-reveal { color:var(--sky); }
+.card-sky    .proj-silhouette svg { fill:var(--sky); }
+
+.card-mint   { background:#081a16; }
+.card-mint   .proj-tag { background:rgba(184,240,232,0.1); color:var(--mint); }
+.card-mint   .proj-title { color:var(--mint); }
+.card-mint   .proj-desc  { color:rgba(200,255,240,0.75); }
+.card-mint   .proj-reveal { color:var(--mint); }
+.card-mint   .proj-silhouette svg { fill:var(--mint); }
+
+.card-coral  { background:#1f0d08; }
+.card-coral  .proj-tag { background:rgba(232,71,42,0.15); color:var(--coral); }
+.card-coral  .proj-title { color:var(--coral); }
+.card-coral  .proj-desc  { color:rgba(255,200,180,0.8); }
+.card-coral  .proj-reveal { color:var(--coral); }
+.card-coral  .proj-silhouette svg { fill:var(--coral); }
+
+.card-navy   { background:#0d1b2a; border:1px solid rgba(245,200,66,0.15); }
+.card-navy   .proj-tag { background:rgba(245,200,66,0.1); color:var(--yellow-dim); }
+.card-navy   .proj-title { color:rgba(250,244,228,0.7); }
+.card-navy   .proj-desc  { color:rgba(250,244,228,0.45); }
+.card-navy   .proj-reveal { color:var(--yellow-dim); }
+.card-navy   .proj-silhouette svg { fill:var(--yellow-dim); }
+
+.dev-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-bottom:3px; }
+
+.legacy-strip {
+  display:grid; grid-template-columns:auto 1fr auto; gap:2rem;
+  align-items:center; padding:2rem 3rem;
+  background:#0a1520; cursor:pointer;
+  border-left:4px solid var(--yellow); transition:background 0.3s;
+}
+.legacy-strip:hover { background:#0f1e2e; }
+.legacy-year { font-family:var(--syne); font-size:3rem; font-weight:800; color:rgba(245,200,66,0.12); line-height:1; }
+.legacy-arrow { font-family:var(--syne); font-size:1.2rem; font-weight:800; color:rgba(245,200,66,0.3); }
+.legacy-strip:hover .legacy-arrow { color:var(--yellow); }
+
+/* ══ STUDIO ══ */
+#about { padding: 8rem 3rem; background: var(--teal); position: relative; overflow: hidden; }
+#about::before { content:''; position:absolute; top:-200px; right:-200px; width:500px; height:500px; border-radius:50%; background:rgba(255,255,255,0.05); }
+
+.studio-inner { max-width: 1100px; margin: 0 auto; }
+
+.studio-statement {
+  font-family: var(--syne); font-size: clamp(1.5rem,3.5vw,2.4rem);
+  font-weight: 700; color: var(--white); line-height: 1.25;
+  letter-spacing: -0.02em; max-width: 820px;
+  margin: 2rem 0 3.5rem; position: relative; z-index: 2;
+}
+.studio-statement em { font-style: normal; color: var(--yellow); }
+
+.studio-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;
+  position: relative; z-index: 2;
+}
+.studio-cell {
+  background: rgba(0,0,0,0.2); padding: 2rem 1.8rem;
+}
+.studio-cell-label {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.22em;
+  color: var(--yellow); margin-bottom: 0.6rem;
+}
+.studio-cell-title {
+  font-family: var(--syne); font-size: 1.2rem; font-weight: 800;
+  color: var(--white); margin-bottom: 0.5rem; letter-spacing: -0.01em;
+}
+.studio-cell-body {
+  font-size: 0.82rem; color: rgba(255,255,255,0.62); line-height: 1.7;
+}
+
+.studio-credits {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  margin-top: 3rem; position: relative; z-index: 2;
+}
+.studio-badge {
+  font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.08em;
+  color: rgba(20,184,178,0.9); background: rgba(11,122,117,0.35);
+  border: 1px solid rgba(20,184,178,0.25); padding: 0.25rem 0.6rem; border-radius: 2px;
+}
+
+/* ══ CURIOUS MINDS ══ */
+#curious-minds { padding: 8rem 3rem; background: var(--navy); }
+.minds-grid { max-width: 1100px; margin: 4rem auto 0; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 6rem; align-items: start; }
+.minds-body { font-size: 0.92rem; color: rgba(250,244,228,0.65); line-height: 1.88; margin-top: 1.5rem; }
+.minds-body p { margin-bottom: 1rem; }
+.partner-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 2.5rem; }
+.partner-cell { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.06em; color:rgba(250,244,228,0.5); background:rgba(255,255,255,0.03); border:1px solid rgba(20,184,178,0.1); padding:0.7rem 0.8rem; transition:all 0.25s; }
+.partner-cell:hover { background:rgba(20,184,178,0.08); color:var(--teal-bright); }
+.pillars { display:flex; flex-direction:column; gap:2rem; padding-top:5.5rem; }
+.pillar { position:relative; padding-left:1.5rem; }
+.pillar::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--coral); border-radius:2px; }
+.pillar h4 { font-family:var(--syne); font-size:1.0rem; font-weight:700; color:var(--cream); margin-bottom:0.3rem; }
+.pillar p { font-size:0.82rem; color:rgba(250,244,228,0.55); line-height:1.65; }
+
+/* ══ CONTACT ══ */
+#contact { background:var(--yellow); padding:8rem 3rem 4rem; text-align:center; position:relative; overflow:hidden; }
+#contact::before { content:''; position:absolute; top:-120px; left:-120px; width:350px; height:350px; border-radius:50%; background:rgba(0,0,0,0.06); }
+#contact::after  { content:''; position:absolute; bottom:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(0,0,0,0.05); }
+.contact-inner { position:relative; z-index:2; }
+.contact-title { font-family:var(--syne); font-size:clamp(2.5rem,7vw,6rem); font-weight:800; letter-spacing:-0.03em; color:var(--navy); line-height:0.95; margin-bottom:1rem; }
+.contact-title em { font-style:normal; color:var(--coral); }
+.contact-sub { font-family:var(--brico); font-size:1.1rem; font-weight:300; color:rgba(13,27,42,0.6); margin-bottom:2.5rem; }
+.contact-email { font-family:var(--syne); font-size:clamp(1.1rem,3vw,2rem); font-weight:700; color:var(--navy); text-decoration:none; display:inline-block; margin-bottom:3rem; padding:0.8rem 2rem; border:3px solid var(--navy); transition:all 0.25s; }
+.contact-email:hover { background:var(--navy); color:var(--yellow); }
+.contact-address { font-family:var(--mono); font-size:0.62rem; letter-spacing:0.12em; color:rgba(13,27,42,0.4); margin-bottom:0.3rem; }
+.social-row { display:flex; gap:1.5rem; justify-content:center; margin-top:1.5rem; }
+.social-row a { font-family:var(--mono); font-size:0.64rem; letter-spacing:0.16em; color:rgba(13,27,42,0.55); text-decoration:none; transition:color 0.25s; }
+.social-row a:hover { color:var(--navy); }
+.footer-sig { font-family:var(--mono); font-size:0.6rem; color:rgba(13,27,42,0.25); margin-top:5rem; letter-spacing:0.16em; }
+
+/* ══ MODAL ══ */
+.modal-overlay { position:fixed; inset:0; background:rgba(13,27,42,0.95); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.35s; backdrop-filter:blur(8px); }
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal { background:var(--navy); border:2px solid var(--teal); max-width:680px; width:92%; max-height:88vh; overflow-y:auto; padding:3rem; position:relative; transform:translateY(20px) scale(0.97); transition:transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275); }
+.modal-overlay.open .modal { transform:translateY(0) scale(1); }
+.modal-accent { position:absolute; top:0; left:0; right:0; height:4px; }
+.modal-close { position:absolute; top:1rem; right:1rem; background:none; border:2px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); width:36px; height:36px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; font-family:var(--syne); font-weight:700; transition:all 0.25s; border-radius:2px; }
+.modal-close:hover { border-color:var(--coral); color:var(--coral); }
+.modal-tag { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; margin-bottom:0.8rem; }
+.modal-title { font-family:var(--syne); font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; letter-spacing:-0.02em; line-height:1.0; margin-bottom:0.4rem; color:var(--cream); }
+.modal-sub { font-family:var(--brico); font-style:italic; font-weight:300; font-size:1rem; color:rgba(250,244,228,0.5); margin-bottom:2rem; padding-bottom:1.8rem; border-bottom:1px solid rgba(255,255,255,0.1); }
+.modal-body { font-size:0.9rem; color:rgba(250,244,228,0.72); line-height:1.9; }
+.modal-body p { margin-bottom:1.1rem; }
+.modal-body em { color:var(--cream); }
+.modal-body strong { color:var(--cream); font-weight:600; }
+.modal-credits { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-wrap:wrap; gap:0.4rem; }
+.m-badge { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.08em; padding:0.25rem 0.55rem; border-radius:2px; }
+
+/* ══ TEATRINO TRUMPET ══ */
+#play-me {
+  background: var(--navy); padding: 2.5rem 3rem 3.5rem; text-align: center;
+  position: relative; overflow: visible;
+}
+.trumpet-stage {
+  display: flex; justify-content: center; align-items: center;
+  perspective: 800px;
+}
+.trumpet-perspective {
+  transform-style: preserve-3d;
+  transition: transform 0.08s ease-out;
+}
+.trumpet-wrapper {
+  position: relative; cursor: pointer; display: inline-block;
+  outline: none; transform-style: preserve-3d;
+  -webkit-user-select: none; user-select: none;
+}
+
+.trumpet-img {
+  width: 260px; height: auto; display: block;
+  filter: drop-shadow(0 4px 24px rgba(245,200,66,0.12));
+  transition: filter 0.3s;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+  border-radius: 8px;
+}
+.trumpet-wrapper:hover .trumpet-img {
+  filter: drop-shadow(0 8px 36px rgba(245,200,66,0.22));
+}
+
+/* 3D spin on click */
+.trumpet-wrapper.spinning .trumpet-img {
+  animation: trumpetSpin 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes trumpetSpin {
+  0%   { transform: rotateY(0deg) scale(1); }
+  40%  { transform: rotateY(200deg) scale(1.08); }
+  70%  { transform: rotateY(340deg) scale(1.02); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+
+/* Play me sticker */
+.play-sticker {
+  position: absolute; top: -20px; right: -36px;
+  background: var(--coral); color: var(--white);
+  font-family: var(--syne); font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.75rem 0.35rem;
+  transform: rotate(12deg);
+  border-radius: 2px;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.3);
+  z-index: 5; pointer-events: none;
+  animation: stickerWiggle 3s ease-in-out infinite;
+  white-space: nowrap;
+}
+.play-sticker::before {
+  content: ''; position: absolute;
+  bottom: -5px; left: 10px;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--coral);
+}
+
+/* Now playing indicator */
+.now-playing {
+  position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: var(--yellow); opacity: 0;
+  transition: opacity 0.4s;
+  white-space: nowrap; pointer-events: none;
+}
+.now-playing.visible { opacity: 0.6; animation: noteFloat 2s ease-in-out infinite; }
+@keyframes noteFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+
+@keyframes stickerWiggle {
+  0%, 100% { transform: rotate(12deg) scale(1); }
+  25% { transform: rotate(14deg) scale(1.04); }
+  75% { transform: rotate(10deg) scale(0.97); }
+}
+
+@media (max-width: 600px) {
+  .trumpet-img { width: 180px; }
+  .play-sticker { top: -16px; right: -22px; font-size: 0.6rem; padding: 0.3rem 0.6rem; }
+  #play-me { padding: 2rem 1.5rem 3rem; }
+}
+
+/* ══ ANIMATIONS ══ */
+@keyframes popIn { from{opacity:0;transform:translateY(16px) scale(0.96)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes beamPulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.7s ease,transform 0.7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.12s; }
+.reveal-d2 { transition-delay:0.24s; }
+.reveal-d3 { transition-delay:0.36s; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .burger { display: flex; }
+
+  .primary-pair { grid-template-columns: 1fr; }
+  .dev-grid { grid-template-columns: 1fr 1fr; }
+  .studio-grid { grid-template-columns: 1fr; }
+  .minds-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .pillars { padding-top: 0; }
+  .partner-grid { grid-template-columns: repeat(2,1fr); }
+  .legacy-strip { grid-template-columns: auto 1fr; }
+  .legacy-arrow { display: none; }
+
+  #about, #curious-minds, #manifesto, #contact { padding: 5rem 1.5rem; }
+  #projects { padding: 5rem 0 4rem; }
+  .projects-header { padding: 0 1.5rem; }
+
+  .proj-card { min-height: 300px; padding: 2rem 1.5rem 2rem; }
+  .proj-title { font-size: clamp(1.5rem,6vw,2.2rem); }
+  .hero-content { padding: 4rem 1.5rem; }
+  .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.18em; margin-bottom: 1.2rem; }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .hero-content { padding: 3.5rem 1rem; }
+  .hero-sub { font-size: 0.92rem; }
+  .hero-eyebrow { font-size: 0.58rem; letter-spacing: 0.16em; }
+}
+
+@media (max-width: 580px) {
+  .dev-grid { grid-template-columns: 1fr; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+  .modal { padding: 2rem 1.5rem; }
+  .modal-title { font-size: 1.8rem; }
+  .legacy-strip { padding: 1.5rem; gap: 1rem; }
+  .legacy-year { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="dot"></span> Curious Dreamers</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">Studio</a></li>
+    <li><a href="#curious-minds">Curious Minds</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#about" onclick="closeMenu()">Studio</a>
+  <a href="#curious-minds" onclick="closeMenu()">Curious Minds</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="proj-beam"></div>
+  <div class="proj-beam-2"></div>
+  <canvas id="smokeCanvas"></canvas>
+
+  <!-- Horizontal film lines — JS driven, sync with tape -->
+  <div id="filmLines" style="position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden;"></div>
+  <div class="scan-lines"></div>
+
+  <!-- Animated film strips -->
+  <div class="film-strip top">
+    <div class="film-tape" id="tapeTop"></div>
+  </div>
+  <div class="film-strip bottom">
+    <div class="film-tape" id="tapeBot"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Award-winning music &amp; screen studio</p>
+    <h1 class="hero-title">
+      <span class="line1">CURIOUS</span>
+      <span class="line2">DREAMERS</span>
+    </h1>
+    <p class="hero-sub">Music-led stories for screen, stage and beyond. Made with care, felt in the bones.</p>
+    <div class="hero-buttons">
+      <a href="#projects" class="btn-primary">Our projects</a>
+      <a href="#about" class="btn-secondary">The studio</a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="manifesto-inner">
+    <p class="manifesto-quote reveal">We make work that <em>means something.</em><br>For all ages. Music first.</p>
+    <p class="manifesto-sub reveal reveal-d1">The best work invites you in. It doesn't care how old you are. We start with music and sound, we collaborate with wonderful people, and we make things we believe in. Simple as that.</p>
+  </div>
+</section>
+
+<!-- TEATRINO TRUMPET -->
+<section id="play-me">
+  <div class="trumpet-stage" id="trumpetStage">
+    <div class="trumpet-perspective" id="trumpetPerspective">
+      <div class="trumpet-wrapper" id="trumpetBtn" role="button" tabindex="0" aria-label="Play a surprise sound">
+        <!-- Play me label -->
+        <div class="play-sticker" id="playSticker">
+          <span class="sticker-text">play me!</span>
+        </div>
+        <!-- Now playing indicator -->
+        <div class="now-playing" id="nowPlaying">♪ ♫ ♪</div>
+        <!-- Trumpet sticker image — upload to R2 as trumpet-sticker.png -->
+        <!-- OR replace src with: https://imagedelivery.net/YOUR_ACCOUNT_HASH/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public -->
+        <img
+          class="trumpet-img" id="trumpetImg"
+          src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public"
+          alt="A peculiar trumpet — click to play"
+          draggable="false"
+          onerror="this.style.display='none';document.getElementById('trumpetFallback').style.display='block';"
+        />
+        <!-- SVG fallback if image not yet uploaded -->
+        <svg id="trumpetFallback" style="display:none" class="trumpet-img" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="58" cy="90" rx="42" ry="52" fill="none" stroke="#f5c842" stroke-width="2.5" opacity="0.8"/>
+          <path d="M95,78 C120,78 140,72 180,72" fill="none" stroke="#f5c842" stroke-width="6" stroke-linecap="round"/>
+          <path d="M95,102 C120,102 140,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+          <path d="M180,72 Q200,72 200,90 Q200,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+          <rect x="132" y="60" width="12" height="20" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="152" y="56" width="12" height="24" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="172" y="59" width="12" height="21" rx="6" fill="#f5c842" opacity="0.5"/>
+          <path d="M200,90 L240,90" fill="none" stroke="#f5c842" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+          <ellipse cx="245" cy="90" rx="8" ry="6" fill="none" stroke="#f5c842" stroke-width="2" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header">
+    <p class="section-label reveal">Our work</p>
+    <h2 class="section-title reveal reveal-d1">Projects in <em>motion</em></h2>
+  </div>
+
+  <div class="primary-pair">
+
+    <!-- TEATRINO — stage set silhouette -->
+    <div class="proj-card card-teal reveal" onclick="openProject('teatrino')">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Stage floor -->
+          <rect x="0" y="260" width="400" height="60" fill="currentColor"/>
+          <!-- Back wall -->
+          <rect x="60" y="80" width="280" height="180" fill="currentColor" opacity="0.5"/>
+          <!-- Left flat -->
+          <rect x="20" y="60" width="55" height="220" fill="currentColor"/>
+          <!-- Right flat -->
+          <rect x="325" y="60" width="55" height="220" fill="currentColor"/>
+          <!-- Proscenium arch -->
+          <path d="M20,60 Q200,10 380,60 L380,80 Q200,32 20,80 Z" fill="currentColor"/>
+          <!-- Centre spotlight circle -->
+          <ellipse cx="200" cy="240" rx="60" ry="12" fill="currentColor" opacity="0.6"/>
+          <!-- Curtain folds left -->
+          <path d="M20,60 Q40,140 30,220 Q50,140 60,60" fill="currentColor" opacity="0.7"/>
+          <!-- Curtain folds right -->
+          <path d="M380,60 Q360,140 370,220 Q350,140 340,60" fill="currentColor" opacity="0.7"/>
+          <!-- Stars above stage -->
+          <polygon points="200,20 203,30 213,30 205,37 208,47 200,41 192,47 195,37 187,30 197,30" fill="currentColor"/>
+          <polygon points="140,35 142,42 149,42 143,46 146,53 140,49 134,53 137,46 131,42 138,42" fill="currentColor" opacity="0.6"/>
+          <polygon points="260,35 262,42 269,42 263,46 266,53 260,49 254,53 257,46 251,42 258,42" fill="currentColor" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="proj-num">01</div>
+      <div class="proj-content">
+        <span class="proj-tag">Animated Series · In Development</span>
+        <h3 class="proj-title">Teatrino</h3>
+        <p class="proj-desc">Set inside a theatre. No dialogue. Seven minutes per episode of music, surrealism and play. European in spirit, and genuinely unlike anything else we've seen.</p>
+        <span class="proj-reveal">Enter the theatre →</span>
+      </div>
+    </div>
+
+    <!-- WNDRKLUB — Captain Wonder silhouette -->
+    <div class="proj-card card-yellow reveal reveal-d1" onclick="openProject('wndrklub')">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Stick figure body — Captain Wonder style -->
+          <!-- Head -->
+          <circle cx="200" cy="80" r="32" fill="currentColor"/>
+          <!-- Hat brim -->
+          <ellipse cx="200" cy="52" rx="42" ry="8" fill="currentColor"/>
+          <!-- Hat crown -->
+          <rect x="180" y="18" width="40" height="36" rx="4" fill="currentColor"/>
+          <!-- Body -->
+          <rect x="185" y="115" width="30" height="90" rx="4" fill="currentColor"/>
+          <!-- Heart on chest -->
+          <path d="M200,145 Q192,135 184,142 Q180,150 200,165 Q220,150 216,142 Q208,135 200,145Z" fill="currentColor" opacity="0.3"/>
+          <!-- Arms -->
+          <line x1="185" y1="130" x2="140" y2="170" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+          <line x1="215" y1="130" x2="260" y2="155" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+          <!-- Legs -->
+          <line x1="192" y1="205" x2="175" y2="265" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+          <line x1="208" y1="205" x2="225" y2="265" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+          <!-- Feet -->
+          <ellipse cx="170" cy="270" rx="16" ry="8" fill="currentColor"/>
+          <ellipse cx="230" cy="270" rx="16" ry="8" fill="currentColor"/>
+          <!-- Water ripple below -->
+          <ellipse cx="200" cy="295" rx="90" ry="14" fill="currentColor" opacity="0.3"/>
+          <ellipse cx="200" cy="300" rx="130" ry="10" fill="currentColor" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="proj-num">02</div>
+      <div class="proj-content">
+        <span class="proj-tag">Animated Series · Screen Scotland</span>
+        <h3 class="proj-title">WndrKlub</h3>
+        <p class="proj-desc">A screen skills curriculum that doubles as a proper creative series. Teaches young filmmakers how to see stories in image and sound, by showing them rather than telling them.</p>
+        <span class="proj-reveal">Discover →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="dev-grid">
+
+    <!-- LEVIATHAN — whale -->
+    <div class="proj-card card-sky reveal" onclick="openProject('leviathan')" style="min-height:300px;">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Whale body -->
+          <path d="M20,140 Q60,80 160,90 Q250,100 280,130 Q260,165 180,170 Q100,175 50,200 Q30,180 20,140Z" fill="currentColor"/>
+          <!-- Tail flukes -->
+          <path d="M50,200 Q20,240 0,220 Q30,200 50,200Z" fill="currentColor"/>
+          <path d="M50,200 Q40,250 20,245 Q35,215 50,200Z" fill="currentColor"/>
+          <!-- Pectoral fin -->
+          <path d="M140,145 Q130,180 110,190 Q120,160 140,145Z" fill="currentColor" opacity="0.7"/>
+          <!-- Eye -->
+          <circle cx="230" cy="125" r="7" fill="currentColor" opacity="0.3"/>
+          <!-- Water surface line -->
+          <path d="M0,210 Q75,200 150,210 Q225,220 300,210" fill="none" stroke="currentColor" stroke-width="3" opacity="0.3"/>
+          <path d="M0,225 Q75,215 150,225 Q225,235 300,225" fill="none" stroke="currentColor" stroke-width="2" opacity="0.18"/>
+          <!-- Blow spout -->
+          <path d="M250,95 Q245,60 255,30 Q260,60 265,90" fill="none" stroke="currentColor" stroke-width="4" opacity="0.5" stroke-linecap="round"/>
+          <ellipse cx="255" cy="25" rx="12" ry="18" fill="currentColor" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="proj-num">03</div>
+      <div class="proj-content">
+        <span class="proj-tag">Film · Immersive · In Dev</span>
+        <h3 class="proj-title">The Last<br>Leviathan</h3>
+        <p class="proj-desc">A film built around whale song, folk music, and the act of listening. Made with Mairi Campbell and Alex South.</p>
+        <span class="proj-reveal">Go deeper →</span>
+      </div>
+    </div>
+
+    <!-- EN — red thread / zen garden -->
+    <div class="proj-card card-mint reveal reveal-d1" onclick="openProject('en')" style="min-height:300px;">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Torii gate -->
+          <rect x="90" y="60" width="12" height="160" fill="currentColor"/>
+          <rect x="198" y="60" width="12" height="160" fill="currentColor"/>
+          <!-- Top beam -->
+          <rect x="70" y="55" width="160" height="14" rx="3" fill="currentColor"/>
+          <!-- Second beam -->
+          <rect x="80" y="80" width="140" height="10" rx="2" fill="currentColor" opacity="0.7"/>
+          <!-- Ground line -->
+          <rect x="60" y="218" width="180" height="4" fill="currentColor" opacity="0.5"/>
+          <!-- Concentric ripples -->
+          <ellipse cx="150" cy="228" rx="120" ry="18" fill="none" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+          <ellipse cx="150" cy="232" rx="90" ry="13" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+          <ellipse cx="150" cy="235" rx="60" ry="8" fill="none" stroke="currentColor" stroke-width="1" opacity="0.18"/>
+          <!-- Thread line -->
+          <path d="M150,55 Q180,30 210,10" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5" stroke-dasharray="4 3"/>
+          <!-- Japanese character hint -->
+          <text x="132" y="165" font-size="42" fill="currentColor" opacity="0.12" font-family="serif">縁</text>
+        </svg>
+      </div>
+      <div class="proj-num">04</div>
+      <div class="proj-content">
+        <span class="proj-tag">Film · Installation · In Dev</span>
+        <h3 class="proj-title">En / The<br>Red Thread<br><small style="font-size:0.7em;opacity:0.5">赤い糸</small></h3>
+        <p class="proj-desc">A sound and film project at Cowden Japanese Garden in Scotland. An album made with Japanese and Scottish musicians. Quiet work, made with care.</p>
+        <span class="proj-reveal">Walk the path →</span>
+      </div>
+    </div>
+
+    <!-- REBEL ANGEL — angel with attitude -->
+    <div class="proj-card card-coral reveal reveal-d2" onclick="openProject('rebel')" style="min-height:300px;">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Halo (slightly tilted — rebel) -->
+          <ellipse cx="150" cy="35" rx="35" ry="10" fill="none" stroke="currentColor" stroke-width="5" transform="rotate(-12 150 35)"/>
+          <!-- Head -->
+          <circle cx="150" cy="75" r="28" fill="currentColor"/>
+          <!-- Jacket body — blocky, cool -->
+          <path d="M118,105 L100,200 L200,200 L182,105 Q165,115 150,115 Q135,115 118,105Z" fill="currentColor"/>
+          <!-- Jacket lapels -->
+          <path d="M118,105 L130,140 L150,130 L170,140 L182,105" fill="currentColor" opacity="0.5"/>
+          <!-- Wings — asymmetric, one drooping (rebellious) -->
+          <path d="M118,120 Q70,90 40,110 Q70,130 100,135 Z" fill="currentColor" opacity="0.8"/>
+          <path d="M182,120 Q230,80 270,95 Q240,125 205,132 Z" fill="currentColor" opacity="0.5"/>
+          <!-- Arms crossed -->
+          <path d="M118,140 Q130,155 160,155 Q130,165 105,155Z" fill="currentColor" opacity="0.7"/>
+          <!-- Legs -->
+          <rect x="128" y="200" width="18" height="60" rx="4" fill="currentColor"/>
+          <rect x="154" y="200" width="18" height="60" rx="4" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="proj-num">05</div>
+      <div class="proj-content">
+        <span class="proj-tag">Animation · In Dev</span>
+        <h3 class="proj-title">Rebel<br>Angel</h3>
+        <p class="proj-desc">An angel who doesn't behave like one. Funny, cool, and completely uninterested in the role she's been given.</p>
+        <span class="proj-reveal">Meet her →</span>
+      </div>
+    </div>
+
+    <!-- BLACK & WHITE — glasses guy left, big-hair woman right, back to back -->
+    <div class="proj-card card-navy reveal reveal-d3" onclick="openProject('bw')" style="min-height:300px;">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+
+          <!-- ── JOHN (left) — glasses, scruffy, slightly hunched ── -->
+          <!-- Head -->
+          <circle cx="95" cy="72" r="26" fill="currentColor"/>
+          <!-- Glasses — two round lenses on a bridge -->
+          <circle cx="87" cy="70" r="9" fill="currentColor" opacity="0.35"/>
+          <circle cx="103" cy="70" r="9" fill="currentColor" opacity="0.35"/>
+          <line x1="96" y1="70" x2="96" y2="70" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Glasses frame outline -->
+          <circle cx="87" cy="70" r="9" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.9"/>
+          <circle cx="103" cy="70" r="9" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.9"/>
+          <line x1="96" y1="70" x2="97" y2="70" stroke="currentColor" stroke-width="2" opacity="0.9"/>
+          <!-- Temple arms -->
+          <line x1="78" y1="70" x2="69" y2="68" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+          <line x1="112" y1="70" x2="121" y2="68" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+          <!-- Scruffy hair — slightly unkempt tufts -->
+          <path d="M69,62 Q72,48 85,46 Q78,50 76,58Z" fill="currentColor"/>
+          <path d="M95,44 Q105,40 115,46 Q108,44 105,52Z" fill="currentColor"/>
+          <path d="M115,52 Q122,48 124,60 Q118,52 115,62Z" fill="currentColor"/>
+          <!-- Body — casual, slightly slouchy -->
+          <path d="M74,100 L68,210 L122,210 L116,100 Q105,110 95,110 Q85,110 74,100Z" fill="currentColor"/>
+          <!-- Hoodie pocket -->
+          <rect x="82" y="150" width="26" height="18" rx="3" fill="currentColor" opacity="0.35"/>
+          <!-- Left arm — out to side, holding coffee cup -->
+          <line x1="74" y1="115" x2="44" y2="155" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+          <!-- Coffee cup -->
+          <rect x="32" y="153" width="16" height="20" rx="3" fill="currentColor" opacity="0.7"/>
+          <!-- Right arm — angled away from woman -->
+          <line x1="116" y1="115" x2="135" y2="150" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+          <!-- Legs -->
+          <rect x="78" y="210" width="16" height="58" rx="4" fill="currentColor"/>
+          <rect x="100" y="210" width="16" height="58" rx="4" fill="currentColor"/>
+          <!-- Trainers -->
+          <ellipse cx="86" cy="270" rx="16" ry="7" fill="currentColor"/>
+          <ellipse cx="108" cy="270" rx="16" ry="7" fill="currentColor"/>
+
+          <!-- ── SAERA (right) — big voluminous hair, upright, confident ── -->
+          <!-- Big hair — wide, full silhouette -->
+          <path d="M165,85 Q162,40 195,30 Q228,40 225,85
+                   Q240,75 238,55 Q248,65 244,82
+                   Q250,72 252,85
+                   Q245,95 235,90
+                   Q230,100 220,98
+                   L220,98 Q218,90 210,88
+                   L180,88 Q172,90 170,98
+                   Q160,100 155,90
+                   Q145,95 148,85
+                   Q150,72 158,80
+                   Q155,62 165,55
+                   Q162,70 165,85Z" fill="currentColor"/>
+          <!-- Head (behind hair) -->
+          <circle cx="195" cy="82" r="24" fill="currentColor"/>
+          <!-- Body — dress, confident posture -->
+          <path d="M174,108 Q165,195 160,268 L230,268 Q225,195 216,108 Q205,118 195,118 Q185,118 174,108Z" fill="currentColor"/>
+          <!-- Right arm — gesturing outward, animated -->
+          <line x1="216" y1="120" x2="252" y2="148" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+          <!-- Left arm — hand on hip -->
+          <path d="M174,120 Q155,135 150,155 Q160,158 168,148 Q170,135 178,128Z" fill="currentColor"/>
+          <!-- Belt / waist detail -->
+          <rect x="172" y="155" width="46" height="8" rx="3" fill="currentColor" opacity="0.4"/>
+
+          <!-- Clapperboard floating between them, top centre -->
+          <rect x="130" y="30" width="36" height="28" rx="3" fill="currentColor" opacity="0.45"/>
+          <path d="M130,30 L166,30 L158,18 L122,18Z" fill="currentColor" opacity="0.3"/>
+          <line x1="136" y1="24" x2="160" y2="24" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+
+        </svg>
+      </div>
+      <div class="proj-num">06</div>
+      <div class="proj-content">
+        <span class="proj-tag">Hybrid · In Dev · Ch4 Interest</span>
+        <h3 class="proj-title">Black &amp;<br>White</h3>
+        <p class="proj-desc">Two mismatched creative partners, one scrappy arts company, and the gloriously dysfunctional reality of making art for a living.</p>
+        <span class="proj-reveal">Read between the lines →</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DISTANCE TO THE MOON — moon emoji/typography style -->
+  <div class="legacy-strip reveal" onclick="openProject('dttm')">
+    <div class="legacy-year" style="display:flex;align-items:center;gap:0.8rem;">
+      <svg viewBox="0 0 60 60" width="48" height="48" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:0.5;">
+        <!-- Classic crescent moon -->
+        <path d="M38,8 Q18,15 18,30 Q18,45 38,52 Q20,52 12,38 Q8,30 12,18 Q18,8 38,8Z" fill="rgba(245,200,66,0.6)"/>
+        <circle cx="42" cy="22" r="3" fill="rgba(245,200,66,0.4)"/>
+        <circle cx="36" cy="14" r="2" fill="rgba(245,200,66,0.3)"/>
+        <circle cx="46" cy="35" r="2.5" fill="rgba(245,200,66,0.3)"/>
+      </svg>
+      <span>2023</span>
+    </div>
+    <div>
+      <p style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;color:rgba(245,200,66,0.5);margin-bottom:0.4rem;">Stop Motion · Screen Scotland · BFI · Award-winning</p>
+      <h3 style="font-family:var(--syne);font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;letter-spacing:-0.02em;color:rgba(250,244,228,0.8);">Distance to the Moon</h3>
+      <p style="font-size:0.82rem;color:rgba(250,244,228,0.45);margin-top:0.3rem;">A stop-motion film made with Eyebolls. It won awards. More than that, it worked as a piece of art in its own right.</p>
+    </div>
+    <div class="legacy-arrow">→</div>
+  </div>
+
+</section>
+
+<!-- STUDIO -->
+<section id="about">
+  <div class="studio-inner">
+    <p class="section-label reveal" style="color:rgba(255,255,255,0.5);">The studio</p>
+    <h2 class="section-title reveal reveal-d1" style="color:var(--white);">Curious Dreamers</h2>
+
+    <p class="studio-statement reveal reveal-d2">
+      A Glasgow-based music and screen studio. We make animated series, immersive films, sound installations and creative education projects. <em>Music comes first</em> in everything we do.
+    </p>
+
+    <div class="studio-grid">
+      <div class="studio-cell reveal">
+        <p class="studio-cell-label">Track record</p>
+        <h4 class="studio-cell-title">It started with a lullaby</h4>
+        <p class="studio-cell-body">Hushabye Lullabye won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers. Distance to the Moon picked up awards on the festival circuit. Beautiful things keep happening when we follow the music.</p>
+      </div>
+      <div class="studio-cell reveal reveal-d1">
+        <p class="studio-cell-label">How we work</p>
+        <h4 class="studio-cell-title">Music first. Always.</h4>
+        <p class="studio-cell-body">Sound and music aren't added at the end of our process. They start it. We work across animation, live action, stop motion, and immersive formats, bringing a European artistic sensibility and a genuine love for the craft.</p>
+      </div>
+      <div class="studio-cell reveal reveal-d2">
+        <p class="studio-cell-label">Who we work with</p>
+        <h4 class="studio-cell-title">Friends and collaborators</h4>
+        <p class="studio-cell-body">We're lucky to work with brilliant people. BAFTA, RTS, WFTV, Screen Scotland, BFI, CBeebies, Channel 4 — broadcasters, funders, and festival programmers who share our appetite for work that feels a bit different.</p>
+      </div>
+    </div>
+
+    <div class="studio-credits reveal">
+      <span class="studio-badge">Sacha Kyle · Creative Director</span>
+      <span class="studio-badge">Giles Lamb · Composer &amp; Sound Designer</span>
+      <span class="studio-badge">BAFTA Member</span>
+      <span class="studio-badge">WFTV Fellow</span>
+      <span class="studio-badge">LSX International Fellow</span>
+      <span class="studio-badge">RTS Award-winning</span>
+      <span class="studio-badge">Screen Scotland</span>
+      <span class="studio-badge">BFI</span>
+      <span class="studio-badge">CBeebies · BBC</span>
+    </div>
+  </div>
+</section>
+
+<!-- CURIOUS MINDS -->
+<section id="curious-minds">
+  <div class="minds-grid">
+    <div class="reveal">
+      <p class="section-label">Curious Minds</p>
+      <h2 class="section-title">Sharing <em>what we know</em></h2>
+      <div class="minds-body">
+        <p>We've spent a long time making things, teaching people to make things, and learning what actually works. Curious Minds is how we share that — openly and generously.</p>
+        <p>We run masterclasses in soundtrack composition, screen skills, creative storytelling, and play-based practice. We work with industry professionals, educators, students, and young people.</p>
+        <p>Championing women in film and television runs through everything we do. We support female talent across directing, writing, design, and production at every stage of their career.</p>
+      </div>
+      <div class="partner-grid">
+        <div class="partner-cell">Screen Scotland</div>
+        <div class="partner-cell">ScreenSkills</div>
+        <div class="partner-cell">NFTS</div>
+        <div class="partner-cell">Royal Conservatoire</div>
+        <div class="partner-cell">Imaginate</div>
+        <div class="partner-cell">Starcatchers</div>
+        <div class="partner-cell">Univ. of Dundee</div>
+        <div class="partner-cell">CBeebies / BBC</div>
+        <div class="partner-cell">NatureScot</div>
+      </div>
+    </div>
+    <div class="pillars reveal reveal-d1">
+      <div class="pillar"><h4>Play and creativity</h4><p>Play is serious work. We run sessions for children, young people, and the adults who work with them, putting creative play at the centre of how we learn and make.</p></div>
+      <div class="pillar"><h4>Screen skills and storytelling</h4><p>Practical masterclasses in animation, live action, sound design, and how to tell a story through image and sound. From students to seasoned professionals.</p></div>
+      <div class="pillar"><h4>Women in film and TV</h4><p>Mentoring, advocating, and opening doors for women working across directing, writing, design, and production. This runs through everything we do.</p></div>
+      <div class="pillar"><h4>Immersive and new forms</h4><p>Galleries, theatres, online, outdoors. We're genuinely curious about what happens when you take the work off the screen and put it somewhere unexpected.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title reveal">Let's make<br><em>something together.</em></h2>
+    <p class="contact-sub reveal reveal-d1">Based in Glasgow. Happy to travel.</p>
+    <a href="mailto:hello@curiousdreamers.com" class="contact-email reveal reveal-d2">hello@curiousdreamers.com</a>
+    <p class="contact-address">73 Albion Street, Merchant City, Glasgow G1 1NY</p>
+    <div class="social-row">
+      <a href="https://www.instagram.com/curiousdreamers_official/" target="_blank">Instagram</a>
+      <a href="https://www.linkedin.com/company/curious-dreamers/" target="_blank">LinkedIn</a>
+    </div>
+    <p class="footer-sig">© 2026 Curious Dreamers Ltd · Glasgow, Scotland</p>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <div class="modal-accent" id="modalAccent"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+/* ── BURGER MENU ── */
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMenu() {
+  burger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── ANIMATED FILM STRIPS — scroll-velocity physics ── */
+function buildTape(id, count) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let html = '';
+  for (let rep = 0; rep < 2; rep++) {
+    for (let i = 0; i < count; i++) {
+      html += `<div class="spr-hole"></div><span class="spr-num">${String(i+1).padStart(2,'0')}</span>`;
+    }
+  }
+  el.innerHTML = html;
+}
+buildTape('tapeTop', 32);
+buildTape('tapeBot', 32);
+
+/* Scroll physics for film tape */
+const tapeTop = document.getElementById('tapeTop');
+const tapeBot = document.getElementById('tapeBot');
+
+// Half-width of the tape (we loop at -50%)
+let tapeUnit = 0;          // current offset in px
+let tapeVelocity = 0;      // current speed px/frame
+let lastScrollY = window.scrollY;
+let lastScrollTime = performance.now();
+const FRICTION = 0.88;     // deceleration per frame
+const MAX_VEL = 28;        // cap speed
+const LINE_SPACING = 90;   // px between horizontal lines
+
+// Build horizontal frame lines
+const linesEl = document.getElementById('filmLines');
+const lineCount = Math.ceil(window.innerHeight / LINE_SPACING) + 2;
+let lineOffset = 0; // tracks cumulative vertical shift
+const lines = [];
+for (let i = 0; i < lineCount; i++) {
+  const l = document.createElement('div');
+  l.className = 'film-h-line';
+  l.style.top = (i * LINE_SPACING) + 'px';
+  linesEl.appendChild(l);
+  lines.push({ el: l, baseY: i * LINE_SPACING });
+}
+
+// Listen for scroll to measure velocity
+window.addEventListener('scroll', () => {
+  const now = performance.now();
+  const dy = window.scrollY - lastScrollY;
+  const dt = Math.max(now - lastScrollTime, 1);
+  const rawVel = (dy / dt) * 16; // normalise to ~60fps frame
+  tapeVelocity = Math.max(-MAX_VEL, Math.min(MAX_VEL, rawVel * 2.5));
+  lastScrollY = window.scrollY;
+  lastScrollTime = now;
+}, { passive: true });
+
+// Animation loop — runs every frame
+(function filmLoop() {
+  // Friction decay
+  tapeVelocity *= FRICTION;
+  if (Math.abs(tapeVelocity) < 0.01) tapeVelocity = 0;
+
+  tapeUnit -= tapeVelocity;
+  lineOffset += tapeVelocity * 0.6; // lines move slower = parallax feel
+
+  // Get tape half-width for seamless loop
+  const tapeW = tapeTop.scrollWidth / 2;
+  if (tapeW > 0) {
+    // Seamless wrap
+    tapeUnit = ((tapeUnit % tapeW) + tapeW) % tapeW;
+    tapeTop.style.transform = `translateX(-${tapeUnit}px)`;
+    tapeBot.style.transform = `translateX(${tapeUnit}px)`; // opposite direction
+  }
+
+  // Move horizontal lines — wrap vertically
+  const H = window.innerHeight;
+  lines.forEach((l, i) => {
+    let y = (l.baseY + lineOffset) % H;
+    if (y < 0) y += H;
+    l.el.style.transform = `translateY(${y - l.baseY}px)`;
+    // Fade lines in/out at edges
+    const proximity = Math.min(y, H - y) / (H * 0.15);
+    l.el.style.opacity = Math.min(1, proximity).toString();
+  });
+
+  requestAnimationFrame(filmLoop);
+})();
+
+/* ── SMOKE ── */
+const canvas = document.getElementById('smokeCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+class Puff {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = W/2 + (Math.random()-0.5)*420;
+    this.y = init ? Math.random()*H : H*0.2 + Math.random()*H*0.5;
+    this.r = 30 + Math.random()*80;
+    this.vx = (Math.random()-0.5)*0.55;
+    this.vy = -(0.18 + Math.random()*0.45);
+    this.alpha = 0; this.maxA = 0.045 + Math.random()*0.085;
+    this.state = 'in'; this.life = 0; this.maxL = 300 + Math.random()*280;
+  }
+  tick() {
+    this.life++;
+    this.x += this.vx + Math.sin(this.life*0.028)*0.55;
+    this.y += this.vy; this.r += 0.28;
+    if (this.state==='in') { this.alpha += this.maxA/50; if (this.alpha>=this.maxA) this.state='out'; }
+    else { this.alpha -= this.maxA/180; }
+    if (this.alpha<=0||this.life>this.maxL) this.reset(false);
+  }
+  draw() {
+    const g = ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
+    g.addColorStop(0,`rgba(230,210,170,${this.alpha})`);
+    g.addColorStop(0.4,`rgba(215,195,155,${this.alpha*0.5})`);
+    g.addColorStop(1,`rgba(190,170,130,0)`);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fill();
+  }
+}
+const puffs = Array.from({length:55}, () => { const p=new Puff(); p.life=Math.random()*p.maxL; return p; });
+let heroVis = true;
+new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observe(document.getElementById('hero'));
+(function loop() { ctx.clearRect(0,0,W,H); if(heroVis) puffs.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+
+/* ── TEATRINO TRUMPET ── */
+(function() {
+  const stage = document.getElementById('trumpetStage');
+  const persp = document.getElementById('trumpetPerspective');
+  const btn = document.getElementById('trumpetBtn');
+  const img = document.getElementById('trumpetImg');
+  const sticker = document.getElementById('playSticker');
+  const nowPlaying = document.getElementById('nowPlaying');
+  if (!btn || !img) return;
+
+  const R2 = 'https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/';
+
+  // ── MP3 FILES ──
+  // Add your filenames here. Each click plays ~10s: 1s fade-in, 8s play, 1s fade-out.
+  const SAMPLE_FILES = [
+    '441789-Film_Projector-16mm-1.mp3',
+    'CRAZY RIDE_STEM_TRUMPET_1.mp3',
+    'Dutch Trumpet Synth.mp3',
+    'Hyundai v1.mp3',
+    'Hyundai v2.3.mp3',
+    'Hyundai v3.mp3',
+  ];
+
+  let audioCtx = null;
+  let playCount = 0;
+  let currentSource = null;
+  let currentGain = null;
+  let fadeOutTimer = null;
+  let isPlaying = false;
+
+  function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  // ── PARALLAX — mouse tilt ──
+  stage.addEventListener('mousemove', e => {
+    const rect = stage.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    const rotY = dx * 18;  // max 18deg tilt
+    const rotX = -dy * 12; // max 12deg tilt
+    persp.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+  });
+  stage.addEventListener('mouseleave', () => {
+    persp.style.transform = 'rotateY(0deg) rotateX(0deg)';
+  });
+
+  // ── SYNTH FALLBACK VOICES ──
+  const voices = [
+    // Music box tinkle
+    function(ctx) {
+      const t = ctx.currentTime;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0, t+i*0.08); g.gain.linearRampToValueAtTime(0.12, t+i*0.08+0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, t+i*0.08+0.6);
+        osc.connect(g).connect(ctx.destination); osc.start(t+i*0.08); osc.stop(t+i*0.08+0.7);
+      });
+    },
+    // Descending woop
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(1200, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.5);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.55);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.6);
+    },
+    // Fat synth chord
+    function(ctx) {
+      const t = ctx.currentTime;
+      [130.81, 164.81, 196, 261.63].forEach(f => {
+        const osc = ctx.createOscillator(); osc.type = 'square'; osc.frequency.value = f+(Math.random()-0.5)*4;
+        const g = ctx.createGain(); g.gain.setValueAtTime(0.04, t); g.gain.linearRampToValueAtTime(0.06, t+0.05);
+        g.gain.exponentialRampToValueAtTime(0.001, t+1.2);
+        osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+1.3);
+      });
+    },
+    // Percussive boing
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.2);
+      osc.frequency.linearRampToValueAtTime(120, t+0.5);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.55);
+    },
+    // Ascending trill
+    function(ctx) {
+      const t = ctx.currentTime;
+      [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25].forEach((f, i) => {
+        const osc = ctx.createOscillator(); osc.type = 'triangle'; osc.frequency.value = f;
+        const g = ctx.createGain(); const s = t+i*0.045;
+        g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(0.1, s+0.015);
+        g.gain.exponentialRampToValueAtTime(0.001, s+0.35);
+        osc.connect(g).connect(ctx.destination); osc.start(s); osc.stop(s+0.4);
+      });
+    },
+    // Funny quack
+    function(ctx) {
+      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'square';
+      osc.frequency.setValueAtTime(350, t); osc.frequency.linearRampToValueAtTime(200, t+0.08);
+      osc.frequency.linearRampToValueAtTime(280, t+0.12); osc.frequency.exponentialRampToValueAtTime(120, t+0.25);
+      const g = ctx.createGain(); g.gain.setValueAtTime(0.08, t); g.gain.linearRampToValueAtTime(0.1, t+0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.35);
+    },
+  ];
+  let lastPick = -1;
+  let fadeInInterval = null;
+
+  // ── Fade out when scrolling away from trumpet section ──
+  const playSection = document.getElementById('play-me');
+  if (playSection) {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting && isPlaying && currentSource) {
+          // Slowly fade out as user scrolls away
+          let scrollFade = setInterval(() => {
+            if (currentSource && currentSource.volume > 0.02) {
+              currentSource.volume = Math.max(currentSource.volume - 0.001, 0);
+            } else {
+              clearInterval(scrollFade);
+              if (currentSource) {
+                currentSource.pause();
+                isPlaying = false;
+                if (nowPlaying) nowPlaying.classList.remove('visible');
+                currentSource = null;
+              }
+            }
+          }, 30);
+        }
+      });
+    }, { threshold: 0.1 }).observe(playSection);
+  }
+
+  // ── STOP current playback ──
+  function stopCurrent() {
+    if (fadeOutTimer) { clearTimeout(fadeOutTimer); fadeOutTimer = null; }
+    if (currentSource) {
+      try {
+        if (currentSource.pause) {
+          // Audio element
+          currentSource.pause();
+          currentSource.currentTime = 0;
+        } else if (currentSource.stop) {
+          currentSource.stop();
+        }
+      } catch(e) {}
+    }
+    currentSource = null; currentGain = null; isPlaying = false;
+    if (nowPlaying) nowPlaying.classList.remove('visible');
+  }
+
+  // ── PLAY ──
+  function play() {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    // Stop any current playback
+    stopCurrent();
+
+    // Spin animation
+    btn.classList.remove('spinning');
+    void btn.offsetWidth;
+    btn.classList.add('spinning');
+
+    // Hide sticker after first play
+    if (sticker && playCount === 0) {
+      sticker.style.transition = 'opacity 0.4s, transform 0.4s';
+      sticker.style.opacity = '0';
+      sticker.style.transform = 'rotate(20deg) scale(0.5)';
+      setTimeout(() => sticker.style.display = 'none', 400);
+    }
+    playCount++;
+
+    // ── MIXED MODE: ~60% MP3, ~40% synth for variety ──
+    const totalPool = SAMPLE_FILES.length + voices.length;
+    let pick;
+    do { pick = Math.floor(Math.random() * totalPool); } while (pick === lastPick && totalPool > 1);
+    lastPick = pick;
+
+    if (pick < SAMPLE_FILES.length) {
+      // ── MP3 ──
+      const file = SAMPLE_FILES[pick];
+      const url = R2 + encodeURIComponent(file);
+
+      const audio = new Audio(url);
+      audio.volume = 0;
+      audio.currentTime = 5;
+      audio.loop = true;
+
+      currentSource = audio;
+      isPlaying = true;
+      if (nowPlaying) nowPlaying.classList.add('visible');
+
+      if (fadeInInterval) clearInterval(fadeInInterval);
+      fadeInInterval = setInterval(() => {
+        if (audio.volume < 0.44) {
+          audio.volume = Math.min(audio.volume + 0.04, 0.45);
+        } else {
+          clearInterval(fadeInInterval);
+          fadeInInterval = null;
+        }
+      }, 20);
+
+      audio.play().catch(err => {
+        console.warn('MP3 play failed:', file, err);
+        isPlaying = false;
+        if (nowPlaying) nowPlaying.classList.remove('visible');
+        voices[Math.floor(Math.random() * voices.length)](audioCtx);
+      });
+
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        if (nowPlaying) nowPlaying.classList.remove('visible');
+        currentSource = null;
+      });
+    } else {
+      // ── SYNTH ──
+      voices[pick - SAMPLE_FILES.length](audioCtx);
+    }
+  }
+
+  btn.addEventListener('click', play);
+  btn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); }
+  });
+
+  // Clean up spin class
+  img.addEventListener('animationend', () => btn.classList.remove('spinning'));
+})();
+
+/* ── PROJECT DATA ── */
+const accentColors = {
+  teatrino:'linear-gradient(90deg,#14b8b2,#0b7a75)',
+  wndrklub:'linear-gradient(90deg,#f5c842,#c49a1a)',
+  leviathan:'linear-gradient(90deg,#4fb3e8,#1a6fa0)',
+  en:'linear-gradient(90deg,#b8f0e8,#0b7a75)',
+  rebel:'linear-gradient(90deg,#e8472a,#a33020)',
+  bw:'linear-gradient(90deg,#f5c842,#4fb3e8)',
+  dttm:'linear-gradient(90deg,#f5c842,#c49a1a)',
+};
+const tagColors = {
+  teatrino:'color:var(--teal-bright)', wndrklub:'color:var(--yellow)',
+  leviathan:'color:var(--sky)', en:'color:var(--mint)',
+  rebel:'color:var(--coral)', bw:'color:rgba(245,200,66,0.7)',
+  dttm:'color:var(--yellow)',
+};
+const P = {
+  teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'A theatre where music writes the script',
+    body:`<p>Teatrino is set inside a theatre. Not a metaphor for one, an actual theatre, with sets, flats, props, and all the beautiful artifice that comes with it. Episodes are seven minutes long and there's no dialogue. Music and sound don't support the story. They are the story.</p><p>It sits in a European tradition of visual comedy and surrealism. Think Tati's timing, the playfulness of Eastern European animation, the musicality of early Fellini. The theatrical setting is worn openly and without apology: sets that look like sets, everything knowingly constructed.</p><p>Each episode starts with something very simple and follows it wherever it goes. At the end there's a short recap section that invites children to take the episode's logic and run with it. No explanation, no moral. Just an invitation to play.</p>`,
+    creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
+  wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub',sub:'Teaching young people to see stories',
+    body:`<p>The question that started WndrKlub was simple: what would a screen skills curriculum look like if it was made by artists rather than policy writers? The answer turns out to be a series that works as both a teaching resource and a genuinely creative piece of television in its own right.</p><p>Developed with Screen Scotland and built around the ScreenSkills Education Curriculum, WndrKlub teaches children and young people how to make films. Not by telling them how to do it, but by showing them what it looks like when it's done well. Each episode demonstrates a different way of telling a story through image and sound.</p><p>It carries the DNA of Hushabye Lullabye, which won double RTS awards for CBeebies and was voted one of the top 50 children's shows ever made by Guardian readers.</p>`,
+    creds:['Screen Scotland','ScreenSkills Curriculum','Animated Series','In Development']},
+  leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'What the whales have been saying, all this time',
+    body:`<p><em>"My soul has been torn from me and I am bleeding / My heart it has been rent and I am crying / I am the last of the Great Whales and I am dying."</em></p><p>Andy Barnes wrote that song in 1983. It asks what it would mean to truly listen to whales, not as a symbol or a campaign, but as living creatures with their own complex acoustic world. That question is the starting point for this film.</p><p>We're working with <strong>Mairi Campbell</strong>, Gaelic and Scottish musician, vocalist, viola and clarsach player, and with <strong>Alex South</strong>, a Glasgow-based musician and researcher whose practice sits at the intersection of music, bioacoustics, and animal communication. The recordings come first, made separately, then woven together.</p><p>The form is still open: short film, multi-screen live performance, VR, or some combination of all three. What's fixed is the subject: what connects us to the rest of the natural world, and what happens when we stop to listen.</p>`,
+    creds:['Mairi Campbell','Alex South','NatureScot','Animation · Immersive · VR','In Development']},
+  en:{tag:'Film · Sound Installation · In Development',title:'En / The Red Thread',sub:'赤い糸 — Cowden Japanese Garden, Scotland',
+    body:`<p>In Perthshire there's a Japanese garden, built by a Scottish explorer who spent time in Japan and came home wanting to create something in that spirit. It's a real place, and it's genuinely extraordinary. That garden is where this project starts.</p><p><em>En</em> (縁) is a Japanese concept that roughly translates as connection, or fate, or the invisible thread that ties things together. It became the title of the album we're making: <em>En / The Red Thread 赤い糸</em>, recorded with Japanese and Scottish musicians.</p><p>The garden's principles, patience, restraint, space as meaning, inform how the whole thing is being made. We're also working with British sound artists based in Japan and Japanese musicians based here. The film follows the recording process and the ideas behind it.</p><p>Funding applications in progress with the Daiwa Foundation, Japan Foundation, PRS Foundation, and BFI R&D.</p>`,
+    creds:['Cowden Japanese Garden','Daiwa Foundation','Japan Foundation','BFI R&D','PRS Foundation','In Development']},
+  rebel:{tag:'Animated Film · In Development',title:'Rebel Angel',sub:'Not your typical angel',
+    body:`<p>An angel arrives. She is not what anyone expected. Cool, funny, and deeply unimpressed by the world she's landed in. She doesn't fit the role, and she's not particularly bothered about that.</p><p>Rebel Angel is an animated film built around a character who refuses to behave the way she's supposed to, and what that actually looks like when you put it on screen. Warm, irreverent, and fun to be around.</p>`,
+    creds:['Animated Film','In Development']},
+  bw:{tag:'Hybrid Live Action / Animation · In Development',title:'Black and White',sub:'Two creative partners. One scrappy arts company. Permanent chaos.',
+    body:`<p>John and Saera run a small arts company making everything from kids animation to immersive installations. He has ADHD, a charming inability to be where he's supposed to be, and a growing obsession with what AI is doing to creative work. She's a perfectionist who occasionally goes completely off-script, recently separated, and has a need to be in control that makes her both his best collaborator and his harshest critic.</p><p>They're not a couple, though most people assume they are. There's something between them neither of them has named.</p><p>John is in the middle of a separation that isn't quite happening. He's sleeping in his garage studio, surrounded by cables and cold takeaway, and he's actually quite happy there. His wife hasn't accepted it's over. He's half in, half out of his old life and not sure how to finish leaving.</p><p>The series moves between their work (pitches, festivals, the absurdity of the industry) and their lives (divorce, family, the general mess of being in your mid-forties). It's funny and human and based very closely on real events. Development interest from Channel 4.</p>`,
+    creds:['Channel 4 Interest','Hybrid Live Action / Animation','In Development']},
+  dttm:{tag:'Stop Motion Animation · Screen Scotland · BFI · Award-winning',title:'Distance to the Moon',sub:'Stop-motion film made with Eyebolls',
+    body:`<p>Distance to the Moon was made with Eyebolls and funded by Screen Scotland and the BFI. It's a stop-motion animation, slow and careful, and it moves the way a piece of music moves. That's not an accident. The music came first and shaped everything about how the film was made.</p><p>It won awards. But more than that it worked as a piece of art in its own right, not as a product for a target audience, not as a box-ticking exercise. It's the film that showed us what Curious Dreamers could be.</p>`,
+    creds:['Screen Scotland','BFI','Award-winning','Stop Motion','With Eyebolls']},
+};
+
+function openProject(id) {
+  const d=P[id]; if(!d) return;
+  const tc=tagColors[id]||'';
+  const bs=tc?`style="${tc};border-color:currentColor;background:rgba(255,255,255,0.05)"`:'';
+  document.getElementById('modalContent').innerHTML=`
+    <p class="modal-tag" style="${tc}">${d.tag}</p>
+    <h2 class="modal-title">${d.title}</h2>
+    <p class="modal-sub">${d.sub}</p>
+    <div class="modal-body">${d.body}</div>
+    <div class="modal-credits">${d.creds.map(c=>`<span class="m-badge" ${bs}>${c}</span>`).join('')}</div>`;
+  document.getElementById('modalAccent').style.background=accentColors[id]||'var(--teal)';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modalOverlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ── FIT HERO TITLE ── */
+function fitHeroTitle() {
+  const title = document.querySelector('.hero-title');
+  const container = document.querySelector('.hero-content');
+  if (!title || !container) return;
+
+  title.style.fontSize = '10rem';
+  title.style.letterSpacing = '-0.01em';
+
+  const lines = title.querySelectorAll('.line1, .line2');
+  const containerW = container.clientWidth - 48; // generous padding buffer
+  let maxLineW = 0;
+  lines.forEach(l => { maxLineW = Math.max(maxLineW, l.scrollWidth); });
+
+  if (maxLineW > 0 && containerW > 0) {
+    const scale = containerW / maxLineW;
+    const currentSize = parseFloat(getComputedStyle(title).fontSize);
+    const newSize = Math.min(currentSize * scale * 0.97, 160); // 3% safety margin
+    title.style.fontSize = newSize + 'px';
+  }
+}
+
+fitHeroTitle();
+// Re-run after fonts load (Syne may not be ready on first call)
+document.fonts.ready.then(fitHeroTitle);
+window.addEventListener('resize', fitHeroTitle);
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.1}).observe(document.querySelectorAll('.reveal')[0]);
+document.querySelectorAll('.reveal').forEach(el=>{
+  new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting) entries[0].target.classList.add('visible');
+  },{threshold:0.1}).observe(el);
+});
+</script>
+</body>
+</html>
