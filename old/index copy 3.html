@@ -212,7 +212,7 @@ nav {
 #manifesto { background: var(--coral); padding: 7rem 3rem; position: relative; overflow: hidden; }
 #manifesto::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.06); }
 #manifesto::after  { content:''; position:absolute; bottom:-100px; left:-60px; width:260px; height:260px; border-radius:50%; background:rgba(0,0,0,0.08); }
-.manifesto-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+.manifesto-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
 .manifesto-quote {
   font-family: var(--syne); font-size: clamp(2rem,5.5vw,4.5rem);
   font-weight: 800; line-height: 1.05; color: var(--white); letter-spacing: -0.02em; margin-bottom: 1.5rem;
@@ -372,23 +372,7 @@ nav {
 #contact { background:var(--yellow); padding:8rem 3rem 4rem; text-align:center; position:relative; overflow:hidden; }
 #contact::before { content:''; position:absolute; top:-120px; left:-120px; width:350px; height:350px; border-radius:50%; background:rgba(0,0,0,0.06); }
 #contact::after  { content:''; position:absolute; bottom:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(0,0,0,0.05); }
-.contact-inner { position:relative; }
-.contact-header {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-.contact-mascot {
-  width: clamp(240px, 32vw, 460px);
-  height: auto;
-  display: block;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-@media (max-width: 720px) {
-  .contact-mascot { width: clamp(200px, 55vw, 340px); }
-}
+.contact-inner { position:relative; z-index:2; }
 .contact-title { font-family:var(--syne); font-size:clamp(2.5rem,7vw,6rem); font-weight:800; letter-spacing:-0.03em; color:var(--navy); line-height:0.95; margin-bottom:1rem; }
 .contact-title em { font-style:normal; color:var(--coral); }
 .contact-sub { font-family:var(--brico); font-size:1.1rem; font-weight:300; color:rgba(13,27,42,0.6); margin-bottom:2.5rem; }
@@ -418,15 +402,11 @@ nav {
 .modal-credits { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-wrap:wrap; gap:0.4rem; }
 .m-badge { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.08em; padding:0.25rem 0.55rem; border-radius:2px; }
 
-/* ══ MANIFESTO with TRUMPET ══ */
-.manifesto-with-trumpet {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 3rem;
-  align-items: center;
-  max-width: 1100px;
+/* ══ TEATRINO TRUMPET ══ */
+#play-me {
+  background: var(--navy); padding: 2.5rem 3rem 3.5rem; text-align: center;
+  position: relative; overflow: visible;
 }
-.manifesto-text { flex: 1; }
 .trumpet-stage {
   display: flex; justify-content: center; align-items: center;
   perspective: 800px;
@@ -442,7 +422,7 @@ nav {
 }
 
 .trumpet-img {
-  width: 200px; height: auto; display: block;
+  width: 260px; height: auto; display: block;
   filter: drop-shadow(0 4px 24px rgba(245,200,66,0.12));
   transition: filter 0.3s;
   pointer-events: none;
@@ -508,9 +488,9 @@ nav {
 }
 
 @media (max-width: 600px) {
-  .trumpet-img { width: 150px; }
+  .trumpet-img { width: 180px; }
   .play-sticker { top: -16px; right: -22px; font-size: 0.6rem; padding: 0.3rem 0.6rem; }
-  .manifesto-with-trumpet { grid-template-columns: 1fr; gap: 2rem; }
+  #play-me { padding: 2rem 1.5rem 3rem; }
 }
 
 /* ══ ANIMATIONS ══ */
@@ -622,39 +602,46 @@ nav {
   </div>
 </section>
 
-<!-- MANIFESTO with Trumpet -->
+<!-- MANIFESTO -->
 <section id="manifesto">
-  <div class="manifesto-inner manifesto-with-trumpet">
-    <div class="manifesto-text">
-      <p class="manifesto-quote reveal">We make work that <em>means something.</em><br>Music, storytelling, wonder.</p>
-      <p class="manifesto-sub reveal reveal-d1">The best work invites you in. We start with music and story, we collaborate with wonderful people, and we make things we believe in. Simple as that.</p>
-    </div>
-    <div class="trumpet-stage reveal reveal-d2" id="trumpetStage">
-      <div class="trumpet-perspective" id="trumpetPerspective">
-        <div class="trumpet-wrapper" id="trumpetBtn" role="button" tabindex="0" aria-label="Play a surprise sound">
-          <div class="play-sticker" id="playSticker">
-            <span class="sticker-text">play me!</span>
-          </div>
-          <div class="now-playing" id="nowPlaying">♪ ♫ ♪</div>
-          <img
-            class="trumpet-img" id="trumpetImg"
-            src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public"
-            alt="A peculiar trumpet, click to play"
-            draggable="false"
-            onerror="this.style.display='none';document.getElementById('trumpetFallback').style.display='block';"
-          />
-          <svg id="trumpetFallback" style="display:none" class="trumpet-img" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="58" cy="90" rx="42" ry="52" fill="none" stroke="#f5c842" stroke-width="2.5" opacity="0.8"/>
-            <path d="M95,78 C120,78 140,72 180,72" fill="none" stroke="#f5c842" stroke-width="6" stroke-linecap="round"/>
-            <path d="M95,102 C120,102 140,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
-            <path d="M180,72 Q200,72 200,90 Q200,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
-            <rect x="132" y="60" width="12" height="20" rx="6" fill="#f5c842" opacity="0.5"/>
-            <rect x="152" y="56" width="12" height="24" rx="6" fill="#f5c842" opacity="0.5"/>
-            <rect x="172" y="59" width="12" height="21" rx="6" fill="#f5c842" opacity="0.5"/>
-            <path d="M200,90 L240,90" fill="none" stroke="#f5c842" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
-            <ellipse cx="245" cy="90" rx="8" ry="6" fill="none" stroke="#f5c842" stroke-width="2" opacity="0.5"/>
-          </svg>
+  <div class="manifesto-inner">
+    <p class="manifesto-quote reveal">We make work that <em>means something.</em><br>Music, storytelling, wonder.</p>
+    <p class="manifesto-sub reveal reveal-d1">The best work invites you in. We start with music and story, we collaborate with wonderful people, and we make things we believe in. Simple as that.</p>
+  </div>
+</section>
+
+<!-- TEATRINO TRUMPET -->
+<section id="play-me">
+  <div class="trumpet-stage" id="trumpetStage">
+    <div class="trumpet-perspective" id="trumpetPerspective">
+      <div class="trumpet-wrapper" id="trumpetBtn" role="button" tabindex="0" aria-label="Play a surprise sound">
+        <!-- Play me label -->
+        <div class="play-sticker" id="playSticker">
+          <span class="sticker-text">play me!</span>
         </div>
+        <!-- Now playing indicator -->
+        <div class="now-playing" id="nowPlaying">♪ ♫ ♪</div>
+        <!-- Trumpet sticker image. upload to R2 as trumpet-sticker.png -->
+        <!-- OR replace src with: https://imagedelivery.net/YOUR_ACCOUNT_HASH/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public -->
+        <img
+          class="trumpet-img" id="trumpetImg"
+          src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/3d0ba67c-9a3d-4d1b-c778-1d0a48a31600/public"
+          alt="A peculiar trumpet – click to play"
+          draggable="false"
+          onerror="this.style.display='none';document.getElementById('trumpetFallback').style.display='block';"
+        />
+        <!-- SVG fallback if image not yet uploaded -->
+        <svg id="trumpetFallback" style="display:none" class="trumpet-img" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="58" cy="90" rx="42" ry="52" fill="none" stroke="#f5c842" stroke-width="2.5" opacity="0.8"/>
+          <path d="M95,78 C120,78 140,72 180,72" fill="none" stroke="#f5c842" stroke-width="6" stroke-linecap="round"/>
+          <path d="M95,102 C120,102 140,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+          <path d="M180,72 Q200,72 200,90 Q200,108 180,108" fill="none" stroke="#f5c842" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+          <rect x="132" y="60" width="12" height="20" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="152" y="56" width="12" height="24" rx="6" fill="#f5c842" opacity="0.5"/>
+          <rect x="172" y="59" width="12" height="21" rx="6" fill="#f5c842" opacity="0.5"/>
+          <path d="M200,90 L240,90" fill="none" stroke="#f5c842" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+          <ellipse cx="245" cy="90" rx="8" ry="6" fill="none" stroke="#f5c842" stroke-width="2" opacity="0.5"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -1024,16 +1011,7 @@ nav {
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner">
-    <div class="contact-header">
-      <img
-        class="contact-mascot"
-        src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/e077008f-829f-49c5-566d-932809a48f00/public"
-        alt=""
-        draggable="false"
-        aria-hidden="true"
-      />
-      <h2 class="contact-title reveal">Let's make<br><em>something together.</em></h2>
-    </div>
+    <h2 class="contact-title reveal">Let's make<br><em>something together.</em></h2>
     <p class="contact-sub reveal reveal-d1">Based in Glasgow. Happy to travel.</p>
     <a href="mailto:hello@curiousdreamers.com" class="contact-email reveal reveal-d2">hello@curiousdreamers.com</a>
     <p class="contact-address">73 Albion Street, Merchant City, Glasgow G1 1NY</p>
@@ -1305,7 +1283,7 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
   let fadeInInterval = null;
 
   // ── Fade out when scrolling away from trumpet section ──
-  const playSection = document.getElementById('manifesto');
+  const playSection = document.getElementById('play-me');
   if (playSection) {
     new IntersectionObserver((entries) => {
       entries.forEach(e => {
