@@ -1207,12 +1207,9 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
   // ── MP3 FILES ──
   // Add your filenames here. Each click plays ~10s: 1s fade-in, 8s play, 1s fade-out.
   const SAMPLE_FILES = [
-    '441789-Film_Projector-16mm-1.mp3',
-    'CRAZY RIDE_STEM_TRUMPET_1.mp3',
-    'Dutch Trumpet Synth.mp3',
-    'Hyundai v1.mp3',
-    'Hyundai v2.3.mp3',
-    'Hyundai v3.mp3',
+    'Teatrino  1 (Hyundai v3).mp3',
+    'Teatrino 2 (Hyundai v2.3).mp3',
+    'Teatrino 3 (Hyundai v4.2 (alt start&end)).mp3',
   ];
 
   let audioCtx = null;
@@ -1242,65 +1239,6 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
     persp.style.transform = 'rotateY(0deg) rotateX(0deg)';
   });
 
-  // ── SYNTH FALLBACK VOICES ──
-  const voices = [
-    // Music box tinkle
-    function(ctx) {
-      const t = ctx.currentTime;
-      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
-        const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0, t+i*0.08); g.gain.linearRampToValueAtTime(0.12, t+i*0.08+0.02);
-        g.gain.exponentialRampToValueAtTime(0.001, t+i*0.08+0.6);
-        osc.connect(g).connect(ctx.destination); osc.start(t+i*0.08); osc.stop(t+i*0.08+0.7);
-      });
-    },
-    // Descending woop
-    function(ctx) {
-      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(1200, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.5);
-      const g = ctx.createGain(); g.gain.setValueAtTime(0.1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.55);
-      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.6);
-    },
-    // Fat synth chord
-    function(ctx) {
-      const t = ctx.currentTime;
-      [130.81, 164.81, 196, 261.63].forEach(f => {
-        const osc = ctx.createOscillator(); osc.type = 'square'; osc.frequency.value = f+(Math.random()-0.5)*4;
-        const g = ctx.createGain(); g.gain.setValueAtTime(0.04, t); g.gain.linearRampToValueAtTime(0.06, t+0.05);
-        g.gain.exponentialRampToValueAtTime(0.001, t+1.2);
-        osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+1.3);
-      });
-    },
-    // Percussive boing
-    function(ctx) {
-      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.2);
-      osc.frequency.linearRampToValueAtTime(120, t+0.5);
-      const g = ctx.createGain(); g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.5);
-      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.55);
-    },
-    // Ascending trill
-    function(ctx) {
-      const t = ctx.currentTime;
-      [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25].forEach((f, i) => {
-        const osc = ctx.createOscillator(); osc.type = 'triangle'; osc.frequency.value = f;
-        const g = ctx.createGain(); const s = t+i*0.045;
-        g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(0.1, s+0.015);
-        g.gain.exponentialRampToValueAtTime(0.001, s+0.35);
-        osc.connect(g).connect(ctx.destination); osc.start(s); osc.stop(s+0.4);
-      });
-    },
-    // Funny quack
-    function(ctx) {
-      const t = ctx.currentTime; const osc = ctx.createOscillator(); osc.type = 'square';
-      osc.frequency.setValueAtTime(350, t); osc.frequency.linearRampToValueAtTime(200, t+0.08);
-      osc.frequency.linearRampToValueAtTime(280, t+0.12); osc.frequency.exponentialRampToValueAtTime(120, t+0.25);
-      const g = ctx.createGain(); g.gain.setValueAtTime(0.08, t); g.gain.linearRampToValueAtTime(0.1, t+0.03);
-      g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
-      osc.connect(g).connect(ctx.destination); osc.start(t); osc.stop(t+0.35);
-    },
-  ];
   let lastPick = -1;
   let fadeInInterval = null;
 
@@ -1369,52 +1307,38 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
     }
     playCount++;
 
-    // ── MIXED MODE: ~60% MP3, ~40% synth for variety ──
-    const totalPool = SAMPLE_FILES.length + voices.length;
+    // Pick a track that isn't the same as last time
     let pick;
-    do { pick = Math.floor(Math.random() * totalPool); } while (pick === lastPick && totalPool > 1);
+    do { pick = Math.floor(Math.random() * SAMPLE_FILES.length); } while (pick === lastPick && SAMPLE_FILES.length > 1);
     lastPick = pick;
 
-    if (pick < SAMPLE_FILES.length) {
-      // ── MP3 ──
-      const file = SAMPLE_FILES[pick];
-      const url = R2 + encodeURIComponent(file);
+    const file = SAMPLE_FILES[pick];
+    const url = R2 + encodeURIComponent(file);
 
-      const audio = new Audio(url);
-      audio.volume = 0;
-      audio.currentTime = 5;
-      audio.loop = true;
+    const audio = new Audio(url);
+    audio.volume = 0;
+    audio.currentTime = 0;
+    audio.loop = true;
 
-      currentSource = audio;
-      isPlaying = true;
-      if (nowPlaying) nowPlaying.classList.add('visible');
+    currentSource = audio;
+    isPlaying = true;
+    if (nowPlaying) nowPlaying.classList.add('visible');
 
-      if (fadeInInterval) clearInterval(fadeInInterval);
-      fadeInInterval = setInterval(() => {
-        if (audio.volume < 0.44) {
-          audio.volume = Math.min(audio.volume + 0.04, 0.45);
-        } else {
-          clearInterval(fadeInInterval);
-          fadeInInterval = null;
-        }
-      }, 20);
+    if (fadeInInterval) clearInterval(fadeInInterval);
+    fadeInInterval = setInterval(() => {
+      if (audio.volume < 0.44) {
+        audio.volume = Math.min(audio.volume + 0.04, 0.45);
+      } else {
+        clearInterval(fadeInInterval);
+        fadeInInterval = null;
+      }
+    }, 20);
 
-      audio.play().catch(err => {
-        console.warn('MP3 play failed:', file, err);
-        isPlaying = false;
-        if (nowPlaying) nowPlaying.classList.remove('visible');
-        voices[Math.floor(Math.random() * voices.length)](audioCtx);
-      });
-
-      audio.addEventListener('ended', () => {
-        isPlaying = false;
-        if (nowPlaying) nowPlaying.classList.remove('visible');
-        currentSource = null;
-      });
-    } else {
-      // ── SYNTH ──
-      voices[pick - SAMPLE_FILES.length](audioCtx);
-    }
+    audio.play().catch(err => {
+      console.warn('MP3 play failed:', file, err);
+      isPlaying = false;
+      if (nowPlaying) nowPlaying.classList.remove('visible');
+    });
   }
 
   btn.addEventListener('click', play);
@@ -1451,13 +1375,13 @@ const P = {
   dreamland:{tag:'Animated Series · In Development',title:'Dillie Dally\'s Dreamland',sub:'A new musical world for families and children',
     body:`<p>Growing from the much-loved Hushabye Lullabye, creator <strong>Sacha Kyle</strong> brings our favourite little character back in Dillie Dally's Dreamland with brand new adventures and new music from award-winning composer <strong>Giles Lamb</strong>, in a new musical world developed for families and children to experience together.</p>`,
     creds:['Animated Series','In Development','Sacha Kyle · Creator','Giles Lamb · Music','From the Hushabye Universe']},
-  teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'A theatre where music writes the script',
+  teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'',
     body:`<p>From the hush of an empty theatre to a stage alive with possibility. Teatrino is a theatrical, music-led animated universe where surreal comedy, curious characters, and curated vignettes invite our audience to jump in, play and explore, building an audience that thrives on curiosity, creativity, and pure joy.</p><p>Teatrino's character-driven world takes Curious Dreamers' award-winning musical storytelling to the next level, blending humour, imagination, and sound-led adventures, while pushing the boundaries of modern audience engagement.</p>`,
     creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
   wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub',sub:'How do you see the world?',
     body:`<p><em>Wndr(er)</em> noun /wɒn-dər/ A filmmaker before they know the word. They pause where others move on, framing the ordinary until it becomes extraordinary.</p><p>A film director doesn't just look at the world. They notice it. They notice the sway of trees in the wind, the reflection of clouds on water, the shadow stretching across a doorway, the texture of a weathered wall, the ripple of movement in a busy street, and the way sound and silence shape a moment.</p><p>They are always asking: what's the story here? How does this moment feel? Who are we meant to be watching, and what happens next?</p><p>They see life not as a blur, but as a series of shots and scenes, each one carefully framed by perspective and emotion. To them, every ordinary moment holds structure: a beginning, a middle, an end, and a feeling beating quietly at its heart.</p><p>We invite children to become Wndr(ers), encouraging them to be curious, to be storytellers, to see the world from a different perspective.</p>`,
     creds:['Screen Scotland','ScreenSkills Curriculum','Animated Series','In Development']},
-  leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'What the whales have been saying, all this time',
+  leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'',
     body:`<p><em>"My soul has been torn from me and I am bleeding / My heart it has been rent and I am crying / I am the last of the Great Whales and I am dying."</em></p><p>Andy Barnes wrote that song in 1983. It asks what it would mean to truly listen to whales, not as a symbol or a campaign, but as living creatures with their own complex acoustic world. That question is the starting point for this film.</p><p>We're working with <strong>Mairi Campbell</strong>, Gaelic and Scottish musician, vocalist, viola and clarsach player, and with <strong>Alex South</strong>, a Glasgow-based musician and researcher whose practice sits at the intersection of music, bioacoustics, and animal communication. The recordings come first, made separately, then woven together.</p><p>The form is still open: short film, multi-screen live performance, VR, or some combination of all three. What's fixed is the subject: what connects us to the rest of the natural world, and what happens when we stop to listen.</p>`,
     creds:['Mairi Campbell','Alex South','NatureScot','Animation · Immersive · VR','In Development']},
   en:{tag:'Film · Sound Installation · In Development',title:'En / The Red Thread',sub:'赤い糸. Cowden Japanese Garden, Scotland',
