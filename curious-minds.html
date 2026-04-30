@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curious Minds. Curious Dreamers</title>
+<meta name="description" content="Curious Minds. Workshops, masterclasses and creative collaboration from Curious Dreamers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:        #0d1b2a;
+  --teal:        #0b7a75;
+  --teal-bright: #14b8b2;
+  --coral:       #e8472a;
+  --yellow:      #f5c842;
+  --cream:       #faf4e4;
+  --mint:        #b8f0e8;
+  --sky:         #4fb3e8;
+  --white:       #ffffff;
+  --syne:        'Syne', sans-serif;
+  --brico:       'Bricolage Grotesque', sans-serif;
+  --mono:        'DM Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--navy); font-family: var(--brico); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(250,244,228,0.94);
+  border-bottom: 2px solid var(--teal);
+  backdrop-filter: blur(8px);
+}
+.nav-logo {
+  font-family: var(--syne); font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--navy); text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-logo .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--coral); display: inline-block; animation: blink 3s ease-in-out infinite; flex-shrink: 0; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; color: rgba(13,27,42,0.55); text-decoration: none; transition: color 0.25s; }
+.nav-links a:hover, .nav-links a.active { color: var(--coral); }
+
+.burger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; z-index:101; }
+.burger span { display:block; width:24px; height:2px; background:var(--navy); transition:all 0.3s; border-radius:1px; }
+.burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity:0; }
+.burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.mobile-menu { display:none; position:fixed; inset:0; background:rgba(250,244,228,0.98); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; }
+.mobile-menu.open { display:flex; }
+.mobile-menu a { font-family:var(--syne); font-size:2rem; font-weight:800; color:var(--navy); text-decoration:none; letter-spacing:-0.02em; }
+.mobile-menu a:hover { color:var(--coral); }
+
+.minds-header {
+  padding: 9rem 3rem 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.minds-eyebrow {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--teal);
+  margin-bottom: 1.4rem;
+}
+.minds-eyebrow a { color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.25s; }
+.minds-eyebrow a:hover { opacity: 1; }
+.minds-eyebrow .arrow { display: inline-block; margin: 0 0.4rem; }
+.minds-title {
+  font-family: var(--syne); font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800; letter-spacing: -0.03em; line-height: 0.95;
+  color: var(--navy); margin-bottom: 1.5rem;
+}
+.minds-title em { font-style: italic; color: var(--coral); }
+.minds-lede {
+  font-family: var(--brico); font-weight: 300; font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.5; color: rgba(13,27,42,0.7);
+  max-width: 720px;
+}
+
+.minds-body-section {
+  padding: 4rem 3rem 6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.minds-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem;
+  align-items: start;
+}
+.minds-text p { margin-bottom: 1.4rem; color: rgba(13,27,42,0.78); font-size: 1rem; }
+.minds-text p strong { color: var(--navy); font-weight: 600; }
+
+.pillars { display: flex; flex-direction: column; gap: 1.5rem; }
+.pillar {
+  padding: 1.6rem; border: 1px solid rgba(13,27,42,0.12);
+  background: var(--white); border-radius: 2px;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.pillar:hover { transform: translateY(-3px); border-color: var(--coral); box-shadow: 0 8px 22px rgba(13,27,42,0.06); }
+.pillar h4 { font-family: var(--syne); font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; color: var(--navy); }
+.pillar p { font-size: 0.9rem; color: rgba(13,27,42,0.7); line-height: 1.6; }
+
+.partners-section {
+  padding: 4rem 3rem 6rem;
+  background: var(--navy); color: var(--cream);
+}
+.partners-inner { max-width: 1100px; margin: 0 auto; }
+.partners-label {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: rgba(250,244,228,0.55);
+  margin-bottom: 1rem;
+}
+.partners-title {
+  font-family: var(--syne); font-weight: 800; font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  letter-spacing: -0.02em; margin-bottom: 2.5rem;
+}
+.partner-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  background: rgba(255,255,255,0.06);
+}
+.partner-cell {
+  padding: 1.6rem; background: var(--navy);
+  font-family: var(--syne); font-weight: 600; font-size: 0.95rem;
+  color: rgba(250,244,228,0.85);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+}
+.partner-cell:hover { background: rgba(245,200,66,0.08); color: var(--yellow); }
+
+.minds-cta {
+  padding: 5rem 3rem; text-align: center;
+  background: var(--cream);
+}
+.cta-inner { max-width: 720px; margin: 0 auto; }
+.cta-title {
+  font-family: var(--syne); font-weight: 800; font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: -0.02em; line-height: 1; color: var(--navy);
+  margin-bottom: 1.4rem;
+}
+.cta-title em { font-style: italic; color: var(--coral); }
+.cta-email {
+  display: inline-block; margin-top: 1rem;
+  font-family: var(--syne); font-weight: 700; font-size: 1.1rem;
+  color: var(--coral); text-decoration: none;
+  border-bottom: 2px solid var(--coral); padding-bottom: 2px;
+  transition: opacity 0.2s;
+}
+.cta-email:hover { opacity: 0.7; }
+.cta-back {
+  display: inline-block; margin-top: 2.5rem;
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(13,27,42,0.5); text-decoration: none;
+  transition: color 0.2s;
+}
+.cta-back:hover { color: var(--coral); }
+
+footer {
+  padding: 2rem 3rem; background: var(--navy);
+  font-family: var(--mono); font-size: 0.6rem; color: rgba(250,244,228,0.4);
+  letter-spacing: 0.16em; text-align: center;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .burger { display: flex; }
+  .minds-header { padding: 7rem 1.5rem 3rem; }
+  .minds-body-section { padding: 3rem 1.5rem 4rem; }
+  .minds-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .partners-section, .minds-cta { padding: 3.5rem 1.5rem; }
+  .partner-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .partner-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="dot"></span>
+    <span>Curious Dreamers</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#about">Studio</a></li>
+    <li><a href="curious-minds.html" class="active">Curious Minds</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#projects" onclick="closeMenu()">Projects</a>
+  <a href="index.html#about" onclick="closeMenu()">Studio</a>
+  <a href="curious-minds.html" onclick="closeMenu()">Curious Minds</a>
+  <a href="index.html#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<header class="minds-header">
+  <p class="minds-eyebrow"><a href="index.html">Curious Dreamers</a><span class="arrow">→</span>Curious Minds</p>
+  <h1 class="minds-title">Sharing <em>what we know</em></h1>
+  <p class="minds-lede">
+    Between us we have decades of experience making creative work, and Curious Minds is where we share all of that, through workshops, masterclasses, and hands-on collaboration with industry, education, and young people.
+  </p>
+</header>
+
+<section class="minds-body-section">
+  <div class="minds-grid">
+    <div class="minds-text">
+      <p>We run masterclasses in <strong>soundtrack composition</strong>, <strong>screen skills</strong>, <strong>creative storytelling</strong>, and <strong>play-based practice</strong>. We work with industry professionals, educators, students, and young people, in studios, schools, festivals, and online.</p>
+      <p>Championing <strong>women in film and television</strong> runs through everything we do. We support female talent across directing, writing, design, and production at every stage of their career, through mentoring, advocacy, and opening doors.</p>
+      <p>We're also genuinely curious about <strong>new forms</strong>. Galleries, theatres, outdoor spaces, immersive installations, and the unexpected places that storytelling and music can live when they step off the screen.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <h4>Play and creativity</h4>
+        <p>Play is serious work. We run sessions for children, young people, and the adults who work with them, putting creative play at the centre of how we learn and make.</p>
+      </div>
+      <div class="pillar">
+        <h4>Screen skills and storytelling</h4>
+        <p>Practical masterclasses in animation, live action, sound design, and how to tell a story through image and sound. From students to seasoned professionals.</p>
+      </div>
+      <div class="pillar">
+        <h4>Women in film and TV</h4>
+        <p>Mentoring, advocating, and opening doors for women working across directing, writing, design, and production. This runs through everything we do.</p>
+      </div>
+      <div class="pillar">
+        <h4>Immersive and new forms</h4>
+        <p>Galleries, theatres, online, outdoors. We're genuinely curious about what happens when you take the work off the screen and put it somewhere unexpected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="partners-section">
+  <div class="partners-inner">
+    <p class="partners-label">Selected partners</p>
+    <h2 class="partners-title">We've worked with</h2>
+    <div class="partner-grid">
+      <div class="partner-cell">Screen Scotland</div>
+      <div class="partner-cell">ScreenSkills</div>
+      <div class="partner-cell">NFTS</div>
+      <div class="partner-cell">Royal Conservatoire</div>
+      <div class="partner-cell">Imaginate</div>
+      <div class="partner-cell">Starcatchers</div>
+      <div class="partner-cell">Univ. of Dundee</div>
+      <div class="partner-cell">CBeebies / BBC</div>
+      <div class="partner-cell">NatureScot</div>
+    </div>
+  </div>
+</section>
+
+<section class="minds-cta">
+  <div class="cta-inner">
+    <h2 class="cta-title">Want to <em>work with us?</em></h2>
+    <p>We collaborate with festivals, broadcasters, universities, schools, and creative industry partners. Tell us what you have in mind.</p>
+    <a href="mailto:hello@curiousdreamers.com" class="cta-email">hello@curiousdreamers.com</a>
+    <br>
+    <a href="index.html" class="cta-back">← Back to Curious Dreamers</a>
+  </div>
+</section>
+
+<footer>© 2026 Curious Dreamers Ltd · Glasgow, Scotland</footer>
+
+<script>
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMenu() {
+  burger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+
+</body>
+</html>

@@ -298,7 +298,7 @@ nav {
 .card-coral  .proj-silhouette svg { fill:var(--coral); }
 
 
-.dev-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin-bottom:3px; }
+.dev-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3px; margin-bottom:3px; }
 
 .legacy-strip {
   display:grid; grid-template-columns:auto 1fr auto; gap:2rem;
@@ -403,20 +403,290 @@ nav {
 /* ══ MODAL ══ */
 .modal-overlay { position:fixed; inset:0; background:rgba(13,27,42,0.95); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.35s; backdrop-filter:blur(8px); }
 .modal-overlay.open { opacity:1; pointer-events:all; }
-.modal { background:var(--navy); border:2px solid var(--teal); max-width:680px; width:92%; max-height:88vh; overflow-y:auto; padding:3rem; position:relative; transform:translateY(20px) scale(0.97); transition:transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275); }
+.modal { background:var(--navy); border:2px solid var(--teal); max-width:760px; width:92%; max-height:90vh; overflow-y:auto; padding:0; position:relative; transform:translateY(20px) scale(0.97); transition:transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275); }
 .modal-overlay.open .modal { transform:translateY(0) scale(1); }
-.modal-accent { position:absolute; top:0; left:0; right:0; height:4px; }
-.modal-close { position:absolute; top:1rem; right:1rem; background:none; border:2px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); width:36px; height:36px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; font-family:var(--syne); font-weight:700; transition:all 0.25s; border-radius:2px; }
+.modal-accent { position:absolute; top:0; left:0; right:0; height:4px; z-index:3; }
+.modal-close { position:absolute; top:1rem; right:1rem; background:rgba(13,27,42,0.7); border:2px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); width:36px; height:36px; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; font-family:var(--syne); font-weight:700; transition:all 0.25s; border-radius:2px; z-index:5; backdrop-filter:blur(6px); }
 .modal-close:hover { border-color:var(--coral); color:var(--coral); }
-.modal-tag { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; margin-bottom:0.8rem; }
+
+/* ── MEDIA HERO ── */
+.modal-media {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.modal-media-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-media img.modal-hero-img {
+  max-width: 70%; max-height: 80%;
+  width: auto; height: auto;
+  object-fit: contain;
+  display: block;
+}
+.modal-media svg.modal-hero-svg { width: 50%; max-width: 280px; max-height: 75%; height: auto; display: block; }
+
+/* Flipbook (WndrKlub) — sits inside a comic panel, fills it edge-to-edge */
+.modal-flipbook { position: absolute; inset: 0; }
+.modal-flipbook img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.05s linear;
+}
+.modal-flipbook img.active { opacity: 1; }
+
+/* WndrKlub. 3 comic panels, white bg, black line frames */
+.modal-wndr {
+  position: absolute; inset: 0;
+  background: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.4rem 1.5rem 2.2rem;
+}
+.modal-wndr-panels {
+  display: flex; gap: 0.8rem;
+  width: 100%; max-width: 580px;
+  height: 220px;
+}
+.modal-wndr-panel {
+  flex: 1;
+  background: #ffffff;
+  border: 2px solid #0d1b2a;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.modal-wndr-panel img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 0.5rem;
+  display: block;
+}
+@media (max-width: 600px) {
+  .modal-wndr-panels { height: 150px; max-width: 380px; gap: 0.5rem; }
+  .modal-wndr { padding: 1rem 1rem 1.6rem; }
+}
+
+/* DTTM. round moon on black starfield */
+.modal-dttm {
+  position: absolute; inset: 0;
+  background: #000;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-dttm-stars {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 60px 70px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 110px 40px, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1px 1px at 160px 90px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 200px 30px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(2px 2px at 240px 110px, rgba(255,255,255,0.95), transparent),
+    radial-gradient(1px 1px at 290px 50px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 330px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 380px 30px, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1px 1px at 430px 100px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 480px 60px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 530px 30px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 580px 90px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 630px 50px, rgba(255,255,255,0.65), transparent),
+    radial-gradient(1.5px 1.5px at 50px 180px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 130px 220px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 220px 200px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 320px 240px, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1px 1px at 410px 180px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 510px 220px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 600px 200px, rgba(255,255,255,0.7), transparent);
+  background-size: 700px 320px;
+  animation: starsTwinkle 4s ease-in-out infinite;
+}
+@keyframes starsTwinkle { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+.modal-dttm-moon-wrap {
+  position: relative;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: modalRevolve 60s linear infinite;
+  box-shadow: 0 0 60px rgba(245,200,66,0.15), inset 0 0 30px rgba(0,0,0,0.4);
+}
+.modal-dttm-moon-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hushabye. cosy starfield, navy not black */
+.modal-hushabye {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #1a2b42 0%, #0d1b2a 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.modal-hushabye-stars {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 30px 40px, rgba(245,200,66,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 90px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 140px 30px, rgba(245,200,66,0.5), transparent),
+    radial-gradient(1px 1px at 200px 100px, rgba(255,255,255,0.55), transparent),
+    radial-gradient(2px 2px at 260px 50px, rgba(245,200,66,0.8), transparent),
+    radial-gradient(1px 1px at 320px 110px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 380px 30px, rgba(245,200,66,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 440px 90px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 500px 60px, rgba(245,200,66,0.5), transparent),
+    radial-gradient(1px 1px at 560px 100px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 620px 40px, rgba(245,200,66,0.7), transparent),
+    radial-gradient(1px 1px at 80px 200px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 180px 240px, rgba(245,200,66,0.55), transparent),
+    radial-gradient(2px 2px at 280px 220px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 380px 250px, rgba(245,200,66,0.5), transparent),
+    radial-gradient(1px 1px at 480px 220px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 580px 240px, rgba(245,200,66,0.6), transparent);
+  background-size: 700px 320px;
+  animation: starsTwinkle 5s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+/* Video (Cloudflare Stream iframe) — sized to fill the frame, letterbox cropped off */
+.modal-video {
+  position: absolute;
+  top: 50%; left: 50%;
+  /* Frame ratio is wider than 16:9 (760/320 = 2.375 vs 16:9 = 1.78).
+     So a 16:9 iframe sized to frame width is too short — letterboxes top/bottom.
+     Solution: make iframe wider than frame so its 16:9 height >= frame height.
+     Width: 178% (≈ frame_height * 16/9 / frame_width when frame is 760×320, plus margin).
+     With width: 178%, height: auto via aspect-ratio gives 178% × 9/16 = 100% — exactly fills.
+     We then oversize a bit to be safe across mobile too. */
+  width: 200%; aspect-ratio: 16 / 9;
+  /* Mobile fallback: if the calculated height is still less than 100% of frame height, force it */
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: none; display: block;
+  pointer-events: none;
+}
+.modal-video-tint {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(13,27,42,0) 70%, rgba(13,27,42,0.3) 100%);
+  pointer-events: none; z-index: 2;
+}
+
+/* Player row. dedicated horizontal band, centred pill inside it */
+.modal-player-row {
+  display: flex; justify-content: center; align-items: center;
+  padding: 0.9rem 1rem;
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.modal-player {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 0.4rem 0.6rem 0.4rem 0.45rem;
+  border-radius: 999px;
+  max-width: 100%;
+}
+.modal-play-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--media-color, var(--teal-bright)); color: var(--navy);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: var(--syne); font-weight: 800;
+}
+.modal-play-btn:hover { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(255,255,255,0.06); }
+.modal-track-info {
+  display: flex; flex-direction: column; gap: 1px;
+  min-width: 100px; max-width: 240px; padding: 0 0.3rem;
+}
+.modal-track-label { font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+.modal-track-name { font-family: var(--syne); font-weight: 600; font-size: 0.78rem; color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.modal-track-prev, .modal-track-next {
+  background: none; border: none; color: rgba(255,255,255,0.55);
+  cursor: pointer; padding: 0.25rem 0.4rem; font-size: 0.95rem;
+  transition: color 0.2s; flex-shrink: 0; line-height: 1;
+}
+.modal-track-prev:hover, .modal-track-next:hover { color: var(--cream); }
+
+/* ── BODY ── */
+.modal-inner { padding: 2.2rem 2.6rem 2.6rem; }
+.modal-tag { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; margin-bottom:0.8rem; display:block; }
 .modal-title { font-family:var(--syne); font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; letter-spacing:-0.02em; line-height:1.0; margin-bottom:0.4rem; color:var(--cream); }
-.modal-sub { font-family:var(--brico); font-style:italic; font-weight:300; font-size:1rem; color:rgba(250,244,228,0.5); margin-bottom:2rem; padding-bottom:1.8rem; border-bottom:1px solid rgba(255,255,255,0.1); }
-.modal-body { font-size:0.9rem; color:rgba(250,244,228,0.72); line-height:1.9; }
+.modal-title .title-dot {
+  display: inline-block;
+  width: 0.32em; height: 0.32em;
+  border-radius: 50%; background: var(--coral);
+  margin-left: 0.05em; vertical-align: 0.12em;
+  animation: blink 3s ease-in-out infinite;
+}
+.modal-sub { font-family:var(--brico); font-style:italic; font-weight:300; font-size:1rem; color:rgba(250,244,228,0.55); margin-bottom:1.6rem; }
+
+.modal-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.4rem; }
+
+/* Info toggle */
+.modal-toggle {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  background: none; border: 1px solid rgba(255,255,255,0.18);
+  color: var(--cream); font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.6rem 0.95rem; cursor: pointer;
+  transition: all 0.25s; border-radius: 2px;
+}
+.modal-toggle:hover { border-color: var(--media-color, var(--teal-bright)); color: var(--media-color, var(--teal-bright)); }
+.modal-toggle .chev { display: inline-block; transition: transform 0.3s; font-family: var(--syne); font-size: 0.7rem; }
+.modal-toggle.open .chev { transform: rotate(90deg); }
+
+/* CTA */
+.modal-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+  background: var(--media-color, var(--teal-bright)); color: var(--navy);
+  padding: 0.65rem 1rem; border-radius: 2px; font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.modal-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+
+/* Body wrap (collapsible) */
+.modal-body-wrap {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  opacity: 0; margin-top: 0;
+}
+.modal-body-wrap.open { max-height: 2400px; opacity: 1; margin-top: 1.5rem; }
+.modal-body { font-size:0.9rem; color:rgba(250,244,228,0.72); line-height:1.9; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
 .modal-body p { margin-bottom:1.1rem; }
 .modal-body em { color:var(--cream); }
 .modal-body strong { color:var(--cream); font-weight:600; }
-.modal-credits { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-wrap:wrap; gap:0.4rem; }
+.modal-credits { margin-top:1.8rem; padding-top:1.4rem; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-wrap:wrap; gap:0.4rem; }
 .m-badge { font-family:var(--mono); font-size:0.56rem; letter-spacing:0.08em; padding:0.25rem 0.55rem; border-radius:2px; }
+
+/* Modal media animations */
+@keyframes modalDrift { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes modalSway  { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+@keyframes modalRevolve { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes modalPulse { 0%,100%{opacity:0.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+@keyframes modalGlide { 0%,100%{transform:translateX(-8px) translateY(0)} 50%{transform:translateX(8px) translateY(-6px)} }
+
+.media-drift { animation: modalDrift 5s ease-in-out infinite; }
+.media-sway { animation: modalSway 6s ease-in-out infinite; transform-origin: bottom center; }
+.media-glide { animation: modalGlide 8s ease-in-out infinite; }
+.media-pulse { animation: modalPulse 4s ease-in-out infinite; }
+
+@media (max-width: 600px) {
+  .modal-media { height: 240px; }
+  .modal-player-row { padding: 0.75rem 0.8rem; }
+  .modal-inner { padding: 1.8rem 1.6rem 2rem; }
+}
 
 /* ══ MANIFESTO with TRUMPET ══ */
 .manifesto-with-trumpet {
@@ -574,7 +844,7 @@ nav {
   <ul class="nav-links">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#about">Studio</a></li>
-    <li><a href="#curious-minds">Curious Minds</a></li>
+    <li><a href="curious-minds.html">Curious Minds</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="burger" id="burger" aria-label="Menu">
@@ -586,7 +856,7 @@ nav {
 <div class="mobile-menu" id="mobileMenu">
   <a href="#projects" onclick="closeMenu()">Projects</a>
   <a href="#about" onclick="closeMenu()">Studio</a>
-  <a href="#curious-minds" onclick="closeMenu()">Curious Minds</a>
+  <a href="curious-minds.html" onclick="closeMenu()">Curious Minds</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
 </div>
 
@@ -869,24 +1139,17 @@ nav {
       </div>
     </div>
 
-    <!-- REBEL ANGEL. angel with attitude -->
+    <!-- REBEL ANGEL — hidden, kept for future use
     <div class="proj-card card-coral reveal reveal-d2" onclick="openProject('rebel')" style="min-height:300px;">
       <div class="proj-silhouette">
         <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-          <!-- Halo (slightly tilted. rebel) -->
           <ellipse cx="150" cy="35" rx="35" ry="10" fill="none" stroke="currentColor" stroke-width="5" transform="rotate(-12 150 35)"/>
-          <!-- Head -->
           <circle cx="150" cy="75" r="28" fill="currentColor"/>
-          <!-- Jacket body. blocky, cool -->
           <path d="M118,105 L100,200 L200,200 L182,105 Q165,115 150,115 Q135,115 118,105Z" fill="currentColor"/>
-          <!-- Jacket lapels -->
           <path d="M118,105 L130,140 L150,130 L170,140 L182,105" fill="currentColor" opacity="0.5"/>
-          <!-- Wings. asymmetric, one drooping (rebellious) -->
           <path d="M118,120 Q70,90 40,110 Q70,130 100,135 Z" fill="currentColor" opacity="0.8"/>
           <path d="M182,120 Q230,80 270,95 Q240,125 205,132 Z" fill="currentColor" opacity="0.5"/>
-          <!-- Arms crossed -->
           <path d="M118,140 Q130,155 160,155 Q130,165 105,155Z" fill="currentColor" opacity="0.7"/>
-          <!-- Legs -->
           <rect x="128" y="200" width="18" height="60" rx="4" fill="currentColor"/>
           <rect x="154" y="200" width="18" height="60" rx="4" fill="currentColor"/>
         </svg>
@@ -899,6 +1162,7 @@ nav {
         <span class="proj-reveal">Meet her →</span>
       </div>
     </div>
+    -->
 
   </div>
 
@@ -989,38 +1253,6 @@ nav {
   </div>
 </section>
 
-<!-- CURIOUS MINDS -->
-<section id="curious-minds">
-  <div class="minds-grid">
-    <div class="reveal">
-      <p class="section-label">Curious Minds</p>
-      <h2 class="section-title">Sharing <em>what we know</em></h2>
-      <div class="minds-body">
-        <p>Between us we have decades of experience making creative work, and Curious Minds is where we share all of that through workshops, masterclasses, and hands-on collaboration.</p>
-        <p>We run masterclasses in soundtrack composition, screen skills, creative storytelling, and play-based practice. We work with industry professionals, educators, students, and young people.</p>
-        <p>Championing women in film and television runs through everything we do. We support female talent across directing, writing, design, and production at every stage of their career.</p>
-      </div>
-      <div class="partner-grid">
-        <div class="partner-cell">Screen Scotland</div>
-        <div class="partner-cell">ScreenSkills</div>
-        <div class="partner-cell">NFTS</div>
-        <div class="partner-cell">Royal Conservatoire</div>
-        <div class="partner-cell">Imaginate</div>
-        <div class="partner-cell">Starcatchers</div>
-        <div class="partner-cell">Univ. of Dundee</div>
-        <div class="partner-cell">CBeebies / BBC</div>
-        <div class="partner-cell">NatureScot</div>
-      </div>
-    </div>
-    <div class="pillars reveal reveal-d1">
-      <div class="pillar"><h4>Play and creativity</h4><p>Play is serious work. We run sessions for children, young people, and the adults who work with them, putting creative play at the centre of how we learn and make.</p></div>
-      <div class="pillar"><h4>Screen skills and storytelling</h4><p>Practical masterclasses in animation, live action, sound design, and how to tell a story through image and sound. From students to seasoned professionals.</p></div>
-      <div class="pillar"><h4>Women in film and TV</h4><p>Mentoring, advocating, and opening doors for women working across directing, writing, design, and production. This runs through everything we do.</p></div>
-      <div class="pillar"><h4>Immersive and new forms</h4><p>Galleries, theatres, online, outdoors. We're genuinely curious about what happens when you take the work off the screen and put it somewhere unexpected.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner">
@@ -1050,7 +1282,21 @@ nav {
   <div class="modal" id="modalBox">
     <div class="modal-accent" id="modalAccent"></div>
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div id="modalContent"></div>
+    <div class="modal-media" id="modalMedia">
+      <div class="modal-media-inner" id="modalMediaInner"></div>
+    </div>
+    <div class="modal-player-row" id="modalPlayerRow" style="display:none;">
+      <div class="modal-player" id="modalPlayer">
+        <button class="modal-play-btn" id="modalPlayBtn" aria-label="Play">▶</button>
+        <button class="modal-track-prev" id="modalTrackPrev" aria-label="Previous track">‹</button>
+        <div class="modal-track-info">
+          <span class="modal-track-label" id="modalTrackLabel">Track</span>
+          <span class="modal-track-name" id="modalTrackName">—</span>
+        </div>
+        <button class="modal-track-next" id="modalTrackNext" aria-label="Next track">›</button>
+      </div>
+    </div>
+    <div class="modal-inner" id="modalContent"></div>
   </div>
 </div>
 
@@ -1202,15 +1448,13 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
   const nowPlaying = document.getElementById('nowPlaying');
   if (!btn || !img) return;
 
-  const R2 = 'https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/';
-
-  // ── MP3 FILES ──
-  // Add your filenames here. Each click plays ~10s: 1s fade-in, 8s play, 1s fade-out.
-  const SAMPLE_FILES = [
-    'Teatrino  1 (Hyundai v3).mp3',
-    'Teatrino 2 (Hyundai v2.3).mp3',
-    'Teatrino 3 (Hyundai v4.2 (alt start&end)).mp3',
-  ];
+  // ── TRACK POOL ──
+  // Pulls from the global TRACKS (defined alongside project data later in script).
+  // Falls back to a stub if TRACKS isn't ready yet.
+  function getAllTracks() {
+    if (typeof TRACKS === 'undefined') return [];
+    return Object.values(TRACKS).flat();
+  }
 
   let audioCtx = null;
   let playCount = 0;
@@ -1307,13 +1551,22 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
     }
     playCount++;
 
+    // Get the full pool of tracks across all projects
+    const pool = getAllTracks();
+    if (!pool.length) return;
+
     // Pick a track that isn't the same as last time
     let pick;
-    do { pick = Math.floor(Math.random() * SAMPLE_FILES.length); } while (pick === lastPick && SAMPLE_FILES.length > 1);
+    do { pick = Math.floor(Math.random() * pool.length); } while (pick === lastPick && pool.length > 1);
     lastPick = pick;
 
-    const file = SAMPLE_FILES[pick];
-    const url = R2 + encodeURIComponent(file);
+    const track = pool[pick];
+    const url = track.url;
+
+    // Update the now-playing label with the track title
+    if (nowPlaying) {
+      nowPlaying.textContent = track.title;
+    }
 
     const audio = new Audio(url);
     audio.volume = 0;
@@ -1335,11 +1588,20 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
     }, 20);
 
     audio.play().catch(err => {
-      console.warn('MP3 play failed:', file, err);
+      console.warn('MP3 play failed:', track.title, err);
       isPlaying = false;
       if (nowPlaying) nowPlaying.classList.remove('visible');
     });
   }
+
+  // Expose a stop function so the modal player can interrupt the trumpet
+  window._stopTrumpet = function() {
+    if (isPlaying && currentSource) {
+      try { currentSource.pause(); } catch(e) {}
+      isPlaying = false;
+      if (nowPlaying) nowPlaying.classList.remove('visible');
+    }
+  };
 
   btn.addEventListener('click', play);
   btn.addEventListener('keydown', e => {
@@ -1368,6 +1630,140 @@ const tagColors = {
   rebel:'color:var(--coral)',
   dttm:'color:var(--yellow)',
 };
+const mediaColors = {
+  hushabye:'#f5c842', dreamland:'#e8472a', teatrino:'#14b8b2',
+  wndrklub:'#f5c842', leviathan:'#4fb3e8', en:'#b8f0e8',
+  rebel:'#e8472a', dttm:'#f5c842',
+};
+
+/* ── R2 audio config ── */
+const R2 = 'https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/';
+function audioURL(folder, file) { return R2 + 'audio/' + folder + '/' + encodeURIComponent(file); }
+function titleFromFile(filename) {
+  // "summer-sunshine.mp3" → "Summer Sunshine"
+  // "dreamland-flow wav.mp3" → "Dreamland Flow"
+  return filename
+    .replace(/\.mp3$/, '')
+    .replace(/\s+wav$/i, '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase())
+    .trim();
+}
+function makeTracks(folder, files) {
+  return files.map(f => ({
+    title: titleFromFile(f),
+    url: audioURL(folder, f),
+  }));
+}
+
+/* ── ALL PROJECT TRACKS ── */
+const TRACKS = {
+  hushabye:  makeTracks('Hushabye',           ['autumn-leaves.mp3','goodnight-dreams.mp3','summer-sunshine.mp3']),
+  dreamland: makeTracks('dreamland',          ['dreamland-flow wav.mp3','dreamland-theme.mp3','moombas.mp3']),
+  wndrklub:  makeTracks('WndrKlub',           ['ko-mandi.mp3','luma-luma.mp3','zippa-zappa.mp3']),
+  teatrino:  makeTracks('teatrino',           ['teatrino-theme.mp3','teatrino-medley.mp3','behind-the_curtain.mp3','elephant-circus.mp3','getting-ready.mp3']),
+  leviathan: makeTracks('leviathan',          ['the-great-whale.mp3','rising.mp3','silo.mp3']),
+  en:        makeTracks('en',                 ['nature-module.mp3','wind-and-water.mp3']),
+  dttm:      makeTracks('distance-to-the-moon',['full score.mp3','otherworldly.mp3','X-space-theme.mp3']),
+  rebel:     [],
+};
+
+/* ── MEDIA RENDERERS ── */
+const MEDIA = {
+  hushabye: () => `
+    <div class="modal-hushabye">
+      <div class="modal-hushabye-stars"></div>
+      <img class="modal-hero-img media-drift" src="https://hushabye-lullabye-music-site.onrender.com/rocket%20crop%20master.png" alt="Hushabye Lullabye rocket" style="max-height:90%; position:relative; z-index:2;">
+    </div>`,
+  dreamland: () => `
+    <iframe class="modal-video"
+      src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/9b946b6832536dd5ba87589ad40d1ab7/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      title="Dillie Dally's Dreamland"></iframe>
+    <div class="modal-video-tint"></div>`,
+  wndrklub: () => `
+    <div class="modal-wndr">
+      <div class="modal-wndr-panels">
+        <div class="modal-wndr-panel">
+          <img src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/7736c7f2-9624-4610-0d78-5da5e3330e00/public" alt="The Wndr(er)">
+        </div>
+        <div class="modal-wndr-panel">
+          <div class="modal-flipbook" id="wndrFlipbook">
+            <img src="https://wndrklub.vercel.app/img/lemon_frame_1.jpg" alt="">
+            <img src="https://wndrklub.vercel.app/img/lemon_frame_2.jpg" alt="">
+            <img src="https://wndrklub.vercel.app/img/lemon_frame_3.jpg" alt="">
+            <img src="https://wndrklub.vercel.app/img/lemon_frame_4.jpg" alt="">
+          </div>
+        </div>
+        <div class="modal-wndr-panel">
+          <img src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/6bd50905-2e97-4265-3bc2-bdbd14d43600/public" alt="Lemon">
+        </div>
+      </div>
+    </div>`,
+  teatrino: () => `
+    <iframe class="modal-video"
+      src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/1973559212c0d49fa0585a7ebedca456/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      title="Teatrino"></iframe>
+    <div class="modal-video-tint"></div>`,
+  leviathan: () => `
+    <iframe class="modal-video"
+      src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/65c189c2724e8389a9f07dd3d2cb8513/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      title="The Last Leviathan"></iframe>
+    <div class="modal-video-tint"></div>`,
+  en: () => `
+    <svg class="modal-hero-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:60%;">
+      <!-- Torii gate -->
+      <rect x="120" y="60" width="14" height="180" fill="#b8f0e8"/>
+      <rect x="266" y="60" width="14" height="180" fill="#b8f0e8"/>
+      <rect x="95" y="55" width="210" height="16" rx="3" fill="#b8f0e8"/>
+      <rect x="105" y="82" width="190" height="12" rx="2" fill="#b8f0e8" opacity="0.75"/>
+      <!-- Ground -->
+      <rect x="80" y="240" width="240" height="4" fill="#b8f0e8" opacity="0.5"/>
+      <!-- Water ripples -->
+      <ellipse cx="200" cy="252" rx="160" ry="18" fill="none" stroke="#b8f0e8" stroke-width="2" opacity="0.35" class="media-pulse"/>
+      <ellipse cx="200" cy="256" rx="120" ry="13" fill="none" stroke="#b8f0e8" stroke-width="1.5" opacity="0.25" class="media-pulse" style="animation-delay:-1s;"/>
+      <ellipse cx="200" cy="259" rx="80"  ry="9"  fill="none" stroke="#b8f0e8" stroke-width="1" opacity="0.2" class="media-pulse" style="animation-delay:-2s;"/>
+      <!-- Red thread, swaying -->
+      <g class="media-sway" style="transform-origin: 200px 60px; animation-duration:9s;">
+        <path d="M200,60 Q230,30 260,12 Q290,2 320,8" fill="none" stroke="#e8472a" stroke-width="2" stroke-linecap="round" opacity="0.85" stroke-dasharray="3 2"/>
+        <circle cx="320" cy="8" r="3" fill="#e8472a"/>
+      </g>
+      <!-- Cherry blossom hint -->
+      <circle cx="80"  cy="80"  r="3" fill="#e8472a" opacity="0.5"/>
+      <circle cx="340" cy="100" r="2.5" fill="#e8472a" opacity="0.4"/>
+      <circle cx="60"  cy="160" r="2" fill="#e8472a" opacity="0.3"/>
+      <!-- Kanji 縁 hint -->
+      <text x="170" y="180" font-size="44" fill="#b8f0e8" opacity="0.18" font-family="serif">縁</text>
+    </svg>`,
+  dttm: () => `
+    <div class="modal-dttm">
+      <div class="modal-dttm-stars"></div>
+      <div class="modal-dttm-moon-wrap">
+        <img src="https://www.distancetothemoonfilm.com/stills/moon.png" alt="">
+      </div>
+    </div>`,
+  rebel: () => `<svg class="modal-hero-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"><circle cx="200" cy="140" r="50" fill="#e8472a" opacity="0.5"/></svg>`,
+};
+
+/* ── EXTERNAL SITE LINKS ── */
+const SITE_URLS = {
+  hushabye: 'https://hushabye-lullabye-music-site.onrender.com',
+  wndrklub: 'https://wndrklub.vercel.app',
+  leviathan: 'https://leviathan-mvp.vercel.app',
+  dttm: 'https://www.distancetothemoonfilm.com',
+};
+const SITE_LABELS = {
+  hushabye: 'Visit Hushabye site',
+  wndrklub: 'Visit WndrKlub Living Bible',
+  leviathan: 'Visit Leviathan site',
+  dttm: 'Visit Distance to the Moon site',
+};
+
 const P = {
   hushabye:{tag:'CBeebies · BBC · RTS Award-winning · International',title:'Hushabye Lullabye',sub:'Royal Television Society Best Children\'s Series',
     body:`<p>Created by <strong>Sacha Kyle</strong> with music by <strong>Giles Lamb</strong>, produced by Mara Kids with animation by Wild Child. Hushabye Lullabye is an award-winning animated series for CBeebies. It follows the loveable Dillie Dally on gentle musical journeys to Planet Dream, a wonderfully soft and cosy place full of lullabies and cuddles.</p><p>The series won two Royal Television Society awards, Best Children's Television Programme and Best Animation, and was voted one of the top 50 children's shows ever made by Guardian readers. It has reached audiences worldwide on YOUKU (China), NRK (Norway), YLE (Finland), Daekyo Kids (South Korea), Hop (Israel), and TVO (Canada).</p><p>The accompanying albums have received over 10 million streams across Spotify and Apple Music, and the picture book <em>Goodnight Dreams</em> was published by Little Door Books.</p>`,
@@ -1378,7 +1774,7 @@ const P = {
   teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'',
     body:`<p>From the hush of an empty theatre to a stage alive with possibility. Teatrino is a theatrical, music-led animated universe where surreal comedy, curious characters, and curated vignettes invite our audience to jump in, play and explore, building an audience that thrives on curiosity, creativity, and pure joy.</p><p>Teatrino's character-driven world takes Curious Dreamers' award-winning musical storytelling to the next level, blending humour, imagination, and sound-led adventures, while pushing the boundaries of modern audience engagement.</p>`,
     creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
-  wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub',sub:'How do you see the world?',
+  wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub<span class="title-dot"></span>',sub:'How do you see the world?',
     body:`<p><em>Wndr(er)</em> noun /wɒn-dər/ A filmmaker before they know the word. They pause where others move on, framing the ordinary until it becomes extraordinary.</p><p>A film director doesn't just look at the world. They notice it. They notice the sway of trees in the wind, the reflection of clouds on water, the shadow stretching across a doorway, the texture of a weathered wall, the ripple of movement in a busy street, and the way sound and silence shape a moment.</p><p>They are always asking: what's the story here? How does this moment feel? Who are we meant to be watching, and what happens next?</p><p>They see life not as a blur, but as a series of shots and scenes, each one carefully framed by perspective and emotion. To them, every ordinary moment holds structure: a beginning, a middle, an end, and a feeling beating quietly at its heart.</p><p>We invite children to become Wndr(ers), encouraging them to be curious, to be storytellers, to see the world from a different perspective.</p>`,
     creds:['Screen Scotland','ScreenSkills Curriculum','Animated Series','In Development']},
   leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'',
@@ -1391,32 +1787,154 @@ const P = {
     body:`<p>Coming soon.</p>`,
     creds:['Animated Film','In Development']},
   dttm:{tag:'Stop Motion Animation · Screen Scotland · BFI · Multi Award-winning',title:'Distance to the Moon',sub:'A surreal cosmic journey in stop motion',
-    body:`<p style="font-style:italic;opacity:0.75;border-left:2px solid var(--yellow);padding-left:1rem;margin-bottom:1.5rem;">"When we originally went to the moon, our total focus was on the moon. We weren't thinking about looking back at the Earth. But now that we've done it, that may well have been the most important reason we went." — Michael Collins (Apollo 11, 1969)</p><p>In a stark future where Earth lies desolate, 'X', its sole remaining inhabitant, undertakes a surreal ascent on a ladder to the Moon. Battling inner demons, existential despair, and profound solitude, 'X' discovers unexpected companionship and glimpses of beauty and hope in the infinite vastness of space.</p><p>A stop-motion animated film inspired by early sci-fi aesthetic (Fritz Lang's Metropolis, Hitchcock) with an absurdist twist (Samuel Beckett, Italo Calvino's Cosmicomics). Set during the Space Race era (1963-68) but in a future timeline, the film resonates with our cultural, environmental and technological tipping point as we return to the moon.</p><p>Created by <strong>Sacha Kyle</strong> with music and sound by <strong>Giles Lamb</strong>, made with Eyebolls and funded by Screen Scotland and the BFI. The score blends modern classical chamber writing, processed analogue textures, and cinematic sound design, weaving strings, piano, and treated field recordings into an emotionally charged sonic landscape that drives the narrative forward in place of dialogue. The music was composed first and shaped every frame of the film that followed.</p><p><strong>Selected Awards &amp; Festivals:</strong> Edinburgh International Film Festival (Official Selection), Athens Animation Film Festival (Award of Distinction &amp; Music Award), Liverpool Film Festival (Best Animation), Glasgow International Film Festival, DUMBO Festival New York, Montreal Animaze, Manipulate Arts Festival, Music+Sound Awards Nomination, and many more.</p><p><a href="https://www.distancetothemoonfilm.com/" target="_blank" style="color:var(--yellow);text-decoration:underline;">distancetothemoonfilm.com →</a></p>`,
+    body:`<p style="font-style:italic;opacity:0.75;border-left:2px solid var(--yellow);padding-left:1rem;margin-bottom:1.5rem;">"When we originally went to the moon, our total focus was on the moon. We weren't thinking about looking back at the Earth. But now that we've done it, that may well have been the most important reason we went." — Michael Collins (Apollo 11, 1969)</p><p>In a stark future where Earth lies desolate, 'X', its sole remaining inhabitant, undertakes a surreal ascent on a ladder to the Moon. Battling inner demons, existential despair, and profound solitude, 'X' discovers unexpected companionship and glimpses of beauty and hope in the infinite vastness of space.</p><p>A stop-motion animated film inspired by early sci-fi aesthetic (Fritz Lang's Metropolis, Hitchcock) with an absurdist twist (Samuel Beckett, Italo Calvino's Cosmicomics). Set during the Space Race era (1963-68) but in a future timeline, the film resonates with our cultural, environmental and technological tipping point as we return to the moon.</p><p>Created by <strong>Sacha Kyle</strong> with music and sound by <strong>Giles Lamb</strong>, made with Eyebolls and funded by Screen Scotland and the BFI. The score blends modern classical chamber writing, processed analogue textures, and cinematic sound design, weaving strings, piano, and treated field recordings into an emotionally charged sonic landscape that drives the narrative forward in place of dialogue. The music was composed first and shaped every frame of the film that followed.</p><p><strong>Selected Awards &amp; Festivals:</strong> Edinburgh International Film Festival (Official Selection), Athens Animation Film Festival (Award of Distinction &amp; Music Award), Liverpool Film Festival (Best Animation), Glasgow International Film Festival, DUMBO Festival New York, Montreal Animaze, Manipulate Arts Festival, Music+Sound Awards Nomination, and many more.</p>`,
     creds:['Screen Scotland','BFI','Sacha Kyle · Creator','Giles Lamb · Music','Eyebolls','Multi Award-winning','Stop Motion','20+ Festival Selections']},
 };
 
-function openProject(id) {
-  const d=P[id]; if(!d) return;
-  const tc=tagColors[id]||'';
-  const bs=tc?`style="${tc};border-color:currentColor;background:rgba(255,255,255,0.05)"`:'';
-  document.getElementById('modalContent').innerHTML=`
-    <p class="modal-tag" style="${tc}">${d.tag}</p>
-    <h2 class="modal-title">${d.title}</h2>
-    <p class="modal-sub">${d.sub}</p>
-    <div class="modal-body">${d.body}</div>
-    <div class="modal-credits">${d.creds.map(c=>`<span class="m-badge" ${bs}>${c}</span>`).join('')}</div>`;
-  document.getElementById('modalAccent').style.background=accentColors[id]||'var(--teal)';
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
+/* ── MODAL PLAYER STATE ── */
+let modalAudio = null;
+let modalTracks = [];
+let modalTrackIndex = 0;
+let modalFlipbookTimer = null;
+
+function modalStopAudio() {
+  if (modalAudio) {
+    try { modalAudio.pause(); } catch(e) {}
+    modalAudio = null;
+  }
+  const btn = document.getElementById('modalPlayBtn');
+  if (btn) { btn.textContent = '▶'; btn.setAttribute('aria-label','Play'); }
 }
+function modalLoadTrack(i) {
+  modalTrackIndex = ((i % modalTracks.length) + modalTracks.length) % modalTracks.length;
+  const t = modalTracks[modalTrackIndex];
+  document.getElementById('modalTrackName').textContent = t.title;
+  document.getElementById('modalTrackLabel').textContent = `Track ${modalTrackIndex+1} of ${modalTracks.length}`;
+  modalStopAudio();
+}
+function modalTogglePlay() {
+  if (!modalTracks.length) return;
+  // Stop the trumpet if it's playing
+  if (window._stopTrumpet) window._stopTrumpet();
+  const btn = document.getElementById('modalPlayBtn');
+  if (modalAudio && !modalAudio.paused) {
+    modalAudio.pause(); btn.textContent = '▶'; btn.setAttribute('aria-label','Play');
+  } else {
+    if (!modalAudio) {
+      modalAudio = new Audio(modalTracks[modalTrackIndex].url);
+      modalAudio.volume = 0.7;
+      modalAudio.addEventListener('ended', () => modalNext());
+    }
+    modalAudio.play().then(() => { btn.textContent = '❚❚'; btn.setAttribute('aria-label','Pause'); })
+      .catch(err => console.warn('Modal audio play failed:', err));
+  }
+}
+function modalNext() { modalLoadTrack(modalTrackIndex + 1); modalTogglePlay(); }
+function modalPrev() { modalLoadTrack(modalTrackIndex - 1); modalTogglePlay(); }
+
+document.getElementById('modalPlayBtn').addEventListener('click', modalTogglePlay);
+document.getElementById('modalTrackNext').addEventListener('click', modalNext);
+document.getElementById('modalTrackPrev').addEventListener('click', modalPrev);
+
+/* ── FLIPBOOK ANIMATION (WndrKlub) ── */
+function startFlipbook() {
+  const fb = document.getElementById('wndrFlipbook');
+  if (!fb) return;
+  const frames = fb.querySelectorAll('img');
+  if (!frames.length) return;
+  let i = 0;
+  frames[0].classList.add('active');
+  modalFlipbookTimer = setInterval(() => {
+    frames[i].classList.remove('active');
+    i = (i + 1) % frames.length;
+    frames[i].classList.add('active');
+  }, 200); // 5fps. classic flipbook feel
+}
+function stopFlipbook() {
+  if (modalFlipbookTimer) { clearInterval(modalFlipbookTimer); modalFlipbookTimer = null; }
+}
+
+/* ── OPEN / CLOSE ── */
+function openProject(id) {
+  const d = P[id]; if (!d) return;
+  const tc = tagColors[id] || '';
+  const mc = mediaColors[id] || '#14b8b2';
+  const bs = tc ? `style="${tc};border-color:currentColor;background:rgba(255,255,255,0.05)"` : '';
+  const tracks = TRACKS[id] || [];
+  const siteUrl = SITE_URLS[id];
+  const siteLabel = SITE_LABELS[id];
+
+  // Set per-project accent colour for player + buttons
+  document.getElementById('modalBox').style.setProperty('--media-color', mc);
+
+  // Render media
+  const mediaInner = document.getElementById('modalMediaInner');
+  mediaInner.innerHTML = (MEDIA[id] || (() => ''))();
+
+  // Player
+  const playerRow = document.getElementById('modalPlayerRow');
+  if (tracks.length) {
+    modalTracks = tracks;
+    modalTrackIndex = 0;
+    document.getElementById('modalTrackName').textContent = tracks[0].title;
+    document.getElementById('modalTrackLabel').textContent = `Track 1 of ${tracks.length}`;
+    document.getElementById('modalPlayBtn').textContent = '▶';
+    playerRow.style.display = 'flex';
+    // Hide prev/next if only one track
+    const showNav = tracks.length > 1 ? '' : 'none';
+    document.getElementById('modalTrackPrev').style.display = showNav;
+    document.getElementById('modalTrackNext').style.display = showNav;
+  } else {
+    playerRow.style.display = 'none';
+    modalTracks = [];
+  }
+
+  // Body
+  const ctaHTML = siteUrl ? `<a class="modal-cta" href="${siteUrl}" target="_blank" rel="noopener">${siteLabel} →</a>` : '';
+  document.getElementById('modalContent').innerHTML = `
+    <span class="modal-tag" style="${tc}">${d.tag}</span>
+    <h2 class="modal-title">${d.title}</h2>
+    ${d.sub ? `<p class="modal-sub">${d.sub}</p>` : ''}
+    <div class="modal-actions">
+      <button class="modal-toggle" id="modalToggleBtn" onclick="toggleModalBody()"><span class="chev">›</span><span>More about this</span></button>
+      ${ctaHTML}
+    </div>
+    <div class="modal-body-wrap" id="modalBodyWrap">
+      <div class="modal-body">${d.body}</div>
+      <div class="modal-credits">${d.creds.map(c => `<span class="m-badge" ${bs}>${c}</span>`).join('')}</div>
+    </div>`;
+
+  document.getElementById('modalAccent').style.background = accentColors[id] || 'var(--teal)';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Start flipbook if it's WndrKlub
+  if (id === 'wndrklub') setTimeout(startFlipbook, 50);
+}
+
+function toggleModalBody() {
+  const wrap = document.getElementById('modalBodyWrap');
+  const btn = document.getElementById('modalToggleBtn');
+  const isOpen = wrap.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  btn.querySelector('span:last-child').textContent = isOpen ? 'Less' : 'More about this';
+}
+
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
+  modalStopAudio();
+  stopFlipbook();
+  // Wipe media so video iframes stop playing in the background
+  setTimeout(() => {
+    const inner = document.getElementById('modalMediaInner');
+    if (inner) inner.innerHTML = '';
+  }, 350); // wait for fade-out animation
 }
-document.getElementById('modalOverlay').addEventListener('click',e=>{
-  if(e.target===document.getElementById('modalOverlay')) closeModal();
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
 });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 /* ── FIT HERO TITLE ── */
 function fitHeroTitle() {
