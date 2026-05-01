@@ -842,7 +842,7 @@ nav {
 <nav>
   <a href="#" class="nav-logo"><span class="dot"></span> Curious Dreamers</a>
   <ul class="nav-links">
-    <li><a href="#projects">Projects</a></li>
+    <li><a href="#projects">Our Work</a></li>
     <li><a href="#about">Studio</a></li>
     <li><a href="curious-minds.html">Curious Minds</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -854,7 +854,7 @@ nav {
 
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#projects" onclick="closeMenu()">Our Work</a>
   <a href="#about" onclick="closeMenu()">Studio</a>
   <a href="curious-minds.html" onclick="closeMenu()">Curious Minds</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
@@ -933,8 +933,7 @@ nav {
 <!-- PROJECTS -->
 <section id="projects">
   <div class="projects-header">
-    <p class="section-label reveal">Our work</p>
-    <h2 class="section-title reveal reveal-d1">Projects in <em>motion</em></h2>
+    <h2 class="section-title reveal">Our <em>Work</em></h2>
   </div>
 
   <div class="primary-pair">
@@ -1896,7 +1895,7 @@ function openProject(id) {
     <h2 class="modal-title">${d.title}</h2>
     ${d.sub ? `<p class="modal-sub">${d.sub}</p>` : ''}
     <div class="modal-actions">
-      <button class="modal-toggle" id="modalToggleBtn" onclick="toggleModalBody()"><span class="chev">›</span><span>More about this</span></button>
+      <button class="modal-toggle" id="modalToggleBtn" onclick="toggleModalBody()"><span class="chev">›</span><span>More info</span></button>
       ${ctaHTML}
     </div>
     <div class="modal-body-wrap" id="modalBodyWrap">
@@ -1917,7 +1916,7 @@ function toggleModalBody() {
   const btn = document.getElementById('modalToggleBtn');
   const isOpen = wrap.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
-  btn.querySelector('span:last-child').textContent = isOpen ? 'Less' : 'More about this';
+  btn.querySelector('span:last-child').textContent = isOpen ? 'Less' : 'More info';
 }
 
 function closeModal() {
