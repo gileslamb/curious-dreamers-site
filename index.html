@@ -1106,7 +1106,7 @@ nav {
       </div>
     </div>
 
-    <!-- EN. red thread / zen garden -->
+    <!-- SHA RAKU EN. red thread / zen garden -->
     <div class="proj-card card-mint reveal reveal-d1" onclick="openProject('en')" style="min-height:300px;">
       <div class="proj-silhouette">
         <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
@@ -1126,15 +1126,15 @@ nav {
           <!-- Thread line -->
           <path d="M150,55 Q180,30 210,10" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5" stroke-dasharray="4 3"/>
           <!-- Japanese character hint -->
-          <text x="132" y="165" font-size="42" fill="currentColor" opacity="0.12" font-family="serif">縁</text>
+          <text x="132" y="165" font-size="42" fill="currentColor" opacity="0.12" font-family="serif">沙</text>
         </svg>
       </div>
       <div class="proj-num">04</div>
       <div class="proj-content">
-        <span class="proj-tag">Film · Installation · In Dev</span>
-        <h3 class="proj-title">En / The<br>Red Thread<br><small style="font-size:0.7em;opacity:0.5">赤い糸</small></h3>
-        <p class="proj-desc">A sound and film project rooted in Cowden Japanese Garden, Scotland. An album of new music recorded with Japanese and Scottish musicians. Patient, beautiful work.</p>
-        <span class="proj-reveal">Walk the path →</span>
+        <span class="proj-tag">Immersive Installation · Early Dev</span>
+        <h3 class="proj-title">Sha Raku En<br><small style="font-size:0.55em;opacity:0.7;font-style:italic;">— Reawakening</small><br><small style="font-size:0.5em;opacity:0.5">沙楽園</small></h3>
+        <p class="proj-desc">A 360° immersive audiovisual installation at the Japanese Garden at Cowden. Generative visuals and ambisonic sound, drawn from the garden's own forms. In early development.</p>
+        <span class="proj-reveal">Step inside →</span>
       </div>
     </div>
 
@@ -1715,30 +1715,16 @@ const MEDIA = {
       title="The Last Leviathan"></iframe>
     <div class="modal-video-tint"></div>`,
   en: () => `
-    <svg class="modal-hero-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="width:60%;">
-      <!-- Torii gate -->
-      <rect x="120" y="60" width="14" height="180" fill="#b8f0e8"/>
-      <rect x="266" y="60" width="14" height="180" fill="#b8f0e8"/>
-      <rect x="95" y="55" width="210" height="16" rx="3" fill="#b8f0e8"/>
-      <rect x="105" y="82" width="190" height="12" rx="2" fill="#b8f0e8" opacity="0.75"/>
-      <!-- Ground -->
-      <rect x="80" y="240" width="240" height="4" fill="#b8f0e8" opacity="0.5"/>
-      <!-- Water ripples -->
-      <ellipse cx="200" cy="252" rx="160" ry="18" fill="none" stroke="#b8f0e8" stroke-width="2" opacity="0.35" class="media-pulse"/>
-      <ellipse cx="200" cy="256" rx="120" ry="13" fill="none" stroke="#b8f0e8" stroke-width="1.5" opacity="0.25" class="media-pulse" style="animation-delay:-1s;"/>
-      <ellipse cx="200" cy="259" rx="80"  ry="9"  fill="none" stroke="#b8f0e8" stroke-width="1" opacity="0.2" class="media-pulse" style="animation-delay:-2s;"/>
-      <!-- Red thread, swaying -->
-      <g class="media-sway" style="transform-origin: 200px 60px; animation-duration:9s;">
-        <path d="M200,60 Q230,30 260,12 Q290,2 320,8" fill="none" stroke="#e8472a" stroke-width="2" stroke-linecap="round" opacity="0.85" stroke-dasharray="3 2"/>
-        <circle cx="320" cy="8" r="3" fill="#e8472a"/>
-      </g>
-      <!-- Cherry blossom hint -->
-      <circle cx="80"  cy="80"  r="3" fill="#e8472a" opacity="0.5"/>
-      <circle cx="340" cy="100" r="2.5" fill="#e8472a" opacity="0.4"/>
-      <circle cx="60"  cy="160" r="2" fill="#e8472a" opacity="0.3"/>
-      <!-- Kanji 縁 hint -->
-      <text x="170" y="180" font-size="44" fill="#b8f0e8" opacity="0.18" font-family="serif">縁</text>
-    </svg>`,
+    <div class="modal-en-bleed" style="position:absolute;inset:0;overflow:hidden;background:#0A0A0A;">
+      <video
+        autoplay loop muted playsinline webkit-playsinline preload="auto"
+        src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/808bff34a4811c61cb0439fc2ce75969/manifest/video.m3u8"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0) 65%,rgba(10,10,10,0.5) 100%);pointer-events:none;z-index:2;"></div>
+      <svg id="enModalThread" preserveAspectRatio="none" style="position:absolute;top:0;right:0;width:80px;height:100%;pointer-events:none;z-index:3;overflow:visible;">
+        <path id="enModalThreadPath" fill="none" stroke="#e8472a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 4px rgba(232,71,42,0.5));" d="M 0 0"/>
+      </svg>
+    </div>`,
   dttm: () => `
     <div class="modal-dttm">
       <div class="modal-dttm-stars"></div>
@@ -1754,12 +1740,14 @@ const SITE_URLS = {
   hushabye: 'https://hushabye-lullabye-music-site.onrender.com',
   wndrklub: 'https://wndrklub.vercel.app',
   leviathan: 'https://leviathan-mvp.vercel.app',
+  en: 'https://sharakuen-reawakening.vercel.app',
   dttm: 'https://www.distancetothemoonfilm.com',
 };
 const SITE_LABELS = {
   hushabye: 'Visit Hushabye site',
   wndrklub: 'Visit WndrKlub Living Bible',
   leviathan: 'Visit Leviathan site',
+  en: 'Visit Sha Raku En living bible',
   dttm: 'Visit Distance to the Moon site',
 };
 
@@ -1779,9 +1767,9 @@ const P = {
   leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'',
     body:`<p><em>"My soul has been torn from me and I am bleeding / My heart it has been rent and I am crying / I am the last of the Great Whales and I am dying."</em></p><p>Andy Barnes wrote that song in 1983. It asks what it would mean to truly listen to whales, not as a symbol or a campaign, but as living creatures with their own complex acoustic world. That question is the starting point for this film.</p><p>We're working with <strong>Mairi Campbell</strong>, Gaelic and Scottish musician, vocalist, viola and clarsach player, and with <strong>Alex South</strong>, a Glasgow-based musician and researcher whose practice sits at the intersection of music, bioacoustics, and animal communication. The recordings come first, made separately, then woven together.</p><p>The form is still open: short film, multi-screen live performance, VR, or some combination of all three. What's fixed is the subject: what connects us to the rest of the natural world, and what happens when we stop to listen.</p>`,
     creds:['Mairi Campbell','Alex South','NatureScot','Animation · Immersive · VR','In Development']},
-  en:{tag:'Film · Sound Installation · In Development',title:'En / The Red Thread',sub:'赤い糸. Cowden Japanese Garden, Scotland',
-    body:`<p>At the turn of the 20th century, Scottish adventurer Ella Christie returned home from Japan inspired to build her own Japanese Garden. She chose a female designer, the gifted Taki Handa, to create the seven-acre site in the grounds of Cowden Castle. The Japanese Garden at Cowden remains the first and only garden of its size and scale to be designed by a woman, a unique and authentic bridge between Scottish and Japanese culture.</p><p><em>En</em> ("Red Thread") is an artistic and musical response to the Garden, honouring the pioneering vision of Ella Christie and Taki Handa. Rooted in Christie's spirit of curiosity and adventure, the project experiments with immersive music, audio, and visual experiences inspired by the Garden, exploring how art, sound, and technology can deepen our connection to place, nature, and memory.</p><p>At its heart is collaboration between Scottish and Japanese musicians: sharing cultural techniques, vocal traditions, and compositional approaches to create a fusion of musical sensibilities in an immersive, emotionally resonant environment.</p>`,
-    creds:['Cowden Japanese Garden','Daiwa Foundation','Japan Foundation','BFI R&D','PRS Foundation','In Development']},
+  en:{tag:'Immersive Installation · In Development',title:'Sha Raku En',sub:'<em>Reawakening</em> · 沙楽園 · Japanese Garden at Cowden',
+    body:`<p>A proposed 360° immersive audiovisual installation, hosted in a purpose-fitted room at the Japanese Garden at Cowden. The garden's contemplative spirit, amplified through contemporary generative visual and ambisonic sound practice. A twelve-minute looping piece, evolving in real time, drawn entirely from the garden's own material.</p><p>At the turn of the 20th century, Scottish adventurer Ella Christie returned home from Japan inspired to dream a Japanese garden into being. She chose Taki Handa, the only Japanese woman to have designed a Japanese garden of this scale anywhere in the West. <em>Sha Raku En</em> means "the place of pleasure and delight". Today the garden is led by Sara Stewart and a team carrying its restoration forward.</p><p><em>Reawakening</em> extends that thread. A contemporary work made by Sacha Kyle and Giles Lamb, in dialogue with the women who have shaped this place. Christie's spirit suffuses the piece. She is felt, not narrated.</p>`,
+    creds:['Early Development','Cowden Japanese Garden','Creative Scotland','Daiwa Foundation','Japan Foundation','£120k Total Project','12-15 min Generative Loop','Launch Sep 2027']},
   rebel:{tag:'Animated Film · In Development',title:'Rebel Angel',sub:'A surreal, graffiti style animated film',
     body:`<p>Coming soon.</p>`,
     creds:['Animated Film','In Development']},
@@ -1853,6 +1841,58 @@ function stopFlipbook() {
   if (modalFlipbookTimer) { clearInterval(modalFlipbookTimer); modalFlipbookTimer = null; }
 }
 
+/* ── EN MODAL THREAD ── animated SVG path on the right edge of the En modal video */
+let enThreadRafId = null;
+let enThreadT = 0;
+function startEnThread() {
+  const path = document.getElementById('enModalThreadPath');
+  const svg = document.getElementById('enModalThread');
+  if (!path || !svg) return;
+  enThreadT = 0;
+  function build() {
+    const rect = svg.getBoundingClientRect();
+    const w = rect.width || 80;
+    const h = rect.height || 320;
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    const anchor = w * 0.55;
+    const segments = 10;
+    const segH = h / (segments - 1);
+    function xAt(i) {
+      const phase = enThreadT * 0.012 + i * 0.55;
+      const ampSine = 0.5 + 0.5 * Math.sin(phase * 0.31 + 0.7);
+      const ampVar = ampSine * ampSine;
+      const baseAmp = 12 + ampVar * 28;
+      const p1 = Math.sin(phase) * baseAmp;
+      const p2 = Math.sin(phase * 1.9 + 1.3) * baseAmp * 0.18;
+      return anchor - Math.abs(p1 + p2);
+    }
+    const pts = [];
+    for (let i = 0; i < segments; i++) pts.push({ x: xAt(i), y: i * segH });
+    let d = 'M ' + pts[0].x.toFixed(1) + ' ' + pts[0].y.toFixed(1);
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || pts[i + 1];
+      const cp1x = p1.x + (p2.x - p0.x) / 6;
+      const cp1y = p1.y + (p2.y - p0.y) / 6;
+      const cp2x = p2.x - (p3.x - p1.x) / 6;
+      const cp2y = p2.y - (p3.y - p1.y) / 6;
+      d += ' C ' + cp1x.toFixed(1) + ' ' + cp1y.toFixed(1) + ', ' + cp2x.toFixed(1) + ' ' + cp2y.toFixed(1) + ', ' + p2.x.toFixed(1) + ' ' + p2.y.toFixed(1);
+    }
+    path.setAttribute('d', d);
+  }
+  function tick() {
+    enThreadT += 1;
+    build();
+    enThreadRafId = requestAnimationFrame(tick);
+  }
+  tick();
+}
+function stopEnThread() {
+  if (enThreadRafId) { cancelAnimationFrame(enThreadRafId); enThreadRafId = null; }
+}
+
 /* ── OPEN / CLOSE ── */
 function openProject(id) {
   const d = P[id]; if (!d) return;
@@ -1909,6 +1949,8 @@ function openProject(id) {
 
   // Start flipbook if it's WndrKlub
   if (id === 'wndrklub') setTimeout(startFlipbook, 50);
+  // Start animated thread if it's Sha Raku En
+  if (id === 'en') setTimeout(startEnThread, 50);
 }
 
 function toggleModalBody() {
@@ -1924,6 +1966,7 @@ function closeModal() {
   document.body.style.overflow = '';
   modalStopAudio();
   stopFlipbook();
+  stopEnThread();
   // Wipe media so video iframes stop playing in the background
   setTimeout(() => {
     const inner = document.getElementById('modalMediaInner');
