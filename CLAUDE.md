@@ -75,7 +75,7 @@ When editing here in chat: copy the uploaded file to working dir, use `str_repla
 
 ## Things to know about the studio (context for tone)
 
-Curious Dreamers is Giles Lamb and Sacha Kyle. Glasgow-based. Practice spans film, television, animation, sound, and immersive work. Sacha is the visual lead (hand-drawn mixed-media collage), Giles leads sound and music. Key institutional relationships: Screen Scotland, Education Scotland, Animation Scotland.
+Curious Dreamers is Giles Lamb and Sacha Kyle. Glasgow-based. Practice spans film, television, animation, sound, and immersive work. Sacha is Creative Director & Producer, leading visually and directorially (hand-drawn mixed-media collage). Giles is Composer & Sound Artist, leading sound and music. Key institutional relationships: Screen Scotland, Education Scotland, Animation Scotland.
 
 Active projects with their own Living Bible sites:
 - **WndrKlub** — primary project, screen-education for ages 3–7, separate repo at `gileslamb/wndrklub`
