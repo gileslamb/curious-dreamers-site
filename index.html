@@ -580,6 +580,17 @@ nav {
   pointer-events: none; z-index: 2;
 }
 
+/* Fit-to-frame variant: shows the whole 16:9 video with letterbox bars
+   top and bottom, instead of cropping to fill the wider modal frame.
+   Use when the video has logos or text near the edges that must be visible. */
+.modal-video.modal-video-fit {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  max-height: 100%;
+}
+
 /* Teatrino gold star field — scoped to modal hero, layered over the Cloudflare video */
 .modal-stars {
   position: absolute; inset: 0;
@@ -1763,10 +1774,12 @@ const TRACKS = {
 /* ── MEDIA RENDERERS ── */
 const MEDIA = {
   hushabye: () => `
-    <div class="modal-hushabye">
-      <div class="modal-hushabye-stars"></div>
-      <img class="modal-hero-img media-drift" src="https://hushabye-lullabye-music-site.onrender.com/rocket%20crop%20master.png" alt="Hushabye Lullabye rocket" style="max-height:90%; position:relative; z-index:2;">
-    </div>`,
+    <iframe class="modal-video modal-video-fit"
+      src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/ef8176e3f817ee0a1687d4cb1988035a/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      title="Hushabye Lullabye"></iframe>
+    <div class="modal-video-tint"></div>`,
   dreamland: () => `
     <iframe class="modal-video"
       src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/9b946b6832536dd5ba87589ad40d1ab7/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
