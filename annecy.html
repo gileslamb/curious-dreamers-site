@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Curious Dreamers — Annecy 2026</title>
+  <meta name="description" content="Curious Dreamers — Waking The Imagination. Meet us at Annecy 2026 / Mifa.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1b2a;
+      --cream:  #faf4e4;
+      --accent: #d4a843; /* Teatrino gold — overridden via JS from CONFIG.accent */
+      --syne:   'Syne', sans-serif;
+      --brico:  'Bricolage Grotesque', sans-serif;
+      --mono:   'DM Mono', monospace;
+    }
+
+    html { height: 100%; }
+
+    body {
+      height: 100%;
+      background: var(--navy);
+      color: var(--cream);
+      font-family: var(--brico);
+      line-height: 1.6;
+      overflow: hidden; /* locked during gate phase */
+    }
+
+    body.unlocked { overflow: auto; }
+
+    /* ── Video background ──────────────────────────── */
+    #bgVideo {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+
+    #bgVideo.visible { opacity: 1; }
+
+    /* Dark veil for legibility */
+    #veil {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 27, 42, 0.76);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── Gate ──────────────────────────────────────── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      cursor: pointer;
+      transition: opacity 0.7s ease;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    #gate.gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .gate-wordmark {
+      font-family: var(--syne);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 9vw, 5rem);
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .gate-tagline {
+      font-family: var(--mono);
+      font-size: clamp(0.58rem, 1.8vw, 0.8rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(250, 244, 228, 0.45);
+      margin-bottom: 3rem;
+    }
+
+    .gate-prompt {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      animation: gateBlink 2.4s ease-in-out infinite;
+    }
+
+    @keyframes gateBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.28; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gate-prompt { animation: none; }
+    }
+
+    /* ── Card ──────────────────────────────────────── */
+    #card {
+      position: relative;
+      z-index: 10;
+      min-height: 100dvh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: max(env(safe-area-inset-top), 2.5rem) 1.5rem max(env(safe-area-inset-bottom), 2.5rem);
+    }
+
+    #cardInner {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* Staggered fade-in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .fade-in {
+      animation: fadeUp 0.65s ease forwards;
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ── Card header ───────────────────────────────── */
+    .card-header { margin-bottom: 1.75rem; }
+
+    .card-wordmark {
+      font-family: var(--syne);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 5vw, 2.1rem);
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-tagline {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(250, 244, 228, 0.4);
+    }
+
+    /* ── Showcase ──────────────────────────────────── */
+    #showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      border-top: 1px solid rgba(250, 244, 228, 0.1);
+      padding-top: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .showcase-item { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .showcase-logo-wrap {
+      height: 36px;
+      display: flex;
+      align-items: center;
+    }
+
+    .showcase-logo {
+      max-height: 32px;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: left center;
+      opacity: 0.9;
+    }
+
+    /* Hide gracefully if image is missing */
+    .showcase-logo[data-missing] { display: none; }
+
+    .showcase-name {
+      font-family: var(--syne);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--cream);
+    }
+
+    .showcase-desc {
+      font-family: var(--brico);
+      font-size: 0.7rem;
+      color: rgba(250, 244, 228, 0.5);
+      line-height: 1.4;
+    }
+
+    /* ── Form ──────────────────────────────────────── */
+    #captureForm {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .field {
+      display: block;
+      width: 100%;
+      background: rgba(250, 244, 228, 0.06);
+      border: 1px solid rgba(250, 244, 228, 0.16);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      color: var(--cream);
+      font-family: var(--brico);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .field:focus { border-color: var(--accent); }
+    .field::placeholder { color: rgba(250, 244, 228, 0.3); }
+    .field.invalid { border-color: #e07060; }
+
+    #submitBtn {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--accent);
+      color: var(--navy);
+      font-family: var(--syne);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 0.2rem;
+    }
+
+    #submitBtn:hover:not(:disabled) { opacity: 0.86; }
+    #submitBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .consent-text {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.02em;
+      color: rgba(250, 244, 228, 0.3);
+      line-height: 1.55;
+      text-align: center;
+      padding: 0 0.25rem;
+    }
+
+    #formError {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.02em;
+      color: #e07060;
+      text-align: center;
+    }
+
+    /* ── Success ───────────────────────────────────── */
+    #successState { text-align: center; padding: 0.5rem 0; }
+
+    .success-msg {
+      font-family: var(--brico);
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .success-link {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(212, 168, 67, 0.35);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+
+    .success-link:hover { border-color: var(--accent); }
+
+    /* ── Footer ────────────────────────────────────── */
+    #pageFooter {
+      margin-top: 2rem;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250, 244, 228, 0.22);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Full-bleed background video -->
+  <video id="bgVideo" playsinline preload="none"></video>
+
+  <!-- Dark veil -->
+  <div id="veil"></div>
+
+  <!-- ── Gate ──────────────────────────────────── -->
+  <div id="gate" role="button" tabindex="0" aria-label="Touch to begin">
+    <div class="gate-wordmark">CURIOUS DREAMERS</div>
+    <p class="gate-tagline">Waking The Imagination</p>
+    <p class="gate-prompt">Touch to begin</p>
+  </div>
+
+  <!-- ── Card (revealed on gate tap) ──────────── -->
+  <div id="card" aria-hidden="true">
+    <div id="cardInner">
+
+      <div class="card-header">
+        <h1 class="card-wordmark">CURIOUS DREAMERS</h1>
+        <p class="card-tagline">Waking The Imagination</p>
+      </div>
+
+      <div id="showcase">
+        <div class="showcase-item">
+          <div class="showcase-logo-wrap">
+            <img class="showcase-logo" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/d7689712-8d88-4621-3e43-5c6043c28100/public" alt="Teatrino"
+                 onerror="this.setAttribute('data-missing','1')">
+          </div>
+          <p class="showcase-name">Teatrino</p>
+          <p class="showcase-desc">Surreal comedy for the very young</p>
+        </div>
+        <div class="showcase-item">
+          <div class="showcase-logo-wrap">
+            <img class="showcase-logo" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/a6880c1f-aa6b-4fb5-e007-a2fcddbfb500/public" alt="WndrKlub"
+                 onerror="this.setAttribute('data-missing','1')">
+          </div>
+          <p class="showcase-name">WndrKlub</p>
+          <p class="showcase-desc">Screen education for ages 3–7</p>
+        </div>
+      </div>
+
+      <form id="captureForm" novalidate>
+        <input class="field" type="text" id="nameInput" name="name"
+               placeholder="Name (optional)" autocomplete="name">
+        <input class="field" type="email" id="emailInput" name="email"
+               placeholder="Email" autocomplete="email">
+        <p id="formError" hidden>Something went wrong. Please try again.</p>
+        <button type="submit" id="submitBtn">Stay in touch</button>
+        <p class="consent-text">Happy for Curious Dreamers to be in touch about your enquiry. No mailing lists, no automation.</p>
+      </form>
+
+      <div id="successState" hidden>
+        <p class="success-msg">Good to meet you. We'll be in touch about your enquiry.</p>
+        <a class="success-link" href="https://www.curiousdreamers.com">curiousdreamers.com</a>
+      </div>
+
+      <footer id="pageFooter">Annecy 2026 · Mifa</footer>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── CONFIG ──────────────────────────────────────────────────── */
+    const CONFIG = {
+      source:          'cd-card',
+      event:           'annecy-2026',
+      source_detail:   'annecy-2026',
+      eventName:       'Annecy 2026',
+      captureEndpoint: 'https://giles-engine.gileslamb.workers.dev/capture',
+      accent:          '#d4a843',
+      consentText:     'Happy for Curious Dreamers to be in touch about my enquiry. No mailing lists, no automation.',
+      videoSrc:        'https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/081b6324fc6541381deba75cac0350d3/manifest/video.m3u8',
+    };
+
+    /* Apply accent colour to CSS custom property */
+    document.documentElement.style.setProperty('--accent', CONFIG.accent);
+
+    /* ── Elements ────────────────────────────────────────────────── */
+    const gate      = document.getElementById('gate');
+    const card      = document.getElementById('card');
+    const cardInner = document.getElementById('cardInner');
+    const bgVideo   = document.getElementById('bgVideo');
+    const form      = document.getElementById('captureForm');
+    const nameInput = document.getElementById('nameInput');
+    const emailInput= document.getElementById('emailInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const formError = document.getElementById('formError');
+    const successEl = document.getElementById('successState');
+
+    /* ── Reduced motion ──────────────────────────────────────────── */
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ── Video ───────────────────────────────────────────────────── */
+    function initVideo() {
+      if (prefersReduced) return;
+      if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(CONFIG.videoSrc);
+        hls.attachMedia(bgVideo);
+      } else if (bgVideo.canPlayType('application/vnd.apple.mpegurl')) {
+        /* Safari native HLS */
+        bgVideo.src = CONFIG.videoSrc;
+      }
+    }
+
+    function playVideo() {
+      if (prefersReduced) return;
+      bgVideo.classList.add('visible');
+      bgVideo.play().catch(function () { /* autoplay blocked — silent fail */ });
+    }
+
+    /* Hold final frame: browsers keep the last frame on 'ended'; no action needed. */
+
+    /* ── Gate interaction ────────────────────────────────────────── */
+    function enterCard() {
+      playVideo();
+      gate.classList.add('gone');
+
+      card.style.display = 'flex';
+      card.removeAttribute('aria-hidden');
+      document.body.classList.add('unlocked');
+
+      /* Staggered fade-in of each direct child of cardInner */
+      requestAnimationFrame(function () {
+        Array.from(cardInner.children).forEach(function (el, i) {
+          el.style.animationDelay = (0.08 + i * 0.14) + 's';
+          el.classList.add('fade-in');
+        });
+      });
+    }
+
+    gate.addEventListener('click', enterCard);
+    gate.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterCard(); }
+    });
+
+    /* ── Form submission ─────────────────────────────────────────── */
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      formError.hidden = true;
+
+      const email = emailInput.value.trim();
+      const emailOk = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!emailOk) {
+        emailInput.classList.add('invalid');
+        emailInput.focus();
+        return;
+      }
+
+      emailInput.classList.remove('invalid');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      const payload = {
+        name:         nameInput.value.trim(),
+        email:        email,
+        source:       CONFIG.source,
+        source_detail: CONFIG.source_detail,
+        consent_text: CONFIG.consentText,
+        consent_at:   new Date().toISOString(),
+      };
+
+      try {
+        const res = await fetch(CONFIG.captureEndpoint, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('non-2xx');
+        form.hidden = true;
+        successEl.hidden = false;
+      } catch (_) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Stay in touch';
+        formError.hidden = false;
+      }
+    });
+
+    emailInput.addEventListener('input', function () {
+      emailInput.classList.remove('invalid');
+    });
+
+    /* ── Boot ────────────────────────────────────────────────────── */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideo);
+    } else {
+      initVideo();
+    }
+  </script>
+</body>
+</html>
