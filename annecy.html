@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -36,7 +36,7 @@
     body.unlocked { overflow: auto; }
 
     /* ── Video background ──────────────────────────── */
-    #bgVideo {
+    #sting {
       position: fixed;
       inset: 0;
       width: 100%;
@@ -47,7 +47,7 @@
       transition: opacity 1.2s ease;
     }
 
-    #bgVideo.visible { opacity: 1; }
+    #sting.visible { opacity: 1; }
 
     /* Dark veil for legibility */
     #veil {
@@ -177,44 +177,20 @@
     #showcase {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      border-top: 1px solid rgba(250, 244, 228, 0.1);
-      padding-top: 1.25rem;
+      gap: 16px;
       margin-bottom: 1.75rem;
     }
 
-    .showcase-item { display: flex; flex-direction: column; gap: 0.4rem; }
-
-    .showcase-logo-wrap {
-      height: 36px;
-      display: flex;
-      align-items: center;
+    .showcase-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
     }
 
-    .showcase-logo {
-      max-height: 32px;
-      max-width: 100%;
-      object-fit: contain;
-      object-position: left center;
-      opacity: 0.9;
-    }
-
-    /* Hide gracefully if image is missing */
-    .showcase-logo[data-missing] { display: none; }
-
-    .showcase-name {
-      font-family: var(--syne);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      color: var(--cream);
-    }
-
-    .showcase-desc {
-      font-family: var(--brico);
-      font-size: 0.7rem;
-      color: rgba(250, 244, 228, 0.5);
-      line-height: 1.4;
+    @media (max-width: 280px) {
+      #showcase { grid-template-columns: 1fr; }
     }
 
     /* ── Form ──────────────────────────────────────── */
@@ -321,7 +297,7 @@
 <body>
 
   <!-- Full-bleed background video -->
-  <video id="bgVideo" playsinline preload="none"></video>
+  <video id="sting" playsinline preload="auto"></video>
 
   <!-- Dark veil -->
   <div id="veil"></div>
@@ -343,22 +319,8 @@
       </div>
 
       <div id="showcase">
-        <div class="showcase-item">
-          <div class="showcase-logo-wrap">
-            <img class="showcase-logo" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/d7689712-8d88-4621-3e43-5c6043c28100/public" alt="Teatrino"
-                 onerror="this.setAttribute('data-missing','1')">
-          </div>
-          <p class="showcase-name">Teatrino</p>
-          <p class="showcase-desc">Surreal comedy for the very young</p>
-        </div>
-        <div class="showcase-item">
-          <div class="showcase-logo-wrap">
-            <img class="showcase-logo" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/a6880c1f-aa6b-4fb5-e007-a2fcddbfb500/public" alt="WndrKlub"
-                 onerror="this.setAttribute('data-missing','1')">
-          </div>
-          <p class="showcase-name">WndrKlub</p>
-          <p class="showcase-desc">Screen education for ages 3–7</p>
-        </div>
+        <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/d7689712-8d88-4621-3e43-5c6043c28100/public" alt="Teatrino">
+        <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/a6880c1f-aa6b-4fb5-e007-a2fcddbfb500/public" alt="WndrKlub">
       </div>
 
       <form id="captureForm" novalidate>
@@ -372,7 +334,7 @@
       </form>
 
       <div id="successState" hidden>
-        <p class="success-msg">Good to meet you. We'll be in touch about your enquiry.</p>
+        <p class="success-msg">Nice to meet you.</p>
         <a class="success-link" href="https://www.curiousdreamers.com">curiousdreamers.com</a>
       </div>
 
@@ -384,7 +346,7 @@
   <script>
     /* ── CONFIG ──────────────────────────────────────────────────── */
     const CONFIG = {
-      source:          'cd-card',
+      source:          'curious-dreamers',
       event:           'annecy-2026',
       source_detail:   'annecy-2026',
       eventName:       'Annecy 2026',
@@ -401,7 +363,6 @@
     const gate      = document.getElementById('gate');
     const card      = document.getElementById('card');
     const cardInner = document.getElementById('cardInner');
-    const bgVideo   = document.getElementById('bgVideo');
     const form      = document.getElementById('captureForm');
     const nameInput = document.getElementById('nameInput');
     const emailInput= document.getElementById('emailInput');
@@ -413,25 +374,33 @@
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ── Video ───────────────────────────────────────────────────── */
+    const v   = document.getElementById('sting');
+    const SRC = CONFIG.videoSrc;
+
     function initVideo() {
       if (prefersReduced) return;
-      if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(CONFIG.videoSrc);
-        hls.attachMedia(bgVideo);
-      } else if (bgVideo.canPlayType('application/vnd.apple.mpegurl')) {
-        /* Safari native HLS */
-        bgVideo.src = CONFIG.videoSrc;
+      if (v.canPlayType('application/vnd.apple.mpegurl')) {
+        v.src = SRC;                                     /* Safari native HLS */
+      } else if (window.Hls && Hls.isSupported()) {
+        const h = new Hls();
+        h.loadSource(SRC);
+        h.attachMedia(v);
       }
     }
 
     function playVideo() {
       if (prefersReduced) return;
-      bgVideo.classList.add('visible');
-      bgVideo.play().catch(function () { /* autoplay blocked — silent fail */ });
+      v.loop = false;
+      v.muted = false;
+      v.currentTime = 0;
+      v.play().catch(function () {
+        v.muted = true;                                  /* sound blocked — play muted */
+        v.play().catch(function () {});
+      });
+      v.classList.add('visible');
     }
 
-    /* Hold final frame: browsers keep the last frame on 'ended'; no action needed. */
+    v.addEventListener('ended', function () { v.pause(); });
 
     /* ── Gate interaction ────────────────────────────────────────── */
     function enterCard() {
