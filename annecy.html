@@ -9,14 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:   #0d1b2a;
-      --cream:  #faf4e4;
-      --accent: #d4a843; /* Teatrino gold — overridden via JS from CONFIG.accent */
+      --bg:     #ffffff;
+      --ink:    #0d1b2a;
+      --accent: #d4a843;
       --syne:   'Syne', sans-serif;
       --brico:  'Bricolage Grotesque', sans-serif;
       --mono:   'DM Mono', monospace;
@@ -26,37 +25,14 @@
 
     body {
       height: 100%;
-      background: var(--navy);
-      color: var(--cream);
+      background: var(--bg);
+      color: var(--ink);
       font-family: var(--brico);
       line-height: 1.6;
-      overflow: hidden; /* locked during gate phase */
+      overflow: hidden;
     }
 
     body.unlocked { overflow: auto; }
-
-    /* ── Video background ──────────────────────────── */
-    #sting {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-
-    #sting.visible { opacity: 1; }
-
-    /* Dark veil for legibility */
-    #veil {
-      position: fixed;
-      inset: 0;
-      background: rgba(13, 27, 42, 0.76);
-      z-index: 1;
-      pointer-events: none;
-    }
 
     /* ── Gate ──────────────────────────────────────── */
     #gate {
@@ -73,6 +49,7 @@
       transition: opacity 0.7s ease;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      background: var(--bg);
     }
 
     #gate.gone {
@@ -85,7 +62,7 @@
       font-weight: 800;
       font-size: clamp(2.2rem, 9vw, 5rem);
       letter-spacing: -0.02em;
-      color: var(--cream);
+      color: var(--ink);
       line-height: 1;
       margin-bottom: 0.6rem;
     }
@@ -95,7 +72,7 @@
       font-size: clamp(0.58rem, 1.8vw, 0.8rem);
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(250, 244, 228, 0.45);
+      color: rgba(13, 27, 42, 0.45);
       margin-bottom: 3rem;
     }
 
@@ -126,6 +103,7 @@
       align-items: center;
       justify-content: center;
       padding: max(env(safe-area-inset-top), 2.5rem) 1.5rem max(env(safe-area-inset-bottom), 2.5rem);
+      background: var(--bg);
     }
 
     #cardInner {
@@ -145,11 +123,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .fade-in {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
+      .fade-in { animation: none; opacity: 1; transform: none; }
     }
 
     /* ── Card header ───────────────────────────────── */
@@ -160,7 +134,7 @@
       font-weight: 800;
       font-size: clamp(1.5rem, 5vw, 2.1rem);
       letter-spacing: -0.02em;
-      color: var(--cream);
+      color: var(--ink);
       line-height: 1;
       margin-bottom: 0.4rem;
     }
@@ -170,7 +144,7 @@
       font-size: 0.62rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(250, 244, 228, 0.4);
+      color: rgba(13, 27, 42, 0.4);
     }
 
     /* ── Showcase ──────────────────────────────────── */
@@ -203,11 +177,11 @@
     .field {
       display: block;
       width: 100%;
-      background: rgba(250, 244, 228, 0.06);
-      border: 1px solid rgba(250, 244, 228, 0.16);
+      background: rgba(13, 27, 42, 0.04);
+      border: 1px solid rgba(13, 27, 42, 0.18);
       border-radius: 4px;
       padding: 0.75rem 1rem;
-      color: var(--cream);
+      color: var(--ink);
       font-family: var(--brico);
       font-size: 1rem;
       outline: none;
@@ -217,14 +191,14 @@
     }
 
     .field:focus { border-color: var(--accent); }
-    .field::placeholder { color: rgba(250, 244, 228, 0.3); }
+    .field::placeholder { color: rgba(13, 27, 42, 0.35); }
     .field.invalid { border-color: #e07060; }
 
     #submitBtn {
       width: 100%;
       padding: 0.875rem 1rem;
       background: var(--accent);
-      color: var(--navy);
+      color: #ffffff;
       font-family: var(--syne);
       font-weight: 700;
       font-size: 0.88rem;
@@ -244,7 +218,7 @@
       font-family: var(--mono);
       font-size: 0.58rem;
       letter-spacing: 0.02em;
-      color: rgba(250, 244, 228, 0.3);
+      color: rgba(13, 27, 42, 0.35);
       line-height: 1.55;
       text-align: center;
       padding: 0 0.25rem;
@@ -264,7 +238,7 @@
     .success-msg {
       font-family: var(--brico);
       font-size: 1.05rem;
-      color: var(--cream);
+      color: var(--ink);
       margin-bottom: 1.25rem;
       line-height: 1.5;
     }
@@ -275,7 +249,7 @@
       letter-spacing: 0.08em;
       color: var(--accent);
       text-decoration: none;
-      border-bottom: 1px solid rgba(212, 168, 67, 0.35);
+      border-bottom: 1px solid rgba(212, 168, 67, 0.4);
       padding-bottom: 1px;
       transition: border-color 0.2s;
     }
@@ -289,18 +263,12 @@
       font-size: 0.58rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(250, 244, 228, 0.22);
+      color: rgba(13, 27, 42, 0.28);
       text-align: center;
     }
   </style>
 </head>
 <body>
-
-  <!-- Full-bleed background video -->
-  <video id="sting" playsinline preload="auto"></video>
-
-  <!-- Dark veil -->
-  <div id="veil"></div>
 
   <!-- ── Gate ──────────────────────────────────── -->
   <div id="gate" role="button" tabindex="0" aria-label="Touch to begin">
@@ -353,7 +321,6 @@
       captureEndpoint: 'https://giles-engine.gileslamb.workers.dev/capture',
       accent:          '#d4a843',
       consentText:     'Happy for Curious Dreamers to be in touch about my enquiry. No mailing lists, no automation.',
-      videoSrc:        'https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/081b6324fc6541381deba75cac0350d3/manifest/video.m3u8',
     };
 
     /* Apply accent colour to CSS custom property */
@@ -370,48 +337,13 @@
     const formError = document.getElementById('formError');
     const successEl = document.getElementById('successState');
 
-    /* ── Reduced motion ──────────────────────────────────────────── */
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* ── Video ───────────────────────────────────────────────────── */
-    const v   = document.getElementById('sting');
-    const SRC = CONFIG.videoSrc;
-
-    function initVideo() {
-      if (prefersReduced) return;
-      if (v.canPlayType('application/vnd.apple.mpegurl')) {
-        v.src = SRC;                                     /* Safari native HLS */
-      } else if (window.Hls && Hls.isSupported()) {
-        const h = new Hls();
-        h.loadSource(SRC);
-        h.attachMedia(v);
-      }
-    }
-
-    function playVideo() {
-      if (prefersReduced) return;
-      v.loop = false;
-      v.muted = false;
-      v.currentTime = 0;
-      v.play().catch(function () {
-        v.muted = true;                                  /* sound blocked — play muted */
-        v.play().catch(function () {});
-      });
-      v.classList.add('visible');
-    }
-
-    v.addEventListener('ended', function () { v.pause(); });
-
     /* ── Gate interaction ────────────────────────────────────────── */
     function enterCard() {
-      playVideo();
       gate.classList.add('gone');
-
       card.style.display = 'flex';
       card.removeAttribute('aria-hidden');
       document.body.classList.add('unlocked');
 
-      /* Staggered fade-in of each direct child of cardInner */
       requestAnimationFrame(function () {
         Array.from(cardInner.children).forEach(function (el, i) {
           el.style.animationDelay = (0.08 + i * 0.14) + 's';
@@ -444,12 +376,12 @@
       submitBtn.textContent = 'Sending…';
 
       const payload = {
-        name:         nameInput.value.trim(),
-        email:        email,
-        source:       CONFIG.source,
+        name:          nameInput.value.trim(),
+        email:         email,
+        source:        CONFIG.source,
         source_detail: CONFIG.source_detail,
-        consent_text: CONFIG.consentText,
-        consent_at:   new Date().toISOString(),
+        consent_text:  CONFIG.consentText,
+        consent_at:    new Date().toISOString(),
       };
 
       try {
@@ -471,13 +403,6 @@
     emailInput.addEventListener('input', function () {
       emailInput.classList.remove('invalid');
     });
-
-    /* ── Boot ────────────────────────────────────────────────────── */
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initVideo);
-    } else {
-      initVideo();
-    }
   </script>
 </body>
 </html>
