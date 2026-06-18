@@ -129,6 +129,12 @@
     /* ── Card header ───────────────────────────────── */
     .card-header { margin-bottom: 1.75rem; }
 
+    .card-header-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
     .card-wordmark {
       font-family: var(--syne);
       font-weight: 800;
@@ -305,8 +311,10 @@
     <div id="cardInner">
 
       <div class="card-header">
-        <h1 class="card-wordmark">CURIOUS DREAMERS</h1>
-        <p class="card-tagline">Waking The Imagination</p>
+        <a class="card-header-link" href="https://www.curiousdreamers.com" target="_blank" rel="noopener">
+          <h1 class="card-wordmark">CURIOUS DREAMERS</h1>
+          <p class="card-tagline">Waking The Imagination</p>
+        </a>
       </div>
 
       <div id="showcase">
