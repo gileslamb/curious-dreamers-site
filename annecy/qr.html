@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Curious Dreamers — Scan</title>
   <meta name="robots" content="noindex,nofollow">
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -15,20 +15,23 @@
       align-items: center;
       justify-content: center;
     }
-    canvas {
-      width: min(90vmin, 480px);
-      height: min(90vmin, 480px);
+    #qr canvas, #qr img {
+      width: min(90vmin, 480px) !important;
+      height: min(90vmin, 480px) !important;
     }
   </style>
 </head>
 <body>
-  <canvas id="qr"></canvas>
+  <div id="qr"></div>
   <script>
-    QRCode.toCanvas(document.getElementById('qr'), 'https://www.curiousdreamers.com/annecy', {
-      width: 960,
-      margin: 2,
-      color: { dark: '#0d1b2a', light: '#ffffff' },
-    }, function (err) { if (err) console.error(err); });
+    new QRCode(document.getElementById('qr'), {
+      text: 'https://www.curiousdreamers.com/annecy',
+      width: 512,
+      height: 512,
+      colorDark: '#0d1b2a',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H,
+    });
   </script>
 </body>
 </html>
