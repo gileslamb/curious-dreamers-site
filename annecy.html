@@ -155,11 +155,19 @@
       margin-bottom: 1.75rem;
     }
 
+    .showcase-link {
+      display: block;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+
+    .showcase-link:hover { opacity: 0.82; }
+
     .showcase-img {
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
-      border-radius: 16px;
       display: block;
     }
 
@@ -256,6 +264,21 @@
 
     .success-link:hover { border-color: var(--accent); }
 
+    /* ── Site link ─────────────────────────────────── */
+    .site-link {
+      display: block;
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: rgba(13, 27, 42, 0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .site-link:hover { color: var(--ink); }
+
     /* ── Footer ────────────────────────────────────── */
     #pageFooter {
       margin-top: 2rem;
@@ -287,8 +310,12 @@
       </div>
 
       <div id="showcase">
-        <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/d7689712-8d88-4621-3e43-5c6043c28100/public" alt="Teatrino">
-        <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/a6880c1f-aa6b-4fb5-e007-a2fcddbfb500/public" alt="WndrKlub">
+        <a class="showcase-link" href="https://teatrino.vercel.app" target="_blank" rel="noopener">
+          <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/d7689712-8d88-4621-3e43-5c6043c28100/public" alt="Teatrino">
+        </a>
+        <a class="showcase-link" href="https://wndrklub.vercel.app" target="_blank" rel="noopener">
+          <img class="showcase-img" src="https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/a6880c1f-aa6b-4fb5-e007-a2fcddbfb500/public" alt="WndrKlub">
+        </a>
       </div>
 
       <form id="captureForm" novalidate>
@@ -305,6 +332,8 @@
         <p class="success-msg">Nice to meet you.</p>
         <a class="success-link" href="https://www.curiousdreamers.com">curiousdreamers.com</a>
       </div>
+
+      <a class="site-link" href="https://www.curiousdreamers.com" target="_blank" rel="noopener">curiousdreamers.com →</a>
 
       <footer id="pageFooter">Annecy 2026 · Mifa</footer>
 
