@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<!-- Planet Dreamland preview faces (modal scene + player) -->
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Grandstander:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js" defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -231,6 +233,19 @@ nav {
 .projects-header { padding: 0 3rem; margin-bottom: 4rem; }
 
 .primary-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-bottom: 3px; }
+
+/* Work lanes (Released / In Development / Immersive) grouped under Our Work */
+.proj-lane { margin-bottom: 3.5rem; }
+.proj-lane:last-of-type { margin-bottom: 0; }
+.lane-head {
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 400;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(250,244,228,0.5);
+  padding: 0 3rem; margin-bottom: 1.4rem;
+}
+.lane-grid { display: grid; gap: 3px; margin-bottom: 3px; }
+.lane-grid.cols-2 { grid-template-columns: repeat(2,1fr); }
+.lane-grid.cols-3 { grid-template-columns: repeat(3,1fr); }
 
 .proj-card {
   position: relative; cursor: pointer;
@@ -523,6 +538,43 @@ nav {
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── PLANET DREAMLAND. procedural night-sky mobile + scoped player (modal preview) ── */
+.dl-stage { position: absolute; inset: 0; overflow: hidden; background: #05050f; font-family: 'Nunito', sans-serif; }
+.dl-canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.dl-scrim { position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(5,5,15,0.85) 0%, rgba(5,5,15,0) 44%); }
+.dl-bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 0 20px 16px; text-align: center; }
+.dl-player { display: flex; align-items: center; gap: 8px; max-width: 100%;
+  padding: 6px 9px 6px 14px; border-radius: 999px;
+  border: 1px solid rgba(200,216,248,0.2);
+  background: rgba(7,7,38,0.5); backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+.dl-player-title { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; text-align: left; }
+.dl-np { font-family: 'Nunito', sans-serif; font-size: 0.54rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(223,232,251,0.5); }
+#dlTrackTitle { font-family: 'Grandstander', cursive; font-weight: 600; font-size: 0.86rem;
+  color: #f9d07a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dl-controls { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; }
+.dl-pbtn { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid rgba(200,216,248,0.18); background: rgba(255,255,255,0.04);
+  color: #dfe8fb; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.15s, border-color 0.2s, color 0.2s; }
+.dl-pbtn:hover { transform: scale(1.08); border-color: #f4a832; color: #f9d07a; }
+.dl-pbtn:focus-visible { outline: 2px solid #f4a832; outline-offset: 2px; }
+.dl-pbtn svg { width: 13px; height: 13px; display: block; }
+.dl-pbtn.dl-pp { width: 34px; height: 34px; color: #f9d07a;
+  background: linear-gradient(135deg, rgba(249,208,122,0.18), rgba(244,168,50,0.12)); }
+.dl-pbtn.dl-pp svg { width: 15px; height: 15px; }
+.dl-pbtn.dl-pp .dl-icon-pause { display: none; }
+.dl-player.playing .dl-pbtn.dl-pp .dl-icon-play { display: none; }
+.dl-player.playing .dl-pbtn.dl-pp .dl-icon-pause { display: block; }
+@media (max-width: 600px) {
+  .dl-bottom { padding: 0 14px 10px; gap: 7px; }
+  .dl-np { display: none; }
 }
 
 /* Hushabye. cosy starfield, navy not black */
@@ -905,6 +957,8 @@ nav {
   .burger { display: flex; }
 
   .primary-pair { grid-template-columns: 1fr; }
+  .lane-grid.cols-2, .lane-grid.cols-3 { grid-template-columns: 1fr; }
+  .lane-head { padding: 0 1.5rem; }
   .dev-grid { grid-template-columns: 1fr 1fr; }
   .studio-grid { grid-template-columns: 1fr; }
   .minds-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -1040,7 +1094,9 @@ nav {
     <h2 class="section-title reveal">Our <em>Work</em></h2>
   </div>
 
-  <div class="primary-pair">
+  <div class="proj-lane">
+  <h3 class="lane-head reveal">Released</h3>
+  <div class="lane-grid cols-2">
 
     <!-- HUSHABYE LULLABYE -->
     <div class="proj-card card-yellow reveal" onclick="openProject('hushabye')">
@@ -1064,7 +1120,6 @@ nav {
           <ellipse cx="200" cy="245" rx="20" ry="30" fill="currentColor" opacity="0.15"/>
         </svg>
       </div>
-      <div class="proj-num">★</div>
       <div class="proj-content">
         <span class="proj-tag">CBeebies · BBC · RTS Award-winning</span>
         <h3 class="proj-title">Hushabye<br>Lullabye</h3>
@@ -1073,7 +1128,33 @@ nav {
       </div>
     </div>
 
-    <!-- DILLY DALLY'S DREAMLAND -->
+    <!-- DISTANCE TO THE MOON -->
+    <div class="proj-card card-yellow reveal reveal-d1" onclick="openProject('dttm')">
+      <div class="proj-silhouette">
+        <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- Crescent moon -->
+          <path d="M190,40 Q90,75 90,150 Q90,225 190,260 Q100,260 60,190 Q40,150 60,90 Q90,40 190,40Z" fill="currentColor"/>
+          <circle cx="212" cy="108" r="6" fill="currentColor" opacity="0.4"/>
+          <circle cx="182" cy="68" r="4" fill="currentColor" opacity="0.3"/>
+          <circle cx="232" cy="172" r="5" fill="currentColor" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="proj-content">
+        <span class="proj-tag">2023 · Stop Motion · Screen Scotland · BFI · Multi Award-winning</span>
+        <h3 class="proj-title">Distance to<br>the Moon</h3>
+        <p class="proj-desc">Created by Sacha Kyle, music by Giles Lamb. Made with Eyebolls. Edinburgh International Film Festival, Athens Animation Festival, Glasgow International and many more.</p>
+        <span class="proj-reveal">Explore →</span>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <div class="proj-lane">
+  <h3 class="lane-head reveal">In Development</h3>
+  <div class="lane-grid cols-3">
+
+    <!-- PLANET DREAMLAND -->
     <div class="proj-card card-coral reveal reveal-d1" onclick="openProject('dreamland')">
       <div class="proj-silhouette">
         <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
@@ -1090,18 +1171,13 @@ nav {
           <ellipse cx="200" cy="200" rx="40" ry="15" fill="currentColor" opacity="0.15"/>
         </svg>
       </div>
-      <div class="proj-num">★</div>
       <div class="proj-content">
-        <span class="proj-tag">Animated Series · In Development</span>
-        <h3 class="proj-title">Dillie Dally's<br>Dreamland</h3>
-        <p class="proj-desc">A brand new animated series growing from the Hushabye world. Dillie Dally returns with new adventures, new music, and the same gentle magic that families loved.</p>
+        <span class="proj-tag">Music & Animation</span>
+        <h3 class="proj-title">Planet<br>Dreamland</h3>
+        <p class="proj-desc">A beautiful, low-stimulus, dreamy animated musical world from the makers of the beloved CBeebies show, Hushabye Lullabye.</p>
         <span class="proj-reveal">Dream on →</span>
       </div>
     </div>
-
-  </div>
-
-  <div class="primary-pair">
 
     <!-- TEATRINO. stage set silhouette -->
     <div class="proj-card card-teal reveal" onclick="openProject('teatrino')">
@@ -1129,9 +1205,8 @@ nav {
           <polygon points="260,35 262,42 269,42 263,46 266,53 260,49 254,53 257,46 251,42 258,42" fill="currentColor" opacity="0.6"/>
         </svg>
       </div>
-      <div class="proj-num">01</div>
       <div class="proj-content">
-        <span class="proj-tag">Animated Series · In Development</span>
+        <span class="proj-tag">Animated Series</span>
         <h3 class="proj-title">Teatrino</h3>
         <p class="proj-desc">A delightfully bonkers animated series set inside a theatre. No dialogue, just pure songs and music, surrealism, imagination and play.</p>
         <span class="proj-reveal">Enter the theatre →</span>
@@ -1167,7 +1242,6 @@ nav {
           <ellipse cx="200" cy="300" rx="130" ry="10" fill="currentColor" opacity="0.15"/>
         </svg>
       </div>
-      <div class="proj-num">02</div>
       <div class="proj-content">
         <span class="proj-tag">Animated Series · Screen Scotland</span>
         <h3 class="proj-title">WndrKlub</h3>
@@ -1177,8 +1251,11 @@ nav {
     </div>
 
   </div>
+  </div>
 
-  <div class="dev-grid">
+  <div class="proj-lane">
+  <h3 class="lane-head reveal">Immersive</h3>
+  <div class="lane-grid cols-2">
 
     <!-- LEVIATHAN. whale -->
     <div class="proj-card card-sky reveal" onclick="openProject('leviathan')" style="min-height:300px;">
@@ -1201,9 +1278,8 @@ nav {
           <ellipse cx="255" cy="25" rx="12" ry="18" fill="currentColor" opacity="0.2"/>
         </svg>
       </div>
-      <div class="proj-num">03</div>
       <div class="proj-content">
-        <span class="proj-tag">Film · Immersive · In Dev</span>
+        <span class="proj-tag">Film · Immersive</span>
         <h3 class="proj-title">The Last<br>Leviathan</h3>
         <p class="proj-desc">An immersive film exploring whale song, folk music, and the beauty of listening. A collaboration with Mairi Campbell and Alex South.</p>
         <span class="proj-reveal">Go deeper →</span>
@@ -1233,14 +1309,16 @@ nav {
           <text x="132" y="165" font-size="42" fill="currentColor" opacity="0.12" font-family="serif">沙</text>
         </svg>
       </div>
-      <div class="proj-num">04</div>
       <div class="proj-content">
-        <span class="proj-tag">Immersive Installation · Early Dev</span>
+        <span class="proj-tag">Immersive Installation</span>
         <h3 class="proj-title">Shãh-rak-uen'<br><small style="font-size:0.55em;opacity:0.7;font-style:italic;">— Reawakening</small><br><small style="font-size:0.5em;opacity:0.5">沙楽園</small></h3>
         <p class="proj-desc">A 360° immersive audiovisual installation at the Japanese Garden at Cowden. Generative visuals and ambisonic sound, drawn from the garden's own forms. In early development.</p>
         <span class="proj-reveal">Step inside →</span>
       </div>
     </div>
+
+  </div>
+  </div>
 
     <!-- REBEL ANGEL — hidden, kept for future use
     <div class="proj-card card-coral reveal reveal-d2" onclick="openProject('rebel')" style="min-height:300px;">
@@ -1266,28 +1344,6 @@ nav {
       </div>
     </div>
     -->
-
-  </div>
-
-  <!-- DISTANCE TO THE MOON. moon emoji/typography style -->
-  <div class="legacy-strip reveal" onclick="openProject('dttm')">
-    <div class="legacy-year" style="display:flex;align-items:center;gap:0.8rem;">
-      <svg viewBox="0 0 60 60" width="48" height="48" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;opacity:0.5;">
-        <!-- Classic crescent moon -->
-        <path d="M38,8 Q18,15 18,30 Q18,45 38,52 Q20,52 12,38 Q8,30 12,18 Q18,8 38,8Z" fill="rgba(245,200,66,0.6)"/>
-        <circle cx="42" cy="22" r="3" fill="rgba(245,200,66,0.4)"/>
-        <circle cx="36" cy="14" r="2" fill="rgba(245,200,66,0.3)"/>
-        <circle cx="46" cy="35" r="2.5" fill="rgba(245,200,66,0.3)"/>
-      </svg>
-      <span>2023</span>
-    </div>
-    <div>
-      <p style="font-family:var(--mono);font-size:0.6rem;letter-spacing:0.2em;color:rgba(245,200,66,0.5);margin-bottom:0.4rem;">Stop Motion · Screen Scotland · BFI · Multi Award-winning</p>
-      <h3 style="font-family:var(--syne);font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;letter-spacing:-0.02em;color:rgba(250,244,228,0.8);">Distance to the Moon</h3>
-      <p style="font-size:0.82rem;color:rgba(250,244,228,0.45);margin-top:0.3rem;">Created by Sacha Kyle, music by Giles Lamb. Made with Eyebolls. Edinburgh International Film Festival, Athens Animation Festival, Glasgow International and many more.</p>
-    </div>
-    <div class="legacy-arrow">→</div>
-  </div>
 
 </section>
 
@@ -1781,12 +1837,27 @@ const MEDIA = {
       title="Hushabye Lullabye"></iframe>
     <div class="modal-video-tint"></div>`,
   dreamland: () => `
-    <iframe class="modal-video"
-      src="https://customer-3aa0vwfgpylhsylu.cloudflarestream.com/9b946b6832536dd5ba87589ad40d1ab7/iframe?autoplay=true&muted=true&loop=true&controls=false&preload=auto"
-      allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen
-      title="Dillie Dally's Dreamland"></iframe>
-    <div class="modal-video-tint"></div>`,
+    <div class="dl-stage">
+      <canvas class="dl-canvas" id="dlScene"></canvas>
+      <div class="dl-scrim"></div>
+      <div class="dl-bottom">
+        <div class="dl-player" id="dlPlayer" role="group" aria-label="Music player">
+          <div class="dl-player-title"><span class="dl-np">Now playing</span><span id="dlTrackTitle">Dreamland theme</span></div>
+          <div class="dl-controls">
+            <button class="dl-pbtn" id="dlPrev" type="button" aria-label="Previous track">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h2v12H7zM20 6v12L9 12z"/></svg>
+            </button>
+            <button class="dl-pbtn dl-pp" id="dlPlayPause" type="button" aria-label="Play" aria-pressed="false">
+              <svg class="dl-icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="dl-icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+            <button class="dl-pbtn" id="dlNext" type="button" aria-label="Next track">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 6h2v12h-2zM4 6l11 6L4 18z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`,
   wndrklub: () => `
     <div class="modal-wndr">
       <div class="modal-wndr-panels">
@@ -1845,6 +1916,7 @@ const MEDIA = {
 /* ── EXTERNAL SITE LINKS ── */
 const SITE_URLS = {
   hushabye: 'https://hushabye-lullabye-music-site.onrender.com',
+  dreamland: 'https://planet-dreamland.vercel.app',
   wndrklub: 'https://wndrklub.vercel.app',
   teatrino: 'https://teatrino.vercel.app',
   leviathan: 'https://leviathan-mvp.vercel.app',
@@ -1853,6 +1925,7 @@ const SITE_URLS = {
 };
 const SITE_LABELS = {
   hushabye: 'Visit Hushabye site',
+  dreamland: 'Visit Planet Dreamland',
   wndrklub: 'Visit WndrKlub Living Bible',
   teatrino: 'Visit Teatrino Living Bible',
   leviathan: 'Visit Leviathan site',
@@ -1864,9 +1937,9 @@ const P = {
   hushabye:{tag:'CBeebies · BBC · RTS Award-winning · International',title:'Hushabye Lullabye',sub:'Royal Television Society Best Children\'s Series',
     body:`<p>Created by <strong>Sacha Kyle</strong> with music by <strong>Giles Lamb</strong>, produced by Mara Kids with animation by Wild Child. Hushabye Lullabye is an award-winning animated series for CBeebies. It follows the loveable Dillie Dally on gentle musical journeys to Planet Dream, a wonderfully soft and cosy place full of lullabies and cuddles.</p><p>The series won two Royal Television Society awards, Best Children's Television Programme and Best Animation, and was voted one of the top 50 children's shows ever made by Guardian readers. It has reached audiences worldwide on YOUKU (China), NRK (Norway), YLE (Finland), Daekyo Kids (South Korea), Hop (Israel), and TVO (Canada).</p><p>The accompanying albums have received over 10 million streams across Spotify and Apple Music, and the picture book <em>Goodnight Dreams</em> was published by Little Door Books.</p>`,
     creds:['CBeebies · BBC','Double RTS Award-winner','Sacha Kyle · Creator','Giles Lamb · Music','30 episodes','International Distribution','10M+ streams','Goodnight Dreams · Book']},
-  dreamland:{tag:'Animated Series · In Development',title:'Dillie Dally\'s Dreamland',sub:'A new musical world for families and children',
-    body:`<p>Growing from the much-loved Hushabye Lullabye, creator <strong>Sacha Kyle</strong> brings our favourite little character back in Dillie Dally's Dreamland with brand new adventures and new music from award-winning composer <strong>Giles Lamb</strong>, in a new musical world developed for families and children to experience together.</p>`,
-    creds:['Animated Series','In Development','Sacha Kyle · Creator','Giles Lamb · Music','From the Hushabye Universe']},
+  dreamland:{tag:'Music & Animation · In Development',title:'Planet Dreamland',sub:'A new musical world for families and children',
+    body:`<p>A beautiful, low-stimulus, dreamy animated musical world from the makers of the beloved CBeebies show, Hushabye Lullabye. In early development. Music first.</p>`,
+    creds:['Music & Animation','In Development','Sacha Kyle · Creator','Giles Lamb · Music','From the Hushabye Universe']},
   teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'',
     body:`<p>From the hush of an empty theatre to a stage alive with possibility. Teatrino is a theatrical, music-led animated universe where surreal comedy, curious characters, and curated vignettes invite our audience to jump in, play and explore, building an audience that thrives on curiosity, creativity, and pure joy.</p><p>Teatrino's character-driven world takes Curious Dreamers' award-winning musical storytelling to the next level, blending humour, imagination, and sound-led adventures, while pushing the boundaries of modern audience engagement.</p>`,
     creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
@@ -2002,6 +2075,310 @@ function stopEnThread() {
   if (enThreadRafId) { cancelAnimationFrame(enThreadRafId); enThreadRafId = null; }
 }
 
+/* ── PLANET DREAMLAND preview ──
+   Procedural Canvas 2D mobile + scoped 4-track player, ported from the
+   planet-dreamland holding page. Sized to the modal preview box (not the window)
+   via ResizeObserver. Everything lives in this closure so no globals leak and the
+   per-track theme/level hooks do not collide with the rest of the site. */
+const DreamlandPreview = (function(){
+  const TRACKS = [
+    { title:"Dreamland theme", src:"https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/Dilly%20Dally%20-%20Theme%20v2%20(no%20Vox).mp3" },
+    { title:"My Heart",        src:"https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/My%20Heart%20inst.wav" },
+    { title:"Hello Moon",      src:"https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/Hello%20Moon%20-%20inst%20.mp3" },
+    { title:"Moombas",         src:"https://pub-2b9a4a895c154bf7b7a368d590f2a3af.r2.dev/audio/dreamland/moombas.mp3" },
+  ];
+
+  let scene = null, ro = null, audio = null, fadeTimer = null;
+
+  /* ── the mobile (authored, real-time), drawn into the modal preview canvas ── */
+  function buildScene(canvas){
+    const ctx = canvas.getContext('2d');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SPEED = reduced ? 0.18 : 1;
+    let W=0, H=0, DPR=1, stars=[], rafId=null;
+
+    // five glowing planets (hue/spread/speed come from the active track theme)
+    const ORBS = [
+      { rad:1.15, ringX:0.55, dy:-0.02, ang0:0.0, self:0.7 },
+      { rad:0.95, ringX:0.95, dy: 0.05, ang0:1.3, self:0.9 },
+      { rad:1.05, ringX:0.75, dy: 0.12, ang0:2.6, self:0.6 },
+      { rad:0.88, ringX:1.05, dy:-0.05, ang0:4.0, self:1.0 },
+      { rad:1.0,  ringX:0.62, dy: 0.16, ang0:5.2, self:0.8 },
+    ];
+
+    // a visual variant per track: palette, spread, rotation speed, bloom colour
+    const TRACK_THEMES = [
+      { hues:[40,330,190,265,140], rot:0.16,  spread:1.0,  bloom:[255,224,160] }, // Dreamland theme: full warm spread
+      { hues:[345,330,18,300,355], rot:0.10,  spread:0.82, bloom:[255,182,202] }, // My Heart: warm, intimate, slower
+      { hues:[220,258,200,235,280],rot:0.075, spread:1.14, bloom:[168,198,255] }, // Hello Moon: cool, wide, dreamy
+      { hues:[150,175,90,200,130], rot:0.12,  spread:0.95, bloom:[176,230,200] }, // Moombas: soft mint and green, playful but still calm
+    ];
+
+    const vis = { hues:[...TRACK_THEMES[0].hues], rot:TRACK_THEMES[0].rot, spread:TRACK_THEMES[0].spread, bloom:[...TRACK_THEMES[0].bloom] };
+    let target = TRACK_THEMES[0];
+    let rotAccum = 0;
+    let level = 0;
+
+    const lerp = (a,b,m)=> a+(b-a)*m;
+    function lerpHue(a,b,m){ let d=((b-a+540)%360)-180; return (a+d*m+360)%360; }
+
+    function puff(cx, cy, w, h, n, alpha){
+      const angles=[0,0.9,1.9,2.9,1.4,2.4], radii=[0,0.36,0.33,0.30,0.27,0.34], jit=[1.0,1.2,0.85,1.16,0.9,1.26];
+      const SR=Math.min(w,h)*0.34;
+      for(let i=0;i<n;i++){
+        const dist = i===0?0:radii[i%radii.length]*Math.min(w,h);
+        const sx=cx+Math.cos(angles[i%angles.length])*dist;
+        const sy=cy+Math.sin(angles[i%angles.length])*dist*0.62;
+        const r=SR*jit[i%jit.length];
+        const g=ctx.createRadialGradient(sx-r*0.3,sy-r*0.3,r*0.05,sx,sy,r);
+        g.addColorStop(0,`rgba(150,178,236,${alpha})`);
+        g.addColorStop(0.55,`rgba(96,120,196,${alpha*0.8})`);
+        g.addColorStop(1,`rgba(60,76,150,0)`);
+        ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+      }
+    }
+
+    function orbLight(x,y,r,hue,intensity){
+      let g=ctx.createRadialGradient(x,y,0,x,y,r*3.4);
+      g.addColorStop(0,`hsla(${hue},90%,72%,${0.55*intensity})`);
+      g.addColorStop(0.25,`hsla(${hue},85%,62%,${0.28*intensity})`);
+      g.addColorStop(1,`hsla(${hue},80%,55%,0)`);
+      ctx.beginPath();ctx.arc(x,y,r*3.4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+      let c=ctx.createRadialGradient(x,y,0,x,y,r);
+      c.addColorStop(0,`hsla(${hue},100%,97%,${0.95*intensity})`);
+      c.addColorStop(0.5,`hsla(${hue},95%,82%,${0.7*intensity})`);
+      c.addColorStop(1,`hsla(${hue},90%,70%,0)`);
+      ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
+    }
+
+    function seedStars(){
+      stars=[];
+      const count=Math.round((W*H)/8000);
+      for(let i=0;i<count;i++){
+        const hero = Math.random() < 0.08;
+        stars.push({
+          x:Math.random()*W, y:Math.random()*H, z:Math.random(),
+          r:(0.4+Math.random()*1.4)*(hero?1.9:1),
+          baseA:hero?(0.6+Math.random()*0.35):(0.18+Math.random()*0.55),
+          twk:0.3+Math.random()*1.6,
+          phase:Math.random()*Math.PI*2,
+          vx:(Math.random()-0.5)*0.14,
+          vy:(Math.random()-0.5)*0.07,
+          hue:198+Math.random()*72
+        });
+      }
+    }
+
+    function resize(){
+      const rect = canvas.getBoundingClientRect();
+      DPR=Math.min(window.devicePixelRatio||1,2);
+      W=Math.max(1, Math.round(rect.width)); H=Math.max(1, Math.round(rect.height));
+      canvas.width=W*DPR; canvas.height=H*DPR;
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      seedStars();
+    }
+
+    let shooters=[], nextShoot=2, lastNow=performance.now();
+    function spawnShooter(){
+      const fromLeft = Math.random() < 0.5;
+      const ang = (Math.random()*0.35 + 0.18) * (fromLeft?1:-1);
+      const speed = (Math.min(W,H)) * (0.9 + Math.random()*0.5);
+      shooters.push({
+        x: fromLeft ? -40 : W+40,
+        y: H*(0.05 + Math.random()*0.32),
+        vx: Math.cos(ang)*speed*(fromLeft?1:-1),
+        vy: Math.sin(ang)*speed,
+        life:0, max:0.9 + Math.random()*0.7,
+        hue:40 + Math.random()*40
+      });
+    }
+
+    function frame(now){
+      const dt = Math.min(0.05, (now - lastNow)/1000); lastNow = now;
+      const t = now/1000 * SPEED;
+      let pulse = 0.5 + 0.5*(0.62*Math.sin(t*0.8) + 0.38*Math.sin(t*1.7+1.3));
+      pulse = Math.max(0, Math.min(1, pulse));
+      pulse = pulse*0.7 + level*0.3;
+
+      const k = 1 - Math.exp(-dt/1.0);
+      for(let i=0;i<vis.hues.length;i++) vis.hues[i] = lerpHue(vis.hues[i], target.hues[i], k);
+      vis.rot = lerp(vis.rot, target.rot, k);
+      vis.spread = lerp(vis.spread, target.spread, k);
+      for(let i=0;i<3;i++) vis.bloom[i] = lerp(vis.bloom[i], target.bloom[i], k);
+      rotAccum += dt * vis.rot * SPEED;
+
+      const ng=ctx.createRadialGradient(W*0.5,H*0.42,0,W*0.5,H*0.5,Math.max(W,H)*0.75);
+      ng.addColorStop(0,'#0c1640'); ng.addColorStop(0.6,'#070a26'); ng.addColorStop(1,'#04040c');
+      ctx.fillStyle=ng; ctx.fillRect(0,0,W,H);
+
+      ctx.globalCompositeOperation='lighter';
+      for(const s of stars){
+        s.x += (s.vx + s.z*0.05) * SPEED; s.y += s.vy * SPEED;
+        if(s.x>W)s.x=0; if(s.x<0)s.x=W; if(s.y>H)s.y=0; if(s.y<0)s.y=H;
+        const sz=s.r*(0.6+s.z*0.6);
+        const tw=s.baseA*(0.45+0.55*Math.sin(t*s.twk+s.phase));
+        const a=Math.max(0,tw)*(0.8+0.2*pulse);
+        const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,sz*3);
+        g.addColorStop(0,`hsla(${s.hue},80%,95%,${a})`);
+        g.addColorStop(0.4,`hsla(${s.hue},60%,80%,${a*0.4})`);
+        g.addColorStop(1,`hsla(${s.hue},40%,60%,0)`);
+        ctx.beginPath();ctx.arc(s.x,s.y,sz*3,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+      }
+
+      nextShoot -= dt * SPEED;
+      if(nextShoot <= 0 && !reduced){ spawnShooter(); nextShoot = 6 + Math.random()*9; }
+      for(let i=shooters.length-1;i>=0;i--){
+        const sh=shooters[i];
+        sh.life += dt; sh.x += sh.vx*dt; sh.y += sh.vy*dt;
+        const f = sh.life < 0.2 ? sh.life/0.2 : Math.max(0, 1-(sh.life-0.2)/(sh.max-0.2));
+        const tailLen = 0.16;
+        const tx = sh.x - sh.vx*tailLen, ty = sh.y - sh.vy*tailLen;
+        const grad=ctx.createLinearGradient(sh.x,sh.y,tx,ty);
+        grad.addColorStop(0,`hsla(${sh.hue},90%,92%,${0.9*f})`);
+        grad.addColorStop(1,`hsla(${sh.hue},90%,80%,0)`);
+        ctx.strokeStyle=grad; ctx.lineWidth=2; ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(sh.x,sh.y);ctx.lineTo(tx,ty);ctx.stroke();
+        const hg=ctx.createRadialGradient(sh.x,sh.y,0,sh.x,sh.y,6);
+        hg.addColorStop(0,`hsla(${sh.hue},100%,97%,${0.9*f})`); hg.addColorStop(1,`hsla(${sh.hue},100%,90%,0)`);
+        ctx.beginPath();ctx.arc(sh.x,sh.y,6,0,Math.PI*2);ctx.fillStyle=hg;ctx.fill();
+        if(sh.life>sh.max || sh.x< -80 || sh.x>W+80 || sh.y>H+80) shooters.splice(i,1);
+      }
+      ctx.globalCompositeOperation='source-over';
+
+      const m=Math.min(W,H);
+      puff((W*0.18 + (t*6)%(W+260))-130, H*0.66, m*0.7, m*0.34, 6, 0.05);
+      puff((W*0.7 + (t*4)%(W+260))-130, H*0.78, m*0.85, m*0.4, 6, 0.045);
+
+      const portrait = W <= 600;
+      const cx=W*0.5 + Math.sin(t*0.25)*W*0.012;
+      const canopyY=H*(portrait?0.205:0.27);
+      const cy=H*(portrait?0.42:0.47) + Math.sin(t*0.4)*H*0.008;
+      const Rx=m*(portrait?0.235:0.20), Ry=m*0.05, base=m*0.05;
+      const dyK = portrait?0.6:1;
+
+      ctx.globalCompositeOperation='lighter';
+      const bc = `${Math.round(vis.bloom[0])},${Math.round(vis.bloom[1])},${Math.round(vis.bloom[2])}`;
+      const bloom=ctx.createRadialGradient(cx,cy,0,cx,cy,m*0.55);
+      bloom.addColorStop(0,`rgba(${bc},${0.10+0.05*pulse})`);
+      bloom.addColorStop(1,`rgba(${bc},0)`);
+      ctx.beginPath();ctx.arc(cx,cy,m*0.55,0,Math.PI*2);ctx.fillStyle=bloom;ctx.fill();
+      ctx.globalCompositeOperation='source-over';
+
+      puff(cx, canopyY, m*0.5, m*0.2, 6, 0.42);
+      puff(cx-m*0.18, canopyY+m*0.02, m*0.32, m*0.14, 5, 0.3);
+      puff(cx+m*0.18, canopyY+m*0.02, m*0.32, m*0.14, 5, 0.3);
+
+      const placed = ORBS.map((o,idx)=>{
+        const ang=o.ang0+rotAccum;
+        const depth=Math.sin(ang);
+        const x=cx+Math.cos(ang)*Rx*o.ringX*vis.spread;
+        const y=cy + o.dy*H*dyK + depth*Ry;
+        const scale=0.72+0.28*((depth+1)/2);
+        const self=0.9+0.1*Math.sin(t*o.self+o.ang0);
+        const intensity=(0.6+0.4*((depth+1)/2))*(0.85+0.15*pulse)*self;
+        return {x,y,r:base*o.rad*scale,hue:vis.hues[idx],intensity,depth};
+      }).sort((a,b)=>a.depth-b.depth);
+
+      ctx.strokeStyle='rgba(200,216,248,0.12)';
+      ctx.lineWidth=1;
+      for(const p of placed){
+        ctx.beginPath();
+        ctx.moveTo(cx,canopyY+m*0.05);
+        ctx.quadraticCurveTo((cx+p.x)/2, (canopyY+p.y)/2, p.x, p.y-p.r*0.6);
+        ctx.stroke();
+      }
+
+      ctx.globalCompositeOperation='lighter';
+      for(const p of placed) orbLight(p.x,p.y,p.r,p.hue,p.intensity);
+      ctx.globalCompositeOperation='source-over';
+
+      rafId=requestAnimationFrame(frame);
+    }
+
+    return {
+      start(){ resize(); lastNow=performance.now(); rafId=requestAnimationFrame(frame); },
+      stop(){ if(rafId) cancelAnimationFrame(rafId); rafId=null; },
+      resize,
+      setTheme(i){ if(TRACK_THEMES[i]) target=TRACK_THEMES[i]; },
+      setLevel(v){ level=v; },
+    };
+  }
+
+  function start(){
+    stop(); // never double-run
+    const root = document.getElementById('modalMediaInner');
+    if(!root) return;
+    const canvas = root.querySelector('#dlScene');
+    if(!canvas) return;
+    const els = {
+      player: root.querySelector('#dlPlayer'),
+      title:  root.querySelector('#dlTrackTitle'),
+      pp:     root.querySelector('#dlPlayPause'),
+      prev:   root.querySelector('#dlPrev'),
+      next:   root.querySelector('#dlNext'),
+    };
+
+    scene = buildScene(canvas);
+    scene.start();
+
+    // size the canvas to the preview box, not the window
+    if(window.ResizeObserver){
+      ro = new ResizeObserver(()=>{ if(scene) scene.resize(); });
+      ro.observe(root);
+    }
+
+    // self-contained audio: created here, paused and reset on close
+    audio = new Audio();
+    audio.loop = true;
+    audio.volume = 0;
+    let cur = 0;
+    const TARGET = 0.7;
+
+    function fadeTo(tv, done){
+      clearInterval(fadeTimer);
+      fadeTimer=setInterval(()=>{
+        const step=0.05;
+        if(!audio){ clearInterval(fadeTimer); return; }
+        if(Math.abs(audio.volume-tv)<=step){ audio.volume=Math.max(0,Math.min(1,tv)); clearInterval(fadeTimer); if(done)done(); }
+        else audio.volume+=audio.volume<tv?step:-step;
+      },40);
+    }
+    function setPlayingUI(on){
+      els.player.classList.toggle('playing',on);
+      els.pp.setAttribute('aria-pressed',on?'true':'false');
+      els.pp.setAttribute('aria-label',on?'Pause':'Play');
+    }
+    function playAudio(){
+      if(window._stopTrumpet) window._stopTrumpet();   // never double up with the trumpet
+      audio.play().then(()=>{ setPlayingUI(true); fadeTo(TARGET); }).catch(()=>{});
+    }
+    function pauseAudio(){ setPlayingUI(false); fadeTo(0,()=>{ if(audio){ try{audio.pause();}catch(e){} } }); }
+    function load(i, autoplay){
+      cur=(i+TRACKS.length)%TRACKS.length;
+      audio.src=TRACKS[cur].src;
+      audio.volume=0;
+      els.title.textContent=TRACKS[cur].title;
+      if(scene) scene.setTheme(cur);   // re-theme the mobile
+      if(autoplay) playAudio();
+    }
+
+    els.pp.addEventListener('click',()=>{ audio.paused?playAudio():pauseAudio(); });
+    els.prev.addEventListener('click',()=>load(cur-1,true));
+    els.next.addEventListener('click',()=>load(cur+1,true));
+
+    load(0,false); // default track 0, no autoplay — starts only on the play button
+  }
+
+  function stop(){
+    if(scene){ scene.stop(); scene=null; }
+    if(ro){ try{ ro.disconnect(); }catch(e){} ro=null; }
+    if(fadeTimer){ clearInterval(fadeTimer); fadeTimer=null; }
+    if(audio){ try{ audio.pause(); audio.currentTime=0; }catch(e){} audio.removeAttribute('src'); audio.load(); audio=null; }
+  }
+
+  return { start, stop };
+})();
+
 /* ── OPEN / CLOSE ── */
 function openProject(id) {
   const d = P[id]; if (!d) return;
@@ -2037,6 +2414,8 @@ function openProject(id) {
     playerRow.style.display = 'none';
     modalTracks = [];
   }
+  // Planet Dreamland embeds its own player in the hero, so hide the generic chrome
+  if (id === 'dreamland') { playerRow.style.display = 'none'; modalTracks = []; }
 
   // Body
   const ctaHTML = siteUrl ? `<a class="modal-cta" href="${siteUrl}" target="_blank" rel="noopener">${siteLabel} →</a>` : '';
@@ -2061,6 +2440,8 @@ function openProject(id) {
   if (id === 'wndrklub') setTimeout(startFlipbook, 50);
   // Start animated thread if it's Shãh-rak-uen'
   if (id === 'en') setTimeout(startEnThread, 50);
+  // Start the procedural Planet Dreamland scene + player
+  if (id === 'dreamland') setTimeout(() => DreamlandPreview.start(), 60);
   // Seed gold star field if it's Teatrino
   if (id === 'teatrino') {
     setTimeout(seedTeatrinoStars, 50);
@@ -2204,6 +2585,7 @@ function closeModal() {
   modalStopAudio();
   stopFlipbook();
   stopEnThread();
+  DreamlandPreview.stop();
   // Tear down Teatrino hls instance if any
   if (teatrinoHls) { try { teatrinoHls.destroy(); } catch(e) {} teatrinoHls = null; }
   // Wipe media so video iframes stop playing in the background
