@@ -775,6 +775,10 @@ nav {
 
 /* ── BODY ── */
 .modal-inner { padding: 2.2rem 2.6rem 2.6rem; }
+/* Brand logo used in place of the text title (e.g. WndrKlub). Sits on the navy modal surface. */
+.modal-logo { display:block; width:auto; height:auto; max-width:220px; max-height:88px; margin:0 0 1.1rem; border-radius:6px; }
+.modal-logo ~ .modal-title { display:none; }
+@media (max-width: 600px) { .modal-logo { max-width:180px; max-height:72px; } }
 .modal-tag { font-family:var(--mono); font-size:0.6rem; letter-spacing:0.2em; margin-bottom:0.8rem; display:block; }
 .modal-title { font-family:var(--syne); font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; letter-spacing:-0.02em; line-height:1.0; margin-bottom:0.4rem; color:var(--cream); }
 .modal-title .title-dot {
@@ -1943,9 +1947,9 @@ const P = {
   teatrino:{tag:'Animated Series · In Development · Primary Project',title:'Teatrino',sub:'',
     body:`<p>From the hush of an empty theatre to a stage alive with possibility. Teatrino is a theatrical, music-led animated universe where surreal comedy, curious characters, and curated vignettes invite our audience to jump in, play and explore, building an audience that thrives on curiosity, creativity, and pure joy.</p><p>Teatrino's character-driven world takes Curious Dreamers' award-winning musical storytelling to the next level, blending humour, imagination, and sound-led adventures, while pushing the boundaries of modern audience engagement.</p>`,
     creds:['Animated Series','7 min · No dialogue','European Surrealist','In Development']},
-  wndrklub:{tag:'Animated Series · Screen Scotland · ScreenSkills Curriculum',title:'WndrKlub<span class="title-dot"></span>',sub:'How do you see the world?',
+  wndrklub:{tag:'Animated Series · Screen Scotland · Film and Screen Curriculum',title:'WndrKlub<span class="title-dot"></span>',logo:'https://imagedelivery.net/GhryEtlvYEhygxHE3JS6Bg/6356c91a-cdbd-4a53-8b0b-15dc2bc22100/public',sub:'How do you see the world?',
     body:`<p><em>Wndr(er)</em> noun /wɒn-dər/ A filmmaker before they know the word. They pause where others move on, framing the ordinary until it becomes extraordinary.</p><p>A film director doesn't just look at the world. They notice it. They notice the sway of trees in the wind, the reflection of clouds on water, the shadow stretching across a doorway, the texture of a weathered wall, the ripple of movement in a busy street, and the way sound and silence shape a moment.</p><p>They are always asking: what's the story here? How does this moment feel? Who are we meant to be watching, and what happens next?</p><p>They see life not as a blur, but as a series of shots and scenes, each one carefully framed by perspective and emotion. To them, every ordinary moment holds structure: a beginning, a middle, an end, and a feeling beating quietly at its heart.</p><p>We invite children to become Wndr(ers), encouraging them to be curious, to be storytellers, to see the world from a different perspective.</p>`,
-    creds:['Screen Scotland','ScreenSkills Curriculum','Animated Series','In Development']},
+    creds:['Screen Scotland','Film and Screen Curriculum','Animated Series','In Development']},
   leviathan:{tag:'Animated Film · Immersive · In Development',title:'The Last Leviathan',sub:'',
     body:`<p><em>"My soul has been torn from me and I am bleeding / My heart it has been rent and I am crying / I am the last of the Great Whales and I am dying."</em></p><p>Andy Barnes wrote that song in 1983. It asks what it would mean to truly listen to whales, not as a symbol or a campaign, but as living creatures with their own complex acoustic world. That question is the starting point for this film.</p><p>We're working with <strong>Mairi Campbell</strong>, Gaelic and Scottish musician, vocalist, viola and clarsach player, and with <strong>Alex South</strong>, a Glasgow-based musician and researcher whose practice sits at the intersection of music, bioacoustics, and animal communication. The recordings come first, made separately, then woven together.</p><p>The form is still open: short film, multi-screen live performance, VR, or some combination of all three. What's fixed is the subject: what connects us to the rest of the natural world, and what happens when we stop to listen.</p>`,
     creds:['Mairi Campbell','Alex South','NatureScot','Animation · Immersive · VR','In Development']},
@@ -2420,6 +2424,7 @@ function openProject(id) {
   // Body
   const ctaHTML = siteUrl ? `<a class="modal-cta" href="${siteUrl}" target="_blank" rel="noopener">${siteLabel} →</a>` : '';
   document.getElementById('modalContent').innerHTML = `
+    ${d.logo ? `<img class="modal-logo" src="${d.logo}" alt="${d.title.replace(/<[^>]+>/g,'')}">` : ''}
     <span class="modal-tag" style="${tc}">${d.tag}</span>
     <h2 class="modal-title">${d.title}</h2>
     ${d.sub ? `<p class="modal-sub">${d.sub}</p>` : ''}
