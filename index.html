@@ -1614,9 +1614,20 @@ new IntersectionObserver(e => heroVis=e[0].isIntersecting, {threshold:0}).observ
   // ── TRACK POOL ──
   // Pulls from the global TRACKS (defined alongside project data later in script).
   // Falls back to a stub if TRACKS isn't ready yet.
+  // Tracks excluded from the trumpet's random pool (vocal tracks).
+  // Matched against the mp3 filename in track.url — add more here.
+  const TRUMPET_EXCLUDE = [
+    'autumn-leaves.mp3',
+    'goodnight-dreams.mp3',
+    'summer-sunshine.mp3',
+  ];
   function getAllTracks() {
     if (typeof TRACKS === 'undefined') return [];
-    return Object.values(TRACKS).flat();
+    const excluded = TRUMPET_EXCLUDE.map(f => f.toLowerCase());
+    return Object.values(TRACKS).flat().filter(t => {
+      const file = decodeURIComponent((t.url || '').split('/').pop()).toLowerCase();
+      return !excluded.includes(file);
+    });
   }
 
   let audioCtx = null;
